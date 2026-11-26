@@ -1,0 +1,147 @@
+{
+  "polity": [
+    {
+      "lec": "Lec 01",
+      "title": "संविधान निर्माण (Making of Constitution)",
+      "sub": "संविधान सभा, समितियाँ, सत्र व प्रारूप समिति",
+      "file": "pdfs/polity/lec1.pdf"
+    },
+    {
+      "lec": "Lec 02",
+      "title": "संविधान की प्रमुख विशेषताएँ व अनुसूचियाँ",
+      "sub": "संघवाद, 12 अनुसूचियाँ (TEARS OF OLD PM)",
+      "file": "pdfs/polity/lec2.pdf"
+    },
+    {
+      "lec": "Lec 03",
+      "title": "प्रस्तावना (Preamble & Parts)",
+      "sub": "उद्देशिका, टिप्पणियाँ, केस व संविधान के 25 भाग",
+      "file": "pdfs/polity/lec3.pdf"
+    },
+    {
+      "lec": "Lec 04",
+      "title": "भाग I — संघ और उसका राज्यक्षेत्र",
+      "sub": "अनुच्छेद 1–4, राज्य पुनर्गठन व अनुच्छेद 371",
+      "file": "pdfs/polity/lec4.pdf"
+    },
+    {
+      "lec": "Lec 05",
+      "title": "भाग II — नागरिकता (Citizenship)",
+      "sub": "अनुच्छेद 5–11, नागरिकता अधिनियम 1955, OCI व CAA",
+      "file": "pdfs/polity/lec5.pdf"
+    },
+    {
+      "lec": "Lec 06",
+      "title": "भाग III — मौलिक अधिकार (Part-1)",
+      "sub": "अनुच्छेद 12–18, समानता का अधिकार व Landmark Cases",
+      "file": "pdfs/polity/lec6.pdf"
+    },
+    {
+      "lec": "Lec 07",
+      "title": "भाग III — मौलिक अधिकार (Part-2)",
+      "sub": "अनुच्छेद 19–21A, स्वतंत्रता व जीवन का अधिकार",
+      "file": "pdfs/polity/lec7.pdf"
+    },
+    {
+      "lec": "Lec 08",
+      "title": "भाग III — मौलिक अधिकार (Part-3)",
+      "sub": "अनुच्छेद 22–35, धर्म, अल्पसंख्यक व 5 रिट (Writs)",
+      "file": "pdfs/polity/lec8.pdf"
+    },
+    {
+      "lec": "Lec 09",
+      "title": "भाग IV — राज्य के नीति निदेशक सिद्धांत (DPSP)",
+      "sub": "अनुच्छेद 36–51, UCC, संशोधन व FR बनाम DPSP",
+      "file": "pdfs/polity/lec9.pdf"
+    },
+    {
+      "lec": "Lec 10",
+      "title": "मौलिक कर्तव्य व संविधान संशोधन",
+      "sub": "अनुच्छेद 51A (11 कर्तव्य), बहुमत के प्रकार व Art 368",
+      "file": "pdfs/polity/lec10.pdf"
+    },
+    {
+      "lec": "Lec 11",
+      "title": "राष्ट्रपति और उपराष्ट्रपति",
+      "sub": "अनुच्छेद 52–71, चुनाव, महाभियोग व कार्यकाल",
+      "file": "pdfs/polity/lec11.pdf"
+    },
+    {
+      "lec": "Lec 12",
+      "title": "प्रधानमंत्री, मंत्रिपरिषद व महान्यायवादी",
+      "sub": "अनुच्छेद 72–78, क्षमादान शक्ति व Attorney General",
+      "file": "pdfs/polity/lec12.pdf"
+    },
+    {
+      "lec": "Lec 13",
+      "title": "भाग V — संसद (Part-1)",
+      "sub": "अनुच्छेद 79–85, लोकसभा, राज्यसभा, परिसीमन व सत्र",
+      "file": "pdfs/polity/lec13.pdf"
+    },
+    {
+      "lec": "Lec 14",
+      "title": "भाग V — संसद (Part-2)",
+      "sub": "अनुच्छेद 86–106, पदाधिकारी, कोरम, दलबदल व विशेषाधिकार",
+      "file": "pdfs/polity/lec14.pdf"
+    },
+    {
+      "lec": "Lec 15",
+      "title": "भाग V — संसद (Part-3)",
+      "sub": "अनुच्छेद 107–123, विधेयक, वीटो, बजट, समितियाँ व अध्यादेश",
+      "file": "pdfs/polity/lec15.pdf"
+    },
+    {
+      "lec": "Lec 16",
+      "title": "राज्य कार्यपालिका व विधानमंडल",
+      "sub": "अनुच्छेद 152–213, राज्यपाल, CM, विधानसभा व विधान परिषद",
+      "file": "pdfs/polity/lec16.pdf"
+    },
+    {
+      "lec": "Lec 17",
+      "title": "सर्वोच्च न्यायालय (Supreme Court)",
+      "sub": "अनुच्छेद 124–147, कॉलेजियम, क्षेत्राधिकार व पूर्ण न्याय",
+      "file": "pdfs/polity/lec17.pdf"
+    },
+    {
+      "lec": "Lec 18",
+      "title": "उच्च न्यायालय, अधीनस्थ न्यायालय व अधिकरण",
+      "sub": "अनुच्छेद 214–237, रिट (226), लोक अदालत, PIL व CAT",
+      "file": "pdfs/polity/lec18.pdf"
+    },
+    {
+      "lec": "Lec 19",
+      "title": "स्थानीय स्वशासन (Local Government)",
+      "sub": "पंचायत (243–243O), नगरपालिका (243P–ZG) व सहकारी समितियाँ",
+      "file": "pdfs/polity/lec19.pdf"
+    },
+    {
+      "lec": "Lec 20",
+      "title": "केंद्र-राज्य संबंध (Center-State Relations)",
+      "sub": "विधायी (245–255), प्रशासनिक (256–263), वित्तीय (265–293) व क्षेत्रीय परिषदें",
+      "file": "pdfs/polity/lec20.pdf"
+    },
+    {
+      "lec": "Lec 21",
+      "title": "संवैधानिक व गैर-संवैधानिक निकाय",
+      "sub": "ECI, UPSC, वित्त आयोग, GST परिषद, CAG, NCSC/ST/BC, NHRC, लोकपाल, नीति आयोग",
+      "file": "pdfs/polity/lec21.pdf"
+    },
+    {
+      "lec": "Lec 22",
+      "title": "आपातकाल, राजभाषा, UT व जनजातीय क्षेत्र",
+      "sub": "अनुच्छेद 352–360, 343–351, 239–242 व 244–244A",
+      "file": "pdfs/polity/lec22.pdf"
+    },
+    {
+      "lec": "Lec 23",
+      "title": "ऐतिहासिक पृष्ठभूमि (Historical Background)",
+      "sub": "रेगुलेटिंग एक्ट 1773 से भारतीय स्वतंत्रता अधिनियम 1947 तक",
+      "file": "pdfs/polity/lec23.pdf"
+    }
+  ],
+  "history": [],
+  "geography": [],
+  "static_gk": [],
+  "science": [],
+  "economics": []
+}
