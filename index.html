@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GS Master — Polity, History &amp; Static GK</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Noto Sans Devanagari & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans Devanagari"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* =========================================================
+     * DESIGN TOKENS: VOCAB MASTER BLUE & WHITE + SYNCED DARK MODE
+     * ========================================================= */
+    :root {
+      --bg: #f0f5ff;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #dbeafe;
+      --border-strong: #bfdbfe;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --shadow-card: 0 6px 20px -6px rgba(37, 99, 235, 0.10), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+      --shadow-hover: 0 12px 28px -8px rgba(37, 99, 235, 0.18), 0 4px 10px -4px rgba(15, 23, 42, 0.06);
+    }
+
+    html.dark {
+      --bg: #0b1120;
+      --surface: #111a2e;
+      --surface-2: #17233b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(59, 130, 246, 0.35);
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --shadow-card: 0 8px 24px -8px rgba(0, 0, 0, 0.45);
+      --shadow-hover: 0 12px 30px -8px rgba(37, 99, 235, 0.30);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
+      background-color: var(--bg);
+      background-image: radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
+                        radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.06) 0px, transparent 50%);
+      color: var(--text);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+    }
+
+    .app-card-hover {
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .app-card-hover:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Prominent Constitution Feature Card */
+    .constitution-banner {
+      background: linear-gradient(135deg, #2563eb 0%, #4338ca 100%);
+      box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.45);
+      transition: transform 0.18s ease, box-shadow 0.2s ease;
+    }
+    .constitution-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(37, 99, 235, 0.55);
+    }
+
+    /* Tactile 3D Bottom-Border Button */
+    .btn-3d {
+      border-bottom-width: 4px;
+      transition: transform 0.08s ease, border-bottom-width 0.08s ease, filter 0.15s ease;
+    }
+    .btn-3d:hover:not(:disabled) {
+      filter: brightness(1.04);
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    /* Fixed Bottom Nav Active State */
+    .bnav-item {
+      color: var(--muted);
+      transition: all 0.18s ease;
+    }
+    .bnav-item.bnav-active {
+      color: #2563eb;
+    }
+    html.dark .bnav-item.bnav-active {
+      color: #60a5fa;
+    }
+    .bnav-item.bnav-active .bnav-pill {
+      background: rgba(37, 99, 235, 0.12);
+    }
+    html.dark .bnav-item.bnav-active .bnav-pill {
+      background: rgba(59, 130, 246, 0.22);
+    }
+
+    /* 3D Flip Flashcard */
+    .perspective-1200 {
+      perspective: 1200px;
+    }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      min-height: 360px;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .flip-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(6px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- ========================================================= -->
+  <!-- 1. TOP STICKY HEADER (CLEAN BLUE & WHITE)                 -->
+  <!-- ========================================================= -->
+  <header class="sticky top-0 z-30 app-card border-x-0 border-t-0 backdrop-blur-md bg-white/95 dark:bg-[#111a2e]/95">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 cursor-pointer group" onclick="goHome()">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white font-extrabold text-base flex items-center justify-center shadow-md border-b-4 border-blue-900 group-hover:scale-105 transition-transform">
+          GS
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white">GS Master</h1>
+          <p class="text-[11px] font-semibold mt-0.5 text-blue-600 dark:text-blue-400">Polity • History • Static GK</p>
+        </div>
+      </div>
+
+      <button onclick="toggleTheme()" id="themeBtn" class="w-9 h-9 rounded-xl border flex items-center justify-center text-base transition hover:bg-blue-50 dark:hover:bg-blue-900/30" style="border-color:var(--border); background:var(--surface-2)" title="Toggle Light / Dark Mode">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- MAIN CONTAINER (pb-24 FOR FIXED BOTTOM NAV BAR)           -->
+  <!-- ========================================================= -->
+  <main class="max-w-6xl w-full mx-auto px-4 pt-5 pb-24 flex-1">
+
+    <!-- ======================================================= -->
+    <!-- VIEW 1: HOME DASHBOARD                                  -->
+    <!-- ======================================================= -->
+    <section id="homeView" class="space-y-5">
+
+      <!-- 2. COMPACT 4-CARD DASHBOARD STATS STRIP -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="app-card rounded-2xl p-3.5 sm:p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">📑</div>
+          <div class="min-w-0">
+            <div id="statTopics" class="font-mono text-xl font-extrabold leading-tight text-slate-900 dark:text-white">0</div>
+            <div class="text-[11px] font-semibold truncate" style="color:var(--muted)">Topics Available</div>
+          </div>
+        </div>
+
+        <div class="app-card rounded-2xl p-3.5 sm:p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-500/30 text-sky-600 dark:text-sky-400 flex items-center justify-center text-lg shrink-0">🎯</div>
+          <div class="min-w-0">
+            <div id="statSolved" class="font-mono text-xl font-extrabold leading-tight text-slate-900 dark:text-white">0</div>
+            <div class="text-[11px] font-semibold truncate" style="color:var(--muted)">Qs Solved</div>
+          </div>
+        </div>
+
+        <div class="app-card rounded-2xl p-3.5 sm:p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg shrink-0">📈</div>
+          <div class="min-w-0">
+            <div id="statAccuracy" class="font-mono text-xl font-extrabold leading-tight text-emerald-600 dark:text-emerald-400">0%</div>
+            <div class="text-[11px] font-semibold truncate" style="color:var(--muted)">Avg Accuracy</div>
+          </div>
+        </div>
+
+        <div onclick="switchSection('vault')" class="app-card app-card-hover cursor-pointer rounded-2xl p-3.5 sm:p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg shrink-0">🛡️</div>
+          <div class="min-w-0">
+            <div id="statVault" class="font-mono text-xl font-extrabold leading-tight text-rose-600 dark:text-rose-400">0</div>
+            <div class="text-[11px] font-semibold truncate" style="color:var(--muted)">Mistake Vault</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. PROMINENT TOP FEATURE BOX: संविधान Revision (Articles & Schedules) -->
+      <a href="articles.html" class="constitution-banner block rounded-3xl p-5 sm:p-6 text-white group">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-start gap-3.5 sm:gap-4">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-105 transition-transform">
+              📜
+            </div>
+            <div class="space-y-1.5 min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="font-extrabold text-base sm:text-xl leading-tight">
+                  संविधान Revision (Articles &amp; Schedules)
+                </h2>
+              </div>
+              <p class="text-xs sm:text-sm font-medium text-blue-100 leading-snug">
+                Interactive 3D Flashcards with Sub-Articles Drill-Down &amp; Exam Tricks
+              </p>
+              <div class="pt-1">
+                <span class="inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white">
+                  12 Schedules • All Articles • Sub-Articles
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="shrink-0">
+            <span class="btn-3d inline-flex items-center justify-center w-full md:w-auto px-5 py-2.5 rounded-2xl bg-white text-blue-700 border-blue-200 text-xs sm:text-sm font-extrabold shadow-sm">
+              Open →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. ACTIVE SECTION HEADING + SUBJECT SELECTOR PILLS -->
+      <div id="subjectBarWrap" class="space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h3 id="activeSectionHeading" class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+            <span>📄</span> Class Notes
+          </h3>
+          <span class="text-[11px] font-bold text-blue-600 dark:text-blue-400">Subject Chunein</span>
+        </div>
+        <div id="subjectPills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
+      </div>
+
+      <!-- 5. TOPICS GRID / MISTAKE VAULT CONTENT -->
+      <div id="contentArea"></div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- VIEW 2: FULL QUIZ ENGINE                                -->
+    <!-- ======================================================= -->
+    <section id="quizView" class="hidden space-y-4 animate-pop">
+      <div class="app-card rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button onclick="requestExitQuiz()" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold border hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">← Back</button>
+          <div class="min-w-0">
+            <h2 id="quizTitle" class="font-extrabold text-sm sm:text-base leading-tight truncate"></h2>
+            <p id="quizMeta" class="text-[11px] font-semibold text-blue-600 dark:text-blue-400"></p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <select id="markingSelect" class="text-xs font-bold px-2.5 py-1.5 rounded-xl border outline-none cursor-pointer" style="border-color:var(--border); background:var(--surface-2); color:var(--text)">
+            <option value="ssc">SSC (+2 / -0.5)</option>
+            <option value="cds">CDS (+0.83 / -0.27)</option>
+            <option value="practice">Practice (No Neg)</option>
+          </select>
+
+          <div id="timerBox" class="font-mono font-extrabold text-xs px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-500/15 border border-amber-300 dark:border-amber-500/30 text-amber-700 dark:text-amber-300">
+            ⏱ 00:00
+          </div>
+
+          <button onclick="submitQuiz()" class="btn-3d px-4 py-1.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+            Submit Test
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- Main Question Card -->
+        <div class="lg:col-span-8 app-card rounded-3xl p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div class="flex items-center gap-2">
+                <span id="qNumberBadge" class="font-mono text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">Q 1 / 15</span>
+                <span id="qTagBadge" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-500/30 text-sky-700 dark:text-sky-300"></span>
+              </div>
+              <button onclick="toggleMarkReview()" id="reviewBtn" class="text-xs font-bold px-3 py-1.5 rounded-xl border transition" style="border-color:var(--border); background:var(--surface-2)">
+                🚩 Mark Review
+              </button>
+            </div>
+
+            <div id="qText" class="text-base sm:text-lg font-bold leading-relaxed mb-5 whitespace-pre-line"></div>
+
+            <div id="optionsContainer" class="space-y-2.5 mb-5"></div>
+
+            <!-- Instant Explanation + Yellow Note Line Box -->
+            <div id="explanationBox" class="hidden rounded-2xl p-4 mb-5 border text-sm animate-pop bg-blue-50/60 dark:bg-slate-800/60" style="border-color:var(--border)">
+              <div class="font-extrabold text-xs uppercase tracking-wider mb-1.5 text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
+                <span>💡</span> Explanation
+              </div>
+              <p id="explanationText" class="leading-relaxed mb-2.5 text-xs sm:text-sm"></p>
+              <div id="sourceLineWrap" class="hidden text-xs p-3 rounded-xl border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-500/15 text-amber-950 dark:text-amber-100">
+                <span class="font-extrabold text-amber-700 dark:text-amber-300">📌 Note Line: </span>
+                <span id="sourceLineText"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-4 border-t" style="border-color:var(--border)">
+            <button onclick="prevQuestion()" id="prevBtn" class="px-4 py-2.5 rounded-xl text-xs font-bold border disabled:opacity-40 hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">← Previous</button>
+            <button onclick="clearResponse()" class="px-3 py-2.5 rounded-xl text-xs font-bold hover:text-rose-600 transition" style="color:var(--muted)">Clear</button>
+            <button onclick="nextQuestion()" id="nextBtn" class="btn-3d px-5 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">Save &amp; Next →</button>
+          </div>
+        </div>
+
+        <!-- Question Palette Sidebar -->
+        <div class="lg:col-span-4 app-card rounded-3xl p-5 h-fit">
+          <div class="flex items-center justify-between mb-3.5">
+            <h3 class="font-extrabold text-sm">Question Palette</h3>
+            <label class="flex items-center gap-1.5 text-[11px] font-bold cursor-pointer select-none" style="color:var(--muted)">
+              <input type="checkbox" id="instantCheck" checked onchange="renderQuestion()" class="accent-blue-600 w-3.5 h-3.5" />
+              Instant Ans
+            </label>
+          </div>
+
+          <div id="paletteGrid" class="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-5 gap-2 mb-4 max-h-72 overflow-y-auto pr-1"></div>
+
+          <div class="grid grid-cols-2 gap-2 text-[11px] font-semibold pt-3.5 border-t" style="border-color:var(--border); color:var(--muted)">
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> Answered</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-500 inline-block"></span> Review</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500 inline-block"></span> Wrong</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded border inline-block" style="border-color:var(--border)"></span> Unseen</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- VIEW 3: RESULT & DETAILED REVIEW                        -->
+    <!-- ======================================================= -->
+    <section id="resultView" class="hidden animate-pop">
+      <div class="app-card rounded-3xl p-6 sm:p-7 max-w-3xl mx-auto">
+        <div class="text-center mb-6">
+          <div class="text-4xl mb-2">🏆</div>
+          <h2 id="resTitle" class="text-xl sm:text-2xl font-extrabold mb-1">Test Complete!</h2>
+          <p id="resSub" class="font-mono text-xs font-semibold" style="color:var(--muted)"></p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div class="p-4 rounded-2xl text-center bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30">
+            <div class="text-[11px] font-bold mb-1 text-blue-700 dark:text-blue-300">Final Score</div>
+            <div id="resScore" class="font-mono text-xl sm:text-2xl font-extrabold text-blue-700 dark:text-blue-300">0</div>
+          </div>
+          <div class="p-4 rounded-2xl text-center bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30">
+            <div class="text-[11px] font-bold mb-1 text-emerald-700 dark:text-emerald-300">Correct</div>
+            <div id="resCorrect" class="font-mono text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">0</div>
+          </div>
+          <div class="p-4 rounded-2xl text-center bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30">
+            <div class="text-[11px] font-bold mb-1 text-rose-700 dark:text-rose-300">Wrong</div>
+            <div id="resWrong" class="font-mono text-xl sm:text-2xl font-extrabold text-rose-600 dark:text-rose-400">0</div>
+          </div>
+          <div class="p-4 rounded-2xl text-center bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-500/30">
+            <div class="text-[11px] font-bold mb-1 text-sky-700 dark:text-sky-300">Accuracy</div>
+            <div id="resAcc" class="font-mono text-xl sm:text-2xl font-extrabold text-sky-600 dark:text-sky-400">0%</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3 mb-6">
+          <button onclick="goHome()" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm border hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">🏠 Home</button>
+          <button onclick="retryQuiz()" class="btn-3d px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-blue-600 border-blue-800 text-white">🔄 Retake Test</button>
+          <button onclick="openVaultFromResult()" class="btn-3d px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-rose-600 border-rose-800 text-white">🛡️ Open Mistake Vault</button>
+        </div>
+
+        <h3 class="font-extrabold text-sm mb-3 flex items-center gap-2 text-blue-800 dark:text-blue-300">
+          <span>📋</span> Detailed Answer Review
+        </h3>
+        <div id="reviewList" class="space-y-3 max-h-[520px] overflow-y-auto pr-1"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- FIXED BOTTOM NAVIGATION BAR (LIKE MATH MASTER)            -->
+  <!-- ========================================================= -->
+  <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-40 app-card border-x-0 border-b-0 backdrop-blur-md bg-white/95 dark:bg-[#111a2e]/95">
+    <div class="max-w-3xl mx-auto px-2 py-2 grid grid-cols-4 gap-1">
+      <button onclick="switchSection('notes')" id="bnav-notes" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
+        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">📄</div>
+        <span class="text-[11px] font-extrabold mt-1">Class Notes</span>
+      </button>
+
+      <button onclick="switchSection('pyq')" id="bnav-pyq" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
+        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">📚</div>
+        <span class="text-[11px] font-extrabold mt-1">Exam PYQs</span>
+      </button>
+
+      <button onclick="switchSection('ai')" id="bnav-ai" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
+        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">✨</div>
+        <span class="text-[11px] font-extrabold mt-1">AI Pattern</span>
+      </button>
+
+      <button onclick="switchSection('vault')" id="bnav-vault" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl relative">
+        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors relative">
+          🛡️
+          <span id="vaultBottomBadge" class="hidden absolute -top-1 -right-1 font-mono text-[10px] min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white font-extrabold flex items-center justify-center shadow">0</span>
+        </div>
+        <span class="text-[11px] font-extrabold mt-1">Mistake Vault</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 1: 3D FLIP FLASHCARDS MODAL                         -->
+  <!-- ========================================================= -->
+  <div id="flashcardModal" class="hidden fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl space-y-4 animate-pop">
+      <div class="app-card rounded-2xl p-3.5 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <h3 id="fcTitle" class="font-extrabold text-sm sm:text-base truncate"></h3>
+          <p class="text-[11px] font-semibold text-blue-600 dark:text-blue-400">3D Flashcards • Tap or Spacebar to flip</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span id="fcCounter" class="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">1 / 15</span>
+          <button onclick="shuffleFlashcards()" class="px-2.5 py-1.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)" title="Shuffle Cards">🔀</button>
+          <button onclick="closeFlashcardModal()" class="w-8 h-8 rounded-xl border font-bold hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-slate-700 transition" style="border-color:var(--border); background:var(--surface-2)">✕</button>
+        </div>
+      </div>
+
+      <div class="w-full h-2 rounded-full overflow-hidden bg-blue-100 dark:bg-slate-800">
+        <div id="fcProgressBar" class="h-full bg-blue-600 rounded-full transition-all duration-300" style="width: 10%"></div>
+      </div>
+
+      <div class="perspective-1200">
+        <div id="fcInner" onclick="flipFlashcard()" class="flip-inner cursor-pointer select-none">
+          <!-- FRONT FACE -->
+          <div class="flip-face app-card rounded-3xl p-6 sm:p-8 justify-between border-2 border-blue-200 dark:border-blue-500/40">
+            <div class="flex items-center justify-between gap-2">
+              <span id="fcFrontBadge" class="text-[11px] font-mono font-extrabold px-2.5 py-1 rounded-lg bg-sky-50 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-500/30">CARD #1</span>
+              <span class="text-xs font-semibold" style="color:var(--muted)">Tap to Flip ↻</span>
+            </div>
+
+            <div class="my-auto py-5 text-center">
+              <p id="fcFrontQuestion" class="text-base sm:text-xl font-extrabold leading-relaxed whitespace-pre-line"></p>
+            </div>
+
+            <div class="text-center">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
+                👆 Tap card to reveal Answer &amp; Note Line
+              </span>
+            </div>
+          </div>
+
+          <!-- BACK FACE -->
+          <div class="flip-face flip-back app-card rounded-3xl p-6 sm:p-8 justify-between border-2 border-blue-500 dark:border-blue-400 overflow-y-auto">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-mono font-extrabold px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">ANSWER &amp; FACT</span>
+              <span class="text-xs font-semibold" style="color:var(--muted)">Tap to Flip Back</span>
+            </div>
+
+            <div class="my-auto py-4 space-y-3.5">
+              <div class="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30">
+                <div class="text-[10px] font-mono font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 mb-1">✅ Sahi Uttar</div>
+                <p id="fcBackAnswer" class="text-sm sm:text-lg font-extrabold text-emerald-800 dark:text-emerald-200"></p>
+              </div>
+
+              <p id="fcBackExplanation" class="text-xs sm:text-sm leading-relaxed"></p>
+
+              <div id="fcBackSourceWrap" class="hidden p-3 rounded-2xl border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-500/15 text-xs leading-relaxed text-amber-950 dark:text-amber-100">
+                <span class="font-extrabold text-amber-700 dark:text-amber-300">📌 Note Line: </span>
+                <span id="fcBackSource"></span>
+              </div>
+            </div>
+
+            <div class="text-center text-[11px] font-semibold" style="color:var(--muted)">
+              Use Left / Right arrows or buttons below
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3">
+        <button onclick="prevFlashcard()" class="app-card py-3 rounded-2xl text-xs sm:text-sm font-extrabold hover:bg-blue-50 dark:hover:bg-slate-800 transition">← Previous</button>
+        <button onclick="flipFlashcard()" class="btn-3d py-3 rounded-2xl bg-sky-500 border-sky-700 text-white text-xs sm:text-sm font-extrabold">↻ Flip Card</button>
+        <button onclick="nextFlashcard()" class="btn-3d py-3 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2: LINE-BY-LINE REVISION KEY                        -->
+  <!-- ========================================================= -->
+  <div id="keyModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-card rounded-3xl w-full max-w-3xl max-h-[86vh] flex flex-col overflow-hidden animate-pop">
+      <div class="p-4 sm:p-5 border-b flex items-center justify-between gap-2 bg-blue-50/70 dark:bg-slate-800/70" style="border-color:var(--border)">
+        <div class="min-w-0">
+          <h3 id="keyModalTitle" class="font-extrabold text-base truncate"></h3>
+          <p class="text-xs font-semibold text-blue-600 dark:text-blue-400">Rapid Line-by-Line Revision Key</p>
+        </div>
+        <button onclick="closeKeyModal()" class="shrink-0 w-9 h-9 rounded-xl border font-bold hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-slate-700 transition" style="border-color:var(--border); background:var(--surface)">✕</button>
+      </div>
+      <div id="keyModalBody" class="p-4 sm:p-5 overflow-y-auto space-y-3"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 3: CUSTOM CONFIRMATION DIALOG (NO alert/confirm)    -->
+  <!-- ========================================================= -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-card rounded-3xl w-full max-w-sm p-6 text-center space-y-4 animate-pop">
+      <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl mx-auto">⚠️</div>
+      <h3 id="confirmTitle" class="font-extrabold text-base">Confirm Action</h3>
+      <p id="confirmMessage" class="text-xs leading-relaxed" style="color:var(--muted)"></p>
+      <div class="flex gap-2.5 justify-center pt-1">
+        <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">Cancel</button>
+        <button id="confirmOkBtn" class="btn-3d flex-1 py-2.5 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">Yes, Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div id="toastContainer" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+  <!-- ========================================================= -->
+  <!-- APPLICATION JAVASCRIPT                                    -->
+  <!-- ========================================================= -->
+  <script>
+    // =========================================================================
+    // 1. SUBJECT REGISTRY
+    // =========================================================================
+    const SUBJECTS = [
+      { key: "polity",    name: "Polity",    icon: "⚖️" },
+      { key: "history",   name: "History",   icon: "🏛️" },
+      { key: "geography", name: "Geography", icon: "🌍" },
+      { key: "static_gk", name: "Static GK", icon: "🎯" },
+      { key: "science",   name: "Science",   icon: "🔬" },
+      { key: "economics", name: "Economics", icon: "📊" }
+    ];
+
+    const SECTION_META = {
+      notes: { label: "Class Notes", icon: "📄" },
+      pyq:   { label: "Exam PYQs", icon: "📚" },
+      ai:    { label: "AI New Pattern", icon: "✨" },
+      vault: { label: "Mistake Vault", icon: "🛡️" }
+    };
+
+    // =========================================================================
+    // 2. EMBEDDED 15-QUESTION HINDI PREVIEW FALLBACK (POLITY LEC 1)
+    // =========================================================================
+    const PREVIEW_POLITY_DATA = {
+      subject: "Polity",
+      section: "notes",
+      topics: [
+        {
+          id: "polity-lec-1-making-of-constitution",
+          title: "संविधान निर्माण (Making of Constitution - Lec 1)",
+          source: "Parmar SSC GK 5.0 Hindi Notes",
+          questions: [
+            {
+              q: "संविधान की परंपरा सबसे पहले किस देश में और किस वर्ष शुरू हुई थी?",
+              options: ["ब्रिटेन (1688)", "संयुक्त राज्य अमेरिका (1787)", "फ्रांस (1789)", "भारत (1950)"],
+              ans: 1,
+              explanation: "संविधान की परंपरा संयुक्त राज्य अमेरिका (USA) में 1787 में शुरू हुई थी।",
+              sourceLine: "संविधान की परंपरा शुरु हुई: संयुक्त राज्य अमेरिका (1787 में)"
+            },
+            {
+              q: "संयुक्त राज्य अमेरिका (USA) को स्वतंत्रता कब मिली थी?",
+              options: ["4 जुलाई 1776", "14 जुलाई 1789", "26 जनवरी 1787", "15 अगस्त 1776"],
+              ans: 0,
+              explanation: "संयुक्त राज्य अमेरिका 4 जुलाई 1776 को स्वतंत्र हुआ था।",
+              sourceLine: "संयुक्त राज्य अमेरिका की स्वतंत्रताः 4 जुलाई 1776"
+            },
+            {
+              q: "1928 में भारतीय संविधान का प्रारंभिक प्रारूप (नेहरू रिपोर्ट) किसकी अध्यक्षता में और कहाँ प्रस्तुत किया गया था?",
+              options: [
+                "जवाहरलाल नेहरू, लाहौर अधिवेशन",
+                "मोतीलाल नेहरू, लखनऊ सर्वदलीय सम्मेलन",
+                "महात्मा गांधी, बेलगाम अधिवेशन",
+                "सुभाष चंद्र बोस, हरिपुरा"
+              ],
+              ans: 1,
+              explanation: "1928 की नेहरू रिपोर्ट लखनऊ में सर्वदलीय सम्मेलन द्वारा प्रस्तुत की गई थी, जिसकी अध्यक्षता मोतीलाल नेहरू ने की थी।",
+              sourceLine: "1928: भारतीय संविधान का प्रारंभिक प्रारूप (नेहरु रिपोर्ट) लखनऊ में सर्वदलीय सम्मेलन द्वारा प्रस्तुत किया गया था जिसकी अध्यक्षता मोतीलाल नेहरू ने की थी।"
+            },
+            {
+              q: "भारत के लिए संविधान सभा का विचार पहली बार 1934 में किसने प्रस्तावित किया था?",
+              options: ["जवाहरलाल नेहरू", "डॉ. बी. आर. अंबेडकर", "एम. एन. रॉय", "महात्मा गांधी"],
+              ans: 2,
+              explanation: "1934 में एम. एन. रॉय ने पहली बार भारत के लिए संविधान सभा का विचार रखा और 1935 में कांग्रेस ने इसकी आधिकारिक मांग की।",
+              sourceLine: "1934: एम. एन. रॉय ने पहली बार भारत के लिए संविधान सभा का विचार प्रस्तावित किया।"
+            },
+            {
+              q: "महात्मा गांधी ने किस ब्रिटिश प्रस्ताव (1942) को 'डूबते हुए बैंक का उत्तर-दिनांकित चेक' (Post-dated cheque) कहा था?",
+              options: ["अगस्त प्रस्ताव (1940)", "क्रिप्स प्रस्ताव (1942)", "वेवेल योजना (1945)", "कैबिनेट मिशन योजना (1946)"],
+              ans: 1,
+              explanation: "महात्मा गांधी ने क्रिप्स प्रस्ताव (1942) के युद्धोत्तर अधिराज्य के दर्जे को 'डूबते हुए बैंक का उत्तर-दिनांकित चेक' कहा था।",
+              sourceLine: "क्रिप्स प्रस्तावः 1942 — महात्मा गांधी युद्धोत्तर अधिराज्य के दर्जे के इसके प्रस्ताव को 'डूबते हुए बैंक के उत्तर-दिनांकित चेक' के रूप में वर्णित करते हैं।"
+            },
+            {
+              q: "कैबिनेट मिशन योजना (1946) के अध्यक्ष और अन्य दो सदस्य कौन थे?",
+              options: [
+                "अध्यक्ष: स्टैफोर्ड क्रिप्स; सदस्य: पेथिक लॉरेंस, ए.वी. अलेक्जेंडर",
+                "अध्यक्ष: पेथिक लॉरेंस; सदस्य: स्टैफोर्ड क्रिप्स, ए.वी. अलेक्जेंडर",
+                "अध्यक्ष: लॉर्ड वेवेल; सदस्य: पेथिक लॉरेंस, स्टैफोर्ड क्रिप्स",
+                "अध्यक्ष: ए.वी. अलेक्जेंडर; सदस्य: पेथिक लॉरेंस, लॉर्ड माउंटबेटन"
+              ],
+              ans: 1,
+              explanation: "कैबिनेट मिशन (1946) में तीन ब्रिटिश कैबिनेट सदस्य थे: पेथिक लॉरेंस (अध्यक्ष), स्टैफोर्ड क्रिप्स और ए.वी. अलेक्जेंडर।",
+              sourceLine: "कैबिनेट मिशन योजना: 1946 तीन ब्रिटिश कैबिनेट सदस्यों के साथ: पेथिक लॉरेंस (अध्यक्ष), स्टैफ़ोर्ड क्रिप्स और ए.वी. अलेक्जेंडर।"
+            },
+            {
+              q: "कैबिनेट मिशन योजना के तहत संविधान सभा की कुल सीटें कितनी निर्धारित की गई थीं?",
+              options: [
+                "299 (229 निर्वाचित + 70 मनोनीत)",
+                "296 (292 गवर्नर प्रांत + 4 मुख्य आयुक्त)",
+                "389 (296 निर्वाचित + 93 मनोनीत)",
+                "395 (300 निर्वाचित + 95 मनोनीत)"
+              ],
+              ans: 2,
+              explanation: "कैबिनेट मिशन योजना के तहत कुल 389 सीटें निर्धारित थीं: 296 निर्वाचित (ब्रिटिश भारत) और 93 मनोनीत (देशी रियासतें)।",
+              sourceLine: "कुल सीटें: 389 | निर्वाचित सदस्य: 296 | मनोनीत सदस्यः 93"
+            },
+            {
+              q: "जुलाई-अगस्त 1946 के संविधान सभा चुनावों में कांग्रेस (INC), मुस्लिम लीग और निर्दलीय को क्रमशः कितनी सीटें मिलीं?",
+              options: [
+                "कांग्रेस: 208, मुस्लिम लीग: 73, निर्दलीय: 15",
+                "कांग्रेस: 211, मुस्लिम लीग: 70, निर्दलीय: 15",
+                "कांग्रेस: 229, मुस्लिम लीग: 73, निर्दलीय: 10",
+                "कांग्रेस: 208, मुस्लिम लीग: 78, निर्दलीय: 10"
+              ],
+              ans: 0,
+              explanation: "चुनाव परिणाम (जुलाई-अगस्त 1946): कांग्रेस को 208, मुस्लिम लीग को 73 और निर्दलीय को 15 सीटें मिलीं।",
+              sourceLine: "चुनाव हुए: जुलाई-अगस्त 1946 | परिणामः बहुमतः कांग्रेस (INC) 208 सीटें, मुस्लिम लीग 73 सीटें, निर्दलीय 15 सीटें"
+            },
+            {
+              q: "भारत की अंतरिम सरकार का गठन किस तिथि को किया गया था?",
+              options: ["24 अगस्त 1946", "2 सितंबर 1946", "9 दिसंबर 1946", "15 अगस्त 1947"],
+              ans: 1,
+              explanation: "अंतरिम राष्ट्रीय सरकार की घोषणा 24 अगस्त 1946 को हुई और इसका गठन 2 सितंबर 1946 को किया गया।",
+              sourceLine: "2 सितंबर 1946 को: भारत की अंतरिम सरकार का गठन किया गया।"
+            },
+            {
+              q: "संविधान सभा की प्रथम बैठक कब हुई थी और इसके अस्थायी व स्थायी अध्यक्ष कौन थे?",
+              options: [
+                "9 दिसंबर 1946; अस्थायी: डॉ. सच्चिदानंद सिन्हा, स्थायी: डॉ. राजेंद्र प्रसाद",
+                "11 दिसंबर 1946; अस्थायी: डॉ. राजेंद्र प्रसाद, स्थायी: डॉ. बी. आर. अंबेडकर",
+                "13 दिसंबर 1946; अस्थायी: डॉ. सच्चिदानंद सिन्हा, स्थायी: जवाहरलाल नेहरू",
+                "9 दिसंबर 1946; अस्थायी: बी. एन. राव, स्थायी: डॉ. राजेंद्र प्रसाद"
+              ],
+              ans: 0,
+              explanation: "प्रथम बैठक 9 दिसंबर 1946 को हुई (211/207 सदस्य); अस्थायी अध्यक्ष डॉ. सच्चिदानंद सिन्हा और स्थायी अध्यक्ष डॉ. राजेंद्र प्रसाद थे।",
+              sourceLine: "प्रथम बैठक 9 दिसंबर 1946 | अस्थायी अध्यक्ष: डॉ. सच्चिदानंद सिन्हा | अध्यक्ष: डॉ. राजेंद्र प्रसाद"
+            },
+            {
+              q: "संविधान सभा में 'उद्देश्य प्रस्ताव' जवाहरलाल नेहरू द्वारा कब पेश किया गया और इसे कब अपनाया गया?",
+              options: [
+                "पेश: 13 दिसंबर 1946; अपनाया गया: 22 जनवरी 1947",
+                "पेश: 9 दिसंबर 1946; अपनाया गया: 26 जनवरी 1947",
+                "पेश: 11 दिसंबर 1946; अपनाया गया: 22 जुलाई 1947",
+                "पेश: 15 अगस्त 1947; अपनाया गया: 29 अगस्त 1947"
+              ],
+              ans: 0,
+              explanation: "13 दिसंबर 1946 को जवाहरलाल नेहरू ने उद्देश्य प्रस्ताव पेश किया और 22 जनवरी 1947 को इसे अपनाया गया।",
+              sourceLine: "13 दिसंबर 1946 को संविधान सभा में जवाहरलाल नेहरु द्वारा पेश किए गए उद्देश्य प्रस्ताव को 22 जनवरी 1947 को अपनाया गया था।"
+            },
+            {
+              q: "प्रारूप समिति (Drafting Committee) की स्थापना कब हुई, इसमें कुल कितने सदस्य थे और इसके अध्यक्ष कौन थे?",
+              options: [
+                "29 अगस्त 1947, 7 सदस्य, अध्यक्ष: डॉ. बी. आर. अंबेडकर",
+                "15 अगस्त 1947, 7 सदस्य, अध्यक्ष: डॉ. राजेंद्र प्रसाद",
+                "29 अगस्त 1947, 9 सदस्य, अध्यक्ष: डॉ. बी. आर. अंबेडकर",
+                "9 दिसंबर 1946, 7 सदस्य, अध्यक्ष: बी. एन. राव"
+              ],
+              ans: 0,
+              explanation: "प्रारूप समिति की स्थापना 29 अगस्त 1947 को हुई (पहली बैठक 30 अगस्त 1947); इसमें 7 सदस्य थे और कुल 141 बैठकें हुईं।",
+              sourceLine: "प्रारुप समिति: स्थापना 29 अगस्त, 1947 | कुल सदस्य: 7 | बैठक: 141 | अध्यक्ष: डॉ. बी. आर. अंबेडकर"
+            },
+            {
+              q: "संविधान निर्माण में कुल कितने सत्र, कुल कितना समय और कितना बजट लगा था?",
+              options: [
+                "11 सत्र (165 दिन), 2 वर्ष 11 महीने 18 दिन, ₹64 लाख",
+                "12 सत्र (141 दिन), 2 वर्ष 11 महीने 18 दिन, ₹64 लाख",
+                "11 सत्र (165 दिन), 3 वर्ष 11 महीने 18 दिन, ₹60 लाख",
+                "10 सत्र (165 दिन), 2 वर्ष 10 महीने 18 दिन, ₹64 लाख"
+              ],
+              ans: 0,
+              explanation: "कुल 165 दिनों में 11 सत्र आयोजित हुए, कुल समय 2 वर्ष 11 महीने 18 दिन लगा और कुल बजट ₹64 लाख था।",
+              sourceLine: "कुल आयोजित सत्र: 165 दिनों में कुल 11 सत्र | कुल समय: 2 वर्ष 11 महीने 18 दिन | कुल बजट: ₹64 लाख"
+            },
+            {
+              q: "भारतीय संविधान को कब अंगीकृत (Adopt) किया गया और मूल संविधान में कितने अनुच्छेद, अनुसूचियाँ और भाग थे?",
+              options: [
+                "26 नवंबर 1949; 395 अनुच्छेद, 8 अनुसूचियाँ, 22 भाग",
+                "26 जनवरी 1950; 395 अनुच्छेद, 12 अनुसूचियाँ, 25 भाग",
+                "26 नवंबर 1949; 448 अनुच्छेद, 8 अनुसूचियाँ, 22 भाग",
+                "24 जनवरी 1950; 395 अनुच्छेद, 10 अनुसूचियाँ, 22 भाग"
+              ],
+              ans: 0,
+              explanation: "26 नवंबर 1949 को संविधान अंगीकृत हुआ (संविधान दिवस)। मूल संविधान में 395 अनुच्छेद, 8 अनुसूचियाँ, 22 भाग और एक प्रस्तावना थी।",
+              sourceLine: "संविधान अंगीकरण तिथि: 26 नवंबर 1949 (संविधान दिवस) | मूलतः 395 अनुच्छेद, 8 अनुसूचियाँ, 22 भाग और एक प्रस्तावना शामिल थी।"
+            },
+            {
+              q: "भारतीय संविधान के अंग्रेजी और हिंदी सुलेखनकर्ता (Calligraphers) क्रमशः कौन थे?",
+              options: [
+                "अंग्रेजी: प्रेम बिहारी नारायण रायजादा; हिंदी: वसंत कृष्ण वैद्य",
+                "अंग्रेजी: वसंत कृष्ण वैद्य; हिंदी: प्रेम बिहारी नारायण रायजादा",
+                "अंग्रेजी: नंद लाल बोस; हिंदी: ब्योहार राममनोहर सिन्हा",
+                "अंग्रेजी: एच. वी. अयंगर; हिंदी: प्रेम बिहारी नारायण रायजादा"
+              ],
+              ans: 0,
+              explanation: "अंग्रेजी सुलेखन प्रेम बिहारी नारायण रायजादा ने और हिंदी सुलेखन वसंत कृष्ण वैद्य ने किया था। सज्जाकार नंद लाल बोस व ब्योहार राममनोहर सिन्हा थे।",
+              sourceLine: "संविधान सुलेखनकर्ताः अंग्रेज़ी: प्रेम बिहारी नारायण रायजादा | हिंदी: वसंत कृष्ण वैद्य"
+            }
+          ]
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. APP STATE & PERSISTENCE (Synced Theme Key: gs_master_theme_v2)
+    // =========================================================================
+    let currentSection = "notes"; // notes | pyq | ai | vault
+    let currentSubject = "polity";
+    let loadedCache = {};
+    let activeQuiz = null;
+    let activeFlashcards = null;
+    let confirmCallback = null;
+
+    const STORAGE_THEME    = "gs_master_theme_v2"; // Synced with articles.html
+    const STORAGE_PROGRESS = "gs_master_progress_v4";
+    const STORAGE_VAULT    = "gs_master_vault_v4";
+    const STORAGE_STATS    = "gs_master_stats_v4";
+
+    // =========================================================================
+    // 4. INITIALIZATION & THEME
+    // =========================================================================
+    function init() {
+      const savedTheme = localStorage.getItem(STORAGE_THEME) || "light";
+      applyTheme(savedTheme);
+      renderSubjectPills();
+      updateDashboardStats(0);
+      switchSection("notes");
+    }
+
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const btn = document.getElementById("themeBtn");
+      if (theme === "dark") {
+        html.classList.add("dark");
+        btn.textContent = "☀️";
+      } else {
+        html.classList.remove("dark");
+        btn.textContent = "🌙";
+      }
+      localStorage.setItem(STORAGE_THEME, theme);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      applyTheme(isDark ? "light" : "dark");
+    }
+
+    // --- localStorage Helpers ---
+    function getProgress() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_PROGRESS) || "{}"); } catch { return {}; }
+    }
+    function saveProgress(topicId, scoreStr, total, accuracy) {
+      const p = getProgress();
+      const prev = p[topicId];
+      if (!prev || accuracy >= prev.accuracy) {
+        p[topicId] = { score: scoreStr, total, accuracy, updatedAt: new Date().toLocaleDateString("hi-IN") };
+        localStorage.setItem(STORAGE_PROGRESS, JSON.stringify(p));
+      }
+    }
+
+    function getGlobalStats() {
+      try {
+        const s = JSON.parse(localStorage.getItem(STORAGE_STATS) || "{}");
+        return { solved: Number(s.solved) || 0, correct: Number(s.correct) || 0 };
+      } catch {
+        return { solved: 0, correct: 0 };
+      }
+    }
+    function recordGlobalStats(attempted, correct) {
+      const s = getGlobalStats();
+      s.solved += attempted;
+      s.correct += correct;
+      localStorage.setItem(STORAGE_STATS, JSON.stringify(s));
+    }
+
+    function getVault() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_VAULT) || "[]"); } catch { return []; }
+    }
+    function saveVault(list) {
+      localStorage.setItem(STORAGE_VAULT, JSON.stringify(list));
+      updateDashboardStats();
+    }
+    function addToVault(qObj, metaTag) {
+      const vault = getVault();
+      if (!vault.some(item => item.q === qObj.q)) {
+        vault.unshift({ ...qObj, vaultTag: metaTag });
+        saveVault(vault);
+      }
+    }
+    function removeFromVault(index) {
+      const vault = getVault();
+      vault.splice(index, 1);
+      saveVault(vault);
+      renderVault();
+      showToast("Question mastered & removed from Vault ✓", "success");
+    }
+
+    function updateDashboardStats(sectionTopicCount = null) {
+      if (sectionTopicCount !== null) {
+        document.getElementById("statTopics").textContent = sectionTopicCount;
+      }
+      const stats = getGlobalStats();
+      const vaultLen = getVault().length;
+      const avgAcc = stats.solved > 0 ? Math.round((stats.correct / stats.solved) * 100) : 0;
+
+      document.getElementById("statSolved").textContent = stats.solved;
+      document.getElementById("statAccuracy").textContent = `${avgAcc}%`;
+      document.getElementById("statVault").textContent = vaultLen;
+
+      const bottomBadge = document.getElementById("vaultBottomBadge");
+      if (vaultLen > 0) {
+        bottomBadge.textContent = vaultLen;
+        bottomBadge.classList.remove("hidden");
+      } else {
+        bottomBadge.classList.add("hidden");
+      }
+    }
+
+    // =========================================================================
+    // 5. NAVIGATION & SILENT AUTO-FETCH ENGINE
+    // =========================================================================
+    function setBottomNavVisible(visible) {
+      document.getElementById("bottomNav").classList.toggle("hidden", !visible);
+    }
+
+    function hideAllViews() {
+      document.getElementById("homeView").classList.add("hidden");
+      document.getElementById("quizView").classList.add("hidden");
+      document.getElementById("resultView").classList.add("hidden");
+    }
+
+    function goHome() {
+      if (activeQuiz && activeQuiz.timerId) clearInterval(activeQuiz.timerId);
+      closeFlashcardModal();
+      hideAllViews();
+      document.getElementById("homeView").classList.remove("hidden");
+      setBottomNavVisible(true);
+      updateDashboardStats();
+      if (currentSection === "vault") renderVault();
+      else loadSubjectData(currentSection, currentSubject);
+    }
+
+    function switchSection(sec) {
+      currentSection = sec;
+      document.querySelectorAll(".bnav-item").forEach(btn => btn.classList.remove("bnav-active"));
+      const activeBtn = document.getElementById(`bnav-${sec}`);
+      if (activeBtn) activeBtn.classList.add("bnav-active");
+
+      const meta = SECTION_META[sec] || SECTION_META.notes;
+      document.getElementById("activeSectionHeading").innerHTML = `<span>${meta.icon}</span> ${meta.label}`;
+
+      if (sec === "vault") {
+        document.getElementById("subjectBarWrap").classList.add("hidden");
+        renderVault();
+      } else {
+        document.getElementById("subjectBarWrap").classList.remove("hidden");
+        renderSubjectPills();
+        loadSubjectData(currentSection, currentSubject);
+      }
+    }
+
+    function renderSubjectPills() {
+      const wrap = document.getElementById("subjectPills");
+      wrap.innerHTML = SUBJECTS.map(s => {
+        const active = s.key === currentSubject;
+        const cls = active
+          ? "bg-blue-600 text-white border-blue-700 shadow-sm"
+          : "app-card text-slate-700 dark:text-slate-200 hover:border-blue-400";
+        return `<button onclick="selectSubject('${s.key}')" class="shrink-0 px-4 py-2 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 ${cls}">
+          <span>${s.icon}</span><span>${s.name}</span>
+        </button>`;
+      }).join("");
+    }
+
+    function selectSubject(subKey) {
+      currentSubject = subKey;
+      renderSubjectPills();
+      loadSubjectData(currentSection, currentSubject);
+    }
+
+    async function loadSubjectData(section, subject) {
+      const path = `data/${section}/${subject}.json`;
+      const area = document.getElementById("contentArea");
+      const cacheKey = `${section}_${subject}`;
+
+      if (loadedCache[cacheKey]) {
+        const cached = loadedCache[cacheKey];
+        updateDashboardStats((cached.topics || []).length);
+        renderTopicBoxes(cached);
+        return;
+      }
+
+      area.innerHTML = `<div class="app-card rounded-3xl p-8 text-center text-xs font-semibold" style="color:var(--muted)">Loading content...</div>`;
+
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        if (!res.ok) throw new Error("Not found");
+        const data = await res.json();
+        loadedCache[cacheKey] = data;
+        updateDashboardStats((data.topics || []).length);
+        renderTopicBoxes(data);
+      } catch (err) {
+        // Embedded 15-MCQ Polity Lec-1 fallback for live preview
+        if (section === "notes" && subject === "polity") {
+          loadedCache[cacheKey] = PREVIEW_POLITY_DATA;
+          updateDashboardStats(PREVIEW_POLITY_DATA.topics.length);
+          renderTopicBoxes(PREVIEW_POLITY_DATA);
+          return;
+        }
+
+        // Clean, student-friendly empty state (Zero technical jargon)
+        updateDashboardStats(0);
+        area.innerHTML = `
+          <div class="app-card rounded-3xl p-9 text-center max-w-md mx-auto animate-pop">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center text-3xl mx-auto mb-3">📚</div>
+            <h3 class="font-extrabold text-base mb-1.5">Content Jald Hi Aayega</h3>
+            <p class="text-xs leading-relaxed" style="color:var(--muted)">
+              Is subject ke notes &amp; tests abhi update kiye ja rahe hain.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // 6. AUTO-RENDERED TOPIC CARDS GRID
+    // =========================================================================
+    function renderTopicBoxes(data) {
+      const area = document.getElementById("contentArea");
+      const topics = data.topics || [];
+      const progress = getProgress();
+
+      if (!topics.length) {
+        area.innerHTML = `
+          <div class="app-card rounded-3xl p-9 text-center max-w-md mx-auto">
+            <div class="text-3xl mb-2">📚</div>
+            <h3 class="font-extrabold text-base mb-1">Content Jald Hi Aayega</h3>
+            <p class="text-xs" style="color:var(--muted)">Is subject ke notes &amp; tests abhi update kiye ja rahe hain.</p>
+          </div>`;
+        return;
+      }
+
+      const secLabel = SECTION_META[currentSection]?.label || "Class Notes";
+
+      area.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          ${topics.map((topic, idx) => {
+            const qCount = (topic.questions || []).length;
+            const prog = progress[topic.id];
+            const acc = prog ? prog.accuracy : 0;
+            return `
+              <div class="app-card app-card-hover rounded-3xl p-5 flex flex-col justify-between animate-pop">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="text-[10px] font-mono font-extrabold uppercase px-2.5 py-1 rounded-lg bg-sky-50 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-500/30">
+                      ${escapeHtml(data.subject || currentSubject.toUpperCase())} • ${secLabel}
+                    </span>
+                    <span class="font-mono text-xs font-extrabold text-blue-600 dark:text-blue-400">${qCount} Qs</span>
+                  </div>
+
+                  <h3 class="font-extrabold text-base leading-snug mb-1.5">${escapeHtml(topic.title)}</h3>
+                  ${topic.source ? `<p class="text-[11px] font-medium mb-4" style="color:var(--muted)">${escapeHtml(topic.source)}</p>` : `<div class="mb-4"></div>`}
+
+                  <div class="mb-5">
+                    <div class="flex justify-between font-mono text-[11px] font-bold mb-1.5" style="color:var(--muted)">
+                      <span>${prog ? `Best Accuracy: ${acc}%` : 'Not Attempted Yet'}</span>
+                      <span class="text-blue-600 dark:text-blue-400">${prog ? escapeHtml(prog.score) : '0%'}</span>
+                    </div>
+                    <div class="w-full h-2 rounded-full overflow-hidden bg-blue-100 dark:bg-slate-800">
+                      <div class="h-full bg-blue-600 rounded-full transition-all duration-500" style="width:${acc}%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-2">
+                  <button onclick="startTopicQuiz(${idx})" class="btn-3d col-span-6 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+                    ▶ Start Test
+                  </button>
+                  <button onclick="startTopicFlashcards(${idx})" class="col-span-4 py-2.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition text-blue-700 dark:text-blue-300" style="border-color:var(--border); background:var(--surface-2)" title="3D Flip Flashcards">
+                    🃏 Cards
+                  </button>
+                  <button onclick="openKeyModal(${idx})" class="col-span-2 py-2.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)" title="Line-by-Line Revision Key">
+                    📖
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 7. MISTAKE VAULT
+    // =========================================================================
+    function renderVault() {
+      const area = document.getElementById("contentArea");
+      const vault = getVault();
+      updateDashboardStats(vault.length);
+
+      if (!vault.length) {
+        area.innerHTML = `
+          <div class="app-card rounded-3xl p-10 text-center max-w-lg mx-auto animate-pop">
+            <div class="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 flex items-center justify-center text-3xl mx-auto mb-3">🛡️</div>
+            <h3 class="font-extrabold text-base mb-1.5">Mistake Vault Khali Hai!</h3>
+            <p class="text-xs leading-relaxed" style="color:var(--muted)">
+              Test dete waqt jo bhi question galat hoga, wo revision ke liye automatically yahan save ho jayega.
+            </p>
+          </div>`;
+        return;
+      }
+
+      area.innerHTML = `
+        <div class="app-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="font-extrabold text-base">Saved Mistakes <span class="font-mono text-rose-600 dark:text-rose-400">(${vault.length})</span></h2>
+            <p class="text-xs" style="color:var(--muted)">Exam se pehle apne weak questions ko test ya flashcards se revise karein</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="startVaultQuiz()" class="btn-3d px-4 py-2 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">▶ Vault Revision Test</button>
+            <button onclick="startVaultFlashcards()" class="btn-3d px-4 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">🃏 Vault Cards</button>
+            <button onclick="requestClearVault()" class="px-3 py-2 rounded-xl border text-xs font-bold hover:text-rose-600 transition" style="border-color:var(--border); background:var(--surface-2)">Clear All</button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          ${vault.map((item, idx) => `
+            <div class="app-card rounded-2xl p-4 sm:p-5 animate-pop">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <span class="font-mono text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30">${escapeHtml(item.vaultTag || 'MISTAKE')}</span>
+                <button onclick="removeFromVault(${idx})" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline">✓ Mastered (Remove)</button>
+              </div>
+              <p class="font-bold text-sm mb-2 whitespace-pre-line">${escapeHtml(item.q)}</p>
+              <p class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 mb-1">✅ Sahi Uttar: ${escapeHtml(item.options[item.ans])}</p>
+              ${item.explanation ? `<p class="text-xs leading-relaxed" style="color:var(--muted)">${escapeHtml(item.explanation)}</p>` : ''}
+              ${item.sourceLine ? `<p class="mt-2.5 text-[11px] p-2.5 rounded-xl border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-500/15 text-amber-950 dark:text-amber-100"><span class="font-bold text-amber-700 dark:text-amber-300">📌 Note Line: </span>${escapeHtml(item.sourceLine)}</p>` : ''}
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function requestClearVault() {
+      openConfirmModal(
+        "Mistake Vault Clear Karein?",
+        "Kya aap saare saved mistakes delete karna chahte hain?",
+        () => {
+          saveVault([]);
+          renderVault();
+          showToast("Mistake Vault clear ho gaya!", "info");
+        }
+      );
+    }
+
+    // =========================================================================
+    // 8. FULL QUIZ ENGINE
+    // =========================================================================
+    function startTopicQuiz(topicIdx) {
+      const data = loadedCache[`${currentSection}_${currentSubject}`];
+      const topic = data.topics[topicIdx];
+      launchQuiz({
+        section: currentSection,
+        subject: data.subject || currentSubject,
+        topicId: topic.id,
+        title: topic.title,
+        questions: topic.questions
+      });
+    }
+
+    function startVaultQuiz() {
+      const vault = getVault();
+      if (!vault.length) return;
+      launchQuiz({
+        section: "vault",
+        subject: "Mistake Vault",
+        topicId: "vault-revision",
+        title: "Mistake Vault Revision Test",
+        questions: vault
+      });
+    }
+
+    function launchQuiz(cfg) {
+      if (activeQuiz && activeQuiz.timerId) clearInterval(activeQuiz.timerId);
+      closeFlashcardModal();
+
+      activeQuiz = {
+        ...cfg,
+        answers: new Array(cfg.questions.length).fill(null),
+        reviewSet: new Set(),
+        currentIdx: 0,
+        seconds: 0,
+        timerId: null
+      };
+
+      hideAllViews();
+      setBottomNavVisible(false);
+      document.getElementById("quizView").classList.remove("hidden");
+      document.getElementById("quizTitle").textContent = cfg.title;
+      document.getElementById("quizMeta").textContent = `${cfg.subject} • ${cfg.questions.length} Questions`;
+      document.getElementById("timerBox").textContent = "⏱ 00:00";
+
+      activeQuiz.timerId = setInterval(() => {
+        activeQuiz.seconds++;
+        const m = String(Math.floor(activeQuiz.seconds / 60)).padStart(2, "0");
+        const s = String(activeQuiz.seconds % 60).padStart(2, "0");
+        document.getElementById("timerBox").textContent = `⏱ ${m}:${s}`;
+      }, 1000);
+
+      renderQuestion();
+    }
+
+    function requestExitQuiz() {
+      openConfirmModal(
+        "Test Chhod Kar Wapas Jaayein?",
+        "Abhi ka test progress save nahi hoga. Kya aap Home par wapas jaana chahte hain?",
+        () => goHome()
+      );
+    }
+
+    function renderQuestion() {
+      const q = activeQuiz.questions[activeQuiz.currentIdx];
+      const total = activeQuiz.questions.length;
+      const chosen = activeQuiz.answers[activeQuiz.currentIdx];
+      const instant = document.getElementById("instantCheck").checked;
+
+      document.getElementById("qNumberBadge").textContent = `Q ${activeQuiz.currentIdx + 1} / ${total}`;
+      document.getElementById("qText").textContent = q.q;
+
+      const tagEl = document.getElementById("qTagBadge");
+      const tagText = q.exam || q.pattern || q.vaultTag || "";
+      if (tagText) {
+        tagEl.textContent = tagText;
+        tagEl.classList.remove("hidden");
+      } else {
+        tagEl.classList.add("hidden");
+      }
+
+      const revBtn = document.getElementById("reviewBtn");
+      if (activeQuiz.reviewSet.has(activeQuiz.currentIdx)) {
+        revBtn.className = "text-xs font-extrabold px-3 py-1.5 rounded-xl border border-amber-400 bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 transition";
+        revBtn.style.background = "";
+        revBtn.style.borderColor = "";
+      } else {
+        revBtn.className = "text-xs font-bold px-3 py-1.5 rounded-xl border hover:bg-blue-50 dark:hover:bg-slate-800 transition";
+        revBtn.style.background = "var(--surface-2)";
+        revBtn.style.borderColor = "var(--border)";
+      }
+
+      const letters = ["A", "B", "C", "D"];
+      const optWrap = document.getElementById("optionsContainer");
+      optWrap.innerHTML = q.options.map((opt, idx) => {
+        let cls = "border hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20";
+        let style = "border-color:var(--border); background:var(--surface-2)";
+        if (chosen !== null) {
+          if (instant) {
+            if (idx === q.ans) {
+              cls = "border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-200";
+              style = "";
+            } else if (idx === chosen && chosen !== q.ans) {
+              cls = "border-2 border-rose-500 bg-rose-50 dark:bg-rose-500/15 text-rose-800 dark:text-rose-200";
+              style = "";
+            }
+          } else if (idx === chosen) {
+            cls = "border-2 border-blue-600 bg-blue-50 dark:bg-blue-500/20 text-blue-900 dark:text-blue-100";
+            style = "";
+          }
+        }
+        return `
+          <button onclick="selectOption(${idx})" class="w-full text-left p-3.5 sm:p-4 rounded-2xl font-semibold text-sm flex items-start gap-3 transition ${cls}" style="${style}">
+            <span class="font-mono w-6 h-6 shrink-0 rounded-lg flex items-center justify-center text-xs font-extrabold border bg-white dark:bg-slate-800" style="border-color:var(--border)">${letters[idx]}</span>
+            <span class="leading-snug">${escapeHtml(opt)}</span>
+          </button>`;
+      }).join("");
+
+      const expBox = document.getElementById("explanationBox");
+      if (instant && chosen !== null) {
+        expBox.classList.remove("hidden");
+        document.getElementById("explanationText").textContent = q.explanation || `Sahi uttar: ${q.options[q.ans]}`;
+        const srcWrap = document.getElementById("sourceLineWrap");
+        if (q.sourceLine) {
+          srcWrap.classList.remove("hidden");
+          document.getElementById("sourceLineText").textContent = q.sourceLine;
+        } else {
+          srcWrap.classList.add("hidden");
+        }
+      } else {
+        expBox.classList.add("hidden");
+      }
+
+      document.getElementById("prevBtn").disabled = activeQuiz.currentIdx === 0;
+      document.getElementById("nextBtn").textContent = activeQuiz.currentIdx === total - 1 ? "Finish & Submit 🏆" : "Save & Next →";
+      renderPalette();
+    }
+
+    function selectOption(optIdx) {
+      const q = activeQuiz.questions[activeQuiz.currentIdx];
+      activeQuiz.answers[activeQuiz.currentIdx] = optIdx;
+      if (optIdx !== q.ans && activeQuiz.section !== "vault") {
+        addToVault(q, `${activeQuiz.subject} • ${activeQuiz.section.toUpperCase()}`);
+      }
+      renderQuestion();
+    }
+
+    function clearResponse() {
+      activeQuiz.answers[activeQuiz.currentIdx] = null;
+      renderQuestion();
+    }
+
+    function toggleMarkReview() {
+      if (activeQuiz.reviewSet.has(activeQuiz.currentIdx)) activeQuiz.reviewSet.delete(activeQuiz.currentIdx);
+      else activeQuiz.reviewSet.add(activeQuiz.currentIdx);
+      renderQuestion();
+    }
+
+    function prevQuestion() {
+      if (activeQuiz.currentIdx > 0) {
+        activeQuiz.currentIdx--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (activeQuiz.currentIdx < activeQuiz.questions.length - 1) {
+        activeQuiz.currentIdx++;
+        renderQuestion();
+      } else {
+        submitQuiz();
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      activeQuiz.currentIdx = idx;
+      renderQuestion();
+    }
+
+    function renderPalette() {
+      const instant = document.getElementById("instantCheck").checked;
+      const grid = document.getElementById("paletteGrid");
+      grid.innerHTML = activeQuiz.questions.map((q, idx) => {
+        const ans = activeQuiz.answers[idx];
+        const isCurr = idx === activeQuiz.currentIdx;
+        const isRev = activeQuiz.reviewSet.has(idx);
+        let bg = "border text-slate-700 dark:text-slate-200";
+        let style = "border-color:var(--border); background:var(--surface-2)";
+        if (isRev) { bg = "bg-amber-500 text-white"; style = ""; }
+        else if (ans !== null) {
+          if (instant && ans !== q.ans) { bg = "bg-rose-500 text-white"; style = ""; }
+          else { bg = "bg-emerald-500 text-white"; style = ""; }
+        }
+        const currRing = isCurr ? "ring-2 ring-blue-600 ring-offset-2 dark:ring-offset-slate-900" : "";
+        return `<button onclick="jumpToQuestion(${idx})" class="font-mono h-9 rounded-xl text-xs font-extrabold transition ${bg} ${currRing}" style="${style}">${idx + 1}</button>`;
+      }).join("");
+    }
+
+    function submitQuiz() {
+      clearInterval(activeQuiz.timerId);
+      const scheme = document.getElementById("markingSelect").value;
+      const pos = scheme === "ssc" ? 2 : scheme === "cds" ? 0.83 : 1;
+      const neg = scheme === "ssc" ? 0.5 : scheme === "cds" ? 0.27 : 0;
+
+      let correct = 0, wrong = 0, skipped = 0;
+      activeQuiz.questions.forEach((q, idx) => {
+        const a = activeQuiz.answers[idx];
+        if (a === null) skipped++;
+        else if (a === q.ans) correct++;
+        else {
+          wrong++;
+          if (activeQuiz.section !== "vault") {
+            addToVault(q, `${activeQuiz.subject} • ${activeQuiz.section.toUpperCase()}`);
+          }
+        }
+      });
+
+      const score = Number((correct * pos - wrong * neg).toFixed(2));
+      const maxScore = Number((activeQuiz.questions.length * pos).toFixed(2));
+      const attempted = correct + wrong;
+      const acc = attempted ? Math.round((correct / attempted) * 100) : 0;
+
+      if (attempted > 0) recordGlobalStats(attempted, correct);
+      if (activeQuiz.topicId !== "vault-revision") {
+        saveProgress(activeQuiz.topicId, `${score}/${maxScore}`, activeQuiz.questions.length, acc);
+      }
+      updateDashboardStats();
+
+      hideAllViews();
+      setBottomNavVisible(false);
+      document.getElementById("resultView").classList.remove("hidden");
+      document.getElementById("resTitle").textContent = activeQuiz.title;
+      document.getElementById("resSub").textContent = `Time: ${document.getElementById("timerBox").textContent} • Skipped: ${skipped}`;
+      document.getElementById("resScore").textContent = `${score}/${maxScore}`;
+      document.getElementById("resCorrect").textContent = correct;
+      document.getElementById("resWrong").textContent = wrong;
+      document.getElementById("resAcc").textContent = `${acc}%`;
+
+      document.getElementById("reviewList").innerHTML = activeQuiz.questions.map((q, idx) => {
+        const a = activeQuiz.answers[idx];
+        const status = a === null ? "Skipped" : a === q.ans ? "Correct" : "Wrong";
+        const badgeCls = status === "Correct"
+          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+          : status === "Wrong"
+          ? "bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300"
+          : "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300";
+        return `
+          <div class="p-4 rounded-2xl border text-xs" style="border-color:var(--border); background:var(--surface-2)">
+            <div class="flex justify-between items-center font-mono font-extrabold mb-1.5">
+              <span class="text-blue-600 dark:text-blue-400">Q${idx + 1}</span>
+              <span class="px-2 py-0.5 rounded-lg text-[10px] ${badgeCls}">${status}</span>
+            </div>
+            <p class="font-bold text-sm mb-2 whitespace-pre-line">${escapeHtml(q.q)}</p>
+            ${a !== null && a !== q.ans ? `<p class="text-rose-600 dark:text-rose-400 font-semibold mb-0.5">❌ Aapka Uttar: ${escapeHtml(q.options[a])}</p>` : ''}
+            <p class="text-emerald-600 dark:text-emerald-400 font-bold mb-1">✅ Sahi Uttar: ${escapeHtml(q.options[q.ans])}</p>
+            ${q.explanation ? `<p class="leading-relaxed" style="color:var(--muted)">${escapeHtml(q.explanation)}</p>` : ''}
+            ${q.sourceLine ? `<p class="mt-2 text-[11px] p-2.5 rounded-xl border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-500/15 text-amber-950 dark:text-amber-100"><span class="font-bold text-amber-700 dark:text-amber-300">📌 Note Line: </span>${escapeHtml(q.sourceLine)}</p>` : ''}
+          </div>`;
+      }).join("");
+    }
+
+    function retryQuiz() {
+      launchQuiz({
+        section: activeQuiz.section,
+        subject: activeQuiz.subject,
+        topicId: activeQuiz.topicId,
+        title: activeQuiz.title,
+        questions: activeQuiz.questions
+      });
+    }
+
+    function openVaultFromResult() {
+      currentSection = "vault";
+      goHome();
+      switchSection("vault");
+    }
+
+    // =========================================================================
+    // 9. 3D FLIP FLASHCARDS MODAL ENGINE
+    // =========================================================================
+    function startTopicFlashcards(topicIdx) {
+      const data = loadedCache[`${currentSection}_${currentSubject}`];
+      const topic = data.topics[topicIdx];
+      launchFlashcards(topic.title, topic.questions);
+    }
+
+    function startVaultFlashcards() {
+      const vault = getVault();
+      if (!vault.length) return;
+      launchFlashcards("Mistake Vault Flashcards", vault);
+    }
+
+    function launchFlashcards(title, questions) {
+      if (!questions || !questions.length) return;
+      activeFlashcards = {
+        title,
+        cards: questions.map(q => ({ ...q })),
+        index: 0,
+        flipped: false
+      };
+      document.getElementById("fcTitle").textContent = title;
+      document.getElementById("flashcardModal").classList.remove("hidden");
+      renderFlashcard();
+    }
+
+    function closeFlashcardModal() {
+      document.getElementById("flashcardModal").classList.add("hidden");
+      activeFlashcards = null;
+    }
+
+    function renderFlashcard() {
+      if (!activeFlashcards) return;
+      const card = activeFlashcards.cards[activeFlashcards.index];
+      const total = activeFlashcards.cards.length;
+      activeFlashcards.flipped = false;
+
+      document.getElementById("fcInner").classList.remove("is-flipped");
+      document.getElementById("fcCounter").textContent = `${activeFlashcards.index + 1} / ${total}`;
+      document.getElementById("fcProgressBar").style.width = `${Math.round(((activeFlashcards.index + 1) / total) * 100)}%`;
+
+      document.getElementById("fcFrontBadge").textContent = card.exam || card.pattern || `CARD #${activeFlashcards.index + 1}`;
+      document.getElementById("fcFrontQuestion").textContent = card.q;
+      document.getElementById("fcBackAnswer").textContent = card.options[card.ans];
+      document.getElementById("fcBackExplanation").textContent = card.explanation || "";
+
+      const srcWrap = document.getElementById("fcBackSourceWrap");
+      if (card.sourceLine) {
+        srcWrap.classList.remove("hidden");
+        document.getElementById("fcBackSource").textContent = card.sourceLine;
+      } else {
+        srcWrap.classList.add("hidden");
+      }
+    }
+
+    function flipFlashcard() {
+      if (!activeFlashcards) return;
+      activeFlashcards.flipped = !activeFlashcards.flipped;
+      document.getElementById("fcInner").classList.toggle("is-flipped", activeFlashcards.flipped);
+    }
+
+    function nextFlashcard() {
+      if (!activeFlashcards) return;
+      activeFlashcards.index = (activeFlashcards.index + 1) % activeFlashcards.cards.length;
+      renderFlashcard();
+    }
+
+    function prevFlashcard() {
+      if (!activeFlashcards) return;
+      activeFlashcards.index = (activeFlashcards.index - 1 + activeFlashcards.cards.length) % activeFlashcards.cards.length;
+      renderFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      if (!activeFlashcards) return;
+      const arr = activeFlashcards.cards;
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      activeFlashcards.index = 0;
+      renderFlashcard();
+      showToast("Flashcards shuffled! 🔀", "info");
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (!activeFlashcards || document.getElementById("flashcardModal").classList.contains("hidden")) return;
+      if (e.key === "ArrowRight") nextFlashcard();
+      else if (e.key === "ArrowLeft") prevFlashcard();
+      else if (e.key === " ") { e.preventDefault(); flipFlashcard(); }
+      else if (e.key === "Escape") closeFlashcardModal();
+    });
+
+    // =========================================================================
+    // 10. LINE-BY-LINE REVISION KEY MODAL
+    // =========================================================================
+    function openKeyModal(topicIdx) {
+      const data = loadedCache[`${currentSection}_${currentSubject}`];
+      const topic = data.topics[topicIdx];
+      document.getElementById("keyModalTitle").textContent = topic.title;
+      document.getElementById("keyModalBody").innerHTML = topic.questions.map((q, i) => `
+        <div class="p-4 rounded-2xl border text-xs" style="border-color:var(--border); background:var(--surface-2)">
+          <p class="font-bold text-sm mb-1.5 whitespace-pre-line"><span class="font-mono text-blue-600 dark:text-blue-400 mr-1">${i + 1}.</span> ${escapeHtml(q.q)}</p>
+          <p class="font-extrabold text-emerald-600 dark:text-emerald-400 mb-1.5">✅ ${escapeHtml(q.options[q.ans])}</p>
+          ${q.explanation ? `<p class="leading-relaxed mb-1.5" style="color:var(--muted)">${escapeHtml(q.explanation)}</p>` : ''}
+          ${q.sourceLine ? `<p class="text-[11px] p-2.5 rounded-xl border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-500/15 text-amber-950 dark:text-amber-100"><span class="font-bold text-amber-700 dark:text-amber-300">📌 Note Line: </span>${escapeHtml(q.sourceLine)}</p>` : ''}
+        </div>
+      `).join("");
+      document.getElementById("keyModal").classList.remove("hidden");
+    }
+
+    function closeKeyModal() {
+      document.getElementById("keyModal").classList.add("hidden");
+    }
+
+    // =========================================================================
+    // 11. CUSTOM CONFIRM MODAL, TOAST & UTILITIES
+    // =========================================================================
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById("confirmTitle").textContent = title;
+      document.getElementById("confirmMessage").textContent = message;
+      confirmCallback = onConfirm;
+      document.getElementById("confirmModal").classList.remove("hidden");
+    }
+
+    function closeConfirmModal() {
+      document.getElementById("confirmModal").classList.add("hidden");
+      confirmCallback = null;
+    }
+
+    document.getElementById("confirmOkBtn").addEventListener("click", () => {
+      const cb = confirmCallback;
+      closeConfirmModal();
+      if (typeof cb === "function") cb();
+    });
+
+    function showToast(msg, type = "info") {
+      const box = document.getElementById("toastContainer");
+      const el = document.createElement("div");
+      const colors = {
+        success: "bg-emerald-600 text-white border-emerald-700",
+        error: "bg-rose-600 text-white border-rose-700",
+        info: "bg-blue-600 text-white border-blue-700"
+      };
+      el.className = `pointer-events-auto px-4 py-3 rounded-2xl border shadow-lg text-xs font-bold animate-pop ${colors[type] || colors.info}`;
+      el.textContent = msg;
+      box.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transition = "opacity 0.25s ease";
+        setTimeout(() => el.remove(), 260);
+      }, 2800);
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== "string") return "";
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    init();
+  </script>
+</body>
+</html>
