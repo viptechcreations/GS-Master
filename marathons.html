@@ -374,8 +374,29 @@
 
     function getThumbUrl(m) {
       if (m.thumbnail && m.thumbnail.trim()) return m.thumbnail.trim();
-      if (m.videoId && m.videoId.trim()) return `https://img.youtube.com/vi/${m.videoId.trim()}/hqdefault.jpg`;
+      if (m.videoId && m.videoId.trim()) return `https://i.ytimg.com/vi/${m.videoId.trim()}/maxresdefault.jpg`;
       return "";
+    }
+
+    function fallbackThumb(img, vid) {
+      const step = Number(img.dataset.step || 0);
+      if (!vid) { img.style.display = 'none'; return; }
+      if (step === 0) {
+        img.dataset.step = "1";
+        img.src = `https://i.ytimg.com/vi/${vid}/sddefault.jpg`;
+      } else if (step === 1) {
+        img.dataset.step = "2";
+        img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+      } else {
+        img.style.display = 'none';
+      }
+    }
+
+    function verifyHdThumb(img, vid) {
+      // YouTube returns a 120x90 grey image if maxresdefault doesn't exist
+      if (img.naturalWidth && img.naturalWidth <= 120) {
+        fallbackThumb(img, vid);
+      }
     }
 
     function getWatchUrl(m) {
@@ -428,7 +449,8 @@
                     src="${escapeHtml(thumbUrl)}"
                     alt="${escapeHtml(m.title)}"
                     loading="lazy"
-                    onerror="this.style.display='none'"
+                    onload="verifyHdThumb(this, '${escapeHtml(m.videoId || '')}')"
+                    onerror="fallbackThumb(this, '${escapeHtml(m.videoId || '')}')"
                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-slate-950/35"></div>
