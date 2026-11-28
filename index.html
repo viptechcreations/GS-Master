@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GS Master — Polity, History &amp; Static GK</title>
+  <title>GS Master — Notes, PYQ, AI &amp; PDFs</title>
+
+  <!-- PWA Manifest & App Meta Tags -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GS Master" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
 
   <!-- Google Fonts: Plus Jakarta Sans, Noto Sans Devanagari & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -84,7 +94,7 @@
       box-shadow: var(--shadow-hover);
     }
 
-    /* Prominent Constitution Feature Card */
+    /* Prominent Constitution Feature Banner */
     .constitution-banner {
       background: linear-gradient(135deg, #2563eb 0%, #4338ca 100%);
       box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.45);
@@ -95,15 +105,15 @@
       box-shadow: 0 16px 36px -8px rgba(37, 99, 235, 0.55);
     }
 
-    /* Tactile 3D Bottom-Border Button */
-    .btn-3d {
+    /* Tactile 3D Bottom-Border Button (Duolingo / Vocab Master Style) */
+    .duo-btn {
       border-bottom-width: 4px;
       transition: transform 0.08s ease, border-bottom-width 0.08s ease, filter 0.15s ease;
     }
-    .btn-3d:hover:not(:disabled) {
+    .duo-btn:hover:not(:disabled) {
       filter: brightness(1.04);
     }
-    .btn-3d:active:not(:disabled) {
+    .duo-btn:active:not(:disabled) {
       transform: translateY(2px);
       border-bottom-width: 2px;
     }
@@ -170,28 +180,44 @@
 <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
   <!-- ========================================================= -->
-  <!-- 1. TOP STICKY HEADER (CLEAN BLUE & WHITE)                 -->
+  <!-- 1. STICKY TOP HEADER (BLUE & WHITE + PWA INSTALL & OFFLINE)-->
   <!-- ========================================================= -->
   <header class="sticky top-0 z-30 app-card border-x-0 border-t-0 backdrop-blur-md bg-white/95 dark:bg-[#111a2e]/95">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3 cursor-pointer group" onclick="goHome()">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white font-extrabold text-base flex items-center justify-center shadow-md border-b-4 border-blue-900 group-hover:scale-105 transition-transform">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <!-- Left: Brand Identity -->
+      <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer group min-w-0" onclick="goHome()">
+        <div class="w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white font-extrabold text-base flex items-center justify-center shadow-md border-b-4 border-blue-900 group-hover:scale-105 transition-transform">
           GS
         </div>
-        <div>
-          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white">GS Master</h1>
-          <p class="text-[11px] font-semibold mt-0.5 text-blue-600 dark:text-blue-400">Polity • History • Static GK</p>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white truncate">GS Master</h1>
+          <p class="text-[11px] font-semibold mt-0.5 text-blue-600 dark:text-blue-400 truncate">Notes • PYQ • AI • PDFs</p>
         </div>
       </div>
 
-      <button onclick="toggleTheme()" id="themeBtn" class="w-9 h-9 rounded-xl border flex items-center justify-center text-base transition hover:bg-blue-50 dark:hover:bg-blue-900/30" style="border-color:var(--border); background:var(--surface-2)" title="Toggle Light / Dark Mode">
-        🌙
-      </button>
+      <!-- Right: Offline Indicator + Install Button + Theme Toggle -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Offline Badge (hidden when online) -->
+        <span id="offlineBadge" class="hidden items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-500/15 border border-amber-300 dark:border-amber-500/30 text-amber-700 dark:text-amber-300 text-[11px] font-extrabold">
+          📡 Offline
+        </span>
+
+        <!-- Compact PWA Install Button -->
+        <button onclick="handleInstallClick()" id="installAppBtn" class="duo-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold shadow-sm" title="Install GS Master App">
+          <span>📲</span>
+          <span>Install</span>
+        </button>
+
+        <!-- Synced Light / Dark Mode Toggle -->
+        <button onclick="toggleTheme()" id="themeBtn" class="w-9 h-9 rounded-xl border flex items-center justify-center text-base transition hover:bg-blue-50 dark:hover:bg-blue-900/30" style="border-color:var(--border); background:var(--surface-2)" title="Toggle Light / Dark Mode">
+          🌙
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- ========================================================= -->
-  <!-- MAIN CONTAINER (pb-24 FOR FIXED BOTTOM NAV BAR)           -->
+  <!-- MAIN CONTENT (pb-24 FOR FIXED BOTTOM NAVIGATION BAR)      -->
   <!-- ========================================================= -->
   <main class="max-w-6xl w-full mx-auto px-4 pt-5 pb-24 flex-1">
 
@@ -200,13 +226,36 @@
     <!-- ======================================================= -->
     <section id="homeView" class="space-y-5">
 
-      <!-- 2. COMPACT 4-CARD DASHBOARD STATS STRIP -->
+      <!-- TOP FEATURE BANNER: संविधान Revision (Links to articles.html) -->
+      <a href="articles.html" class="constitution-banner block rounded-3xl p-5 sm:p-6 text-white group">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-105 transition-transform">
+              📜
+            </div>
+            <div class="space-y-1 min-w-0">
+              <h2 class="font-extrabold text-base sm:text-xl leading-tight truncate">
+                संविधान Revision
+              </h2>
+              <p class="text-xs sm:text-sm font-medium text-blue-100 leading-snug">
+                12 Schedules • Articles • Sub-Articles • Quick Test
+              </p>
+            </div>
+          </div>
+
+          <div class="shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center font-extrabold text-lg group-hover:translate-x-1 transition-transform">
+            →
+          </div>
+        </div>
+      </a>
+
+      <!-- 4-CARD STATS STRIP (2x2 ON MOBILE, 4-COL ON DESKTOP) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div class="app-card rounded-2xl p-3.5 sm:p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">📑</div>
+          <div id="statTabIcon" class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">📑</div>
           <div class="min-w-0">
             <div id="statTopics" class="font-mono text-xl font-extrabold leading-tight text-slate-900 dark:text-white">0</div>
-            <div class="text-[11px] font-semibold truncate" style="color:var(--muted)">Topics Available</div>
+            <div id="statTabLabel" class="text-[11px] font-semibold truncate" style="color:var(--muted)">Active Topics</div>
           </div>
         </div>
 
@@ -235,39 +284,7 @@
         </div>
       </div>
 
-      <!-- 3. PROMINENT TOP FEATURE BOX: संविधान Revision (Articles & Schedules) -->
-      <a href="articles.html" class="constitution-banner block rounded-3xl p-5 sm:p-6 text-white group">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-start gap-3.5 sm:gap-4">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-2xl sm:text-3xl shrink-0 group-hover:scale-105 transition-transform">
-              📜
-            </div>
-            <div class="space-y-1.5 min-w-0">
-              <div class="flex flex-wrap items-center gap-2">
-                <h2 class="font-extrabold text-base sm:text-xl leading-tight">
-                  संविधान Revision (Articles &amp; Schedules)
-                </h2>
-              </div>
-              <p class="text-xs sm:text-sm font-medium text-blue-100 leading-snug">
-                Interactive 3D Flashcards with Sub-Articles Drill-Down &amp; Exam Tricks
-              </p>
-              <div class="pt-1">
-                <span class="inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white">
-                  12 Schedules • All Articles • Sub-Articles
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="shrink-0">
-            <span class="btn-3d inline-flex items-center justify-center w-full md:w-auto px-5 py-2.5 rounded-2xl bg-white text-blue-700 border-blue-200 text-xs sm:text-sm font-extrabold shadow-sm">
-              Open →
-            </span>
-          </div>
-        </div>
-      </a>
-
-      <!-- 4. ACTIVE SECTION HEADING + SUBJECT SELECTOR PILLS -->
+      <!-- ACTIVE SECTION HEADER + SUBJECT SELECTOR PILLS -->
       <div id="subjectBarWrap" class="space-y-2.5">
         <div class="flex items-center justify-between gap-2">
           <h3 id="activeSectionHeading" class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -278,7 +295,7 @@
         <div id="subjectPills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
       </div>
 
-      <!-- 5. TOPICS GRID / MISTAKE VAULT CONTENT -->
+      <!-- DYNAMIC CONTENT AREA (TOPICS GRID / PDF LIBRARY / MISTAKE VAULT) -->
       <div id="contentArea"></div>
     </section>
 
@@ -286,6 +303,7 @@
     <!-- VIEW 2: FULL QUIZ ENGINE                                -->
     <!-- ======================================================= -->
     <section id="quizView" class="hidden space-y-4 animate-pop">
+      <!-- Quiz Header -->
       <div class="app-card rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2.5 min-w-0">
           <button onclick="requestExitQuiz()" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold border hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">← Back</button>
@@ -306,7 +324,7 @@
             ⏱ 00:00
           </div>
 
-          <button onclick="submitQuiz()" class="btn-3d px-4 py-1.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+          <button onclick="submitQuiz()" class="duo-btn px-4 py-1.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
             Submit Test
           </button>
         </div>
@@ -318,7 +336,7 @@
           <div>
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div class="flex items-center gap-2">
-                <span id="qNumberBadge" class="font-mono text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">Q 1 / 15</span>
+                <span id="qNumberBadge" class="font-mono text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">Q 1 / 18</span>
                 <span id="qTagBadge" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-500/30 text-sky-700 dark:text-sky-300"></span>
               </div>
               <button onclick="toggleMarkReview()" id="reviewBtn" class="text-xs font-bold px-3 py-1.5 rounded-xl border transition" style="border-color:var(--border); background:var(--surface-2)">
@@ -330,7 +348,7 @@
 
             <div id="optionsContainer" class="space-y-2.5 mb-5"></div>
 
-            <!-- Instant Explanation + Yellow Note Line Box -->
+            <!-- Instant Explanation + Amber Note Line Box -->
             <div id="explanationBox" class="hidden rounded-2xl p-4 mb-5 border text-sm animate-pop bg-blue-50/60 dark:bg-slate-800/60" style="border-color:var(--border)">
               <div class="font-extrabold text-xs uppercase tracking-wider mb-1.5 text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
                 <span>💡</span> Explanation
@@ -346,7 +364,7 @@
           <div class="flex items-center justify-between gap-2 pt-4 border-t" style="border-color:var(--border)">
             <button onclick="prevQuestion()" id="prevBtn" class="px-4 py-2.5 rounded-xl text-xs font-bold border disabled:opacity-40 hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">← Previous</button>
             <button onclick="clearResponse()" class="px-3 py-2.5 rounded-xl text-xs font-bold hover:text-rose-600 transition" style="color:var(--muted)">Clear</button>
-            <button onclick="nextQuestion()" id="nextBtn" class="btn-3d px-5 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">Save &amp; Next →</button>
+            <button onclick="nextQuestion()" id="nextBtn" class="duo-btn px-5 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">Save &amp; Next →</button>
           </div>
         </div>
 
@@ -373,7 +391,7 @@
     </section>
 
     <!-- ======================================================= -->
-    <!-- VIEW 3: RESULT & DETAILED REVIEW                        -->
+    <!-- VIEW 3: RESULT & DETAILED ANSWER REVIEW                 -->
     <!-- ======================================================= -->
     <section id="resultView" class="hidden animate-pop">
       <div class="app-card rounded-3xl p-6 sm:p-7 max-w-3xl mx-auto">
@@ -404,8 +422,8 @@
 
         <div class="flex flex-wrap justify-center gap-3 mb-6">
           <button onclick="goHome()" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm border hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">🏠 Home</button>
-          <button onclick="retryQuiz()" class="btn-3d px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-blue-600 border-blue-800 text-white">🔄 Retake Test</button>
-          <button onclick="openVaultFromResult()" class="btn-3d px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-rose-600 border-rose-800 text-white">🛡️ Open Mistake Vault</button>
+          <button onclick="retryQuiz()" class="duo-btn px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-blue-600 border-blue-800 text-white">🔄 Retake Test</button>
+          <button onclick="openVaultFromResult()" class="duo-btn px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm bg-rose-600 border-rose-800 text-white">🛡️ Open Mistake Vault</button>
         </div>
 
         <h3 class="font-extrabold text-sm mb-3 flex items-center gap-2 text-blue-800 dark:text-blue-300">
@@ -418,31 +436,36 @@
   </main>
 
   <!-- ========================================================= -->
-  <!-- FIXED BOTTOM NAVIGATION BAR (LIKE MATH MASTER)            -->
+  <!-- FIXED BOTTOM NAVIGATION BAR (5 TABS LIKE MATH MASTER)     -->
   <!-- ========================================================= -->
   <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-40 app-card border-x-0 border-b-0 backdrop-blur-md bg-white/95 dark:bg-[#111a2e]/95">
-    <div class="max-w-3xl mx-auto px-2 py-2 grid grid-cols-4 gap-1">
+    <div class="max-w-4xl mx-auto px-1.5 py-2 grid grid-cols-5 gap-0.5 sm:gap-1">
       <button onclick="switchSection('notes')" id="bnav-notes" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
-        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">📄</div>
-        <span class="text-[11px] font-extrabold mt-1">Class Notes</span>
+        <div class="bnav-pill px-3 sm:px-4 py-1 rounded-full text-base sm:text-lg leading-none transition-colors">📄</div>
+        <span class="text-[10px] sm:text-[11px] font-extrabold mt-1">Notes</span>
       </button>
 
       <button onclick="switchSection('pyq')" id="bnav-pyq" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
-        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">📚</div>
-        <span class="text-[11px] font-extrabold mt-1">Exam PYQs</span>
+        <div class="bnav-pill px-3 sm:px-4 py-1 rounded-full text-base sm:text-lg leading-none transition-colors">📚</div>
+        <span class="text-[10px] sm:text-[11px] font-extrabold mt-1">PYQs</span>
       </button>
 
       <button onclick="switchSection('ai')" id="bnav-ai" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
-        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors">✨</div>
-        <span class="text-[11px] font-extrabold mt-1">AI Pattern</span>
+        <div class="bnav-pill px-3 sm:px-4 py-1 rounded-full text-base sm:text-lg leading-none transition-colors">✨</div>
+        <span class="text-[10px] sm:text-[11px] font-extrabold mt-1">AI</span>
+      </button>
+
+      <button onclick="switchSection('pdfs')" id="bnav-pdfs" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl">
+        <div class="bnav-pill px-3 sm:px-4 py-1 rounded-full text-base sm:text-lg leading-none transition-colors">📥</div>
+        <span class="text-[10px] sm:text-[11px] font-extrabold mt-1">PDFs</span>
       </button>
 
       <button onclick="switchSection('vault')" id="bnav-vault" class="bnav-item flex flex-col items-center justify-center py-1 rounded-2xl relative">
-        <div class="bnav-pill px-4 py-1 rounded-full text-lg leading-none transition-colors relative">
+        <div class="bnav-pill px-3 sm:px-4 py-1 rounded-full text-base sm:text-lg leading-none transition-colors relative">
           🛡️
           <span id="vaultBottomBadge" class="hidden absolute -top-1 -right-1 font-mono text-[10px] min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white font-extrabold flex items-center justify-center shadow">0</span>
         </div>
-        <span class="text-[11px] font-extrabold mt-1">Mistake Vault</span>
+        <span class="text-[10px] sm:text-[11px] font-extrabold mt-1">Vault</span>
       </button>
     </div>
   </nav>
@@ -458,7 +481,7 @@
           <p class="text-[11px] font-semibold text-blue-600 dark:text-blue-400">3D Flashcards • Tap or Spacebar to flip</p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
-          <span id="fcCounter" class="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">1 / 15</span>
+          <span id="fcCounter" class="font-mono text-xs font-extrabold px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300">1 / 18</span>
           <button onclick="shuffleFlashcards()" class="px-2.5 py-1.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)" title="Shuffle Cards">🔀</button>
           <button onclick="closeFlashcardModal()" class="w-8 h-8 rounded-xl border font-bold hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-slate-700 transition" style="border-color:var(--border); background:var(--surface-2)">✕</button>
         </div>
@@ -518,8 +541,8 @@
 
       <div class="grid grid-cols-3 gap-3">
         <button onclick="prevFlashcard()" class="app-card py-3 rounded-2xl text-xs sm:text-sm font-extrabold hover:bg-blue-50 dark:hover:bg-slate-800 transition">← Previous</button>
-        <button onclick="flipFlashcard()" class="btn-3d py-3 rounded-2xl bg-sky-500 border-sky-700 text-white text-xs sm:text-sm font-extrabold">↻ Flip Card</button>
-        <button onclick="nextFlashcard()" class="btn-3d py-3 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">Next →</button>
+        <button onclick="flipFlashcard()" class="duo-btn py-3 rounded-2xl bg-sky-500 border-sky-700 text-white text-xs sm:text-sm font-extrabold">↻ Flip Card</button>
+        <button onclick="nextFlashcard()" class="duo-btn py-3 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">Next →</button>
       </div>
     </div>
   </div>
@@ -541,7 +564,57 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- MODAL 3: CUSTOM CONFIRMATION DIALOG (NO alert/confirm)    -->
+  <!-- MODAL 3: PWA INSTALL GUIDE MODAL (HINDI / HINGLISH)       -->
+  <!-- ========================================================= -->
+  <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="app-card rounded-3xl w-full max-w-md p-6 space-y-4 animate-pop">
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+            📲
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base leading-tight">App Install Kaise Karein</h3>
+            <p class="text-[11px] font-semibold text-blue-600 dark:text-blue-400">GS Master ko phone/PC par App banayein</p>
+          </div>
+        </div>
+        <button onclick="closeInstallGuideModal()" class="w-8 h-8 rounded-xl border font-bold hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-slate-700 transition" style="border-color:var(--border); background:var(--surface-2)">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs leading-relaxed">
+        <!-- Android Chrome Steps -->
+        <div class="p-3.5 rounded-2xl border space-y-1.5" style="border-color:var(--border); background:var(--surface-2)">
+          <div class="font-extrabold text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
+            <span>🤖</span> Android (Chrome Browser)
+          </div>
+          <p style="color:var(--muted)">
+            1. Upar right corner mein <strong>3-dots (⋮)</strong> menu par tap karein.<br />
+            2. <strong>"Install App"</strong> ya <strong>"Add to Home Screen"</strong> chunein.<br />
+            3. <strong>Install</strong> par tap karte hi GS Master icon home screen par aa jayega!
+          </p>
+        </div>
+
+        <!-- iPhone / iPad Safari Steps -->
+        <div class="p-3.5 rounded-2xl border space-y-1.5" style="border-color:var(--border); background:var(--surface-2)">
+          <div class="font-extrabold text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
+            <span>🍎</span> iPhone / iPad (Safari Browser)
+          </div>
+          <p style="color:var(--muted)">
+            1. Neeche <strong>Share (⬆️)</strong> button par tap karein.<br />
+            2. Scroll karke <strong>"Add to Home Screen"</strong> par tap karein.<br />
+            3. Upar <strong>Add</strong> dabayein — full-screen app ready!
+          </p>
+        </div>
+      </div>
+
+      <button onclick="closeInstallGuideModal()" class="duo-btn w-full py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+        Samajh Gaya ✓
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 4: CUSTOM CONFIRMATION DIALOG (NO alert/confirm)    -->
   <!-- ========================================================= -->
   <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="app-card rounded-3xl w-full max-w-sm p-6 text-center space-y-4 animate-pop">
@@ -550,7 +623,7 @@
       <p id="confirmMessage" class="text-xs leading-relaxed" style="color:var(--muted)"></p>
       <div class="flex gap-2.5 justify-center pt-1">
         <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)">Cancel</button>
-        <button id="confirmOkBtn" class="btn-3d flex-1 py-2.5 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">Yes, Continue</button>
+        <button id="confirmOkBtn" class="duo-btn flex-1 py-2.5 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">Yes, Continue</button>
       </div>
     </div>
   </div>
@@ -563,7 +636,7 @@
   <!-- ========================================================= -->
   <script>
     // =========================================================================
-    // 1. SUBJECT REGISTRY
+    // 1. SUBJECT REGISTRY & SECTION METADATA
     // =========================================================================
     const SUBJECTS = [
       { key: "polity",    name: "Polity",    icon: "⚖️" },
@@ -575,14 +648,15 @@
     ];
 
     const SECTION_META = {
-      notes: { label: "Class Notes", icon: "📄" },
-      pyq:   { label: "Exam PYQs", icon: "📚" },
-      ai:    { label: "AI New Pattern", icon: "✨" },
-      vault: { label: "Mistake Vault", icon: "🛡️" }
+      notes: { label: "Class Notes", icon: "📄", statLabel: "Active Topics", statIcon: "📑" },
+      pyq:   { label: "Exam PYQs", icon: "📚", statLabel: "Active Topics", statIcon: "📑" },
+      ai:    { label: "AI New Pattern", icon: "✨", statLabel: "Active Topics", statIcon: "📑" },
+      pdfs:  { label: "PDF Notes Library", icon: "📥", statLabel: "PDFs Available", statIcon: "📥" },
+      vault: { label: "Mistake Vault", icon: "🛡️", statLabel: "Saved Mistakes", statIcon: "🛡️" }
     };
 
     // =========================================================================
-    // 2. EMBEDDED 15-QUESTION HINDI PREVIEW FALLBACK (POLITY LEC 1)
+    // 2. EMBEDDED 18-MCQ HINDI PREVIEW FALLBACK (PARMAR SSC POLITY LEC 1)
     // =========================================================================
     const PREVIEW_POLITY_DATA = {
       subject: "Polity",
@@ -623,8 +697,15 @@
               q: "भारत के लिए संविधान सभा का विचार पहली बार 1934 में किसने प्रस्तावित किया था?",
               options: ["जवाहरलाल नेहरू", "डॉ. बी. आर. अंबेडकर", "एम. एन. रॉय", "महात्मा गांधी"],
               ans: 2,
-              explanation: "1934 में एम. एन. रॉय ने पहली बार भारत के लिए संविधान सभा का विचार रखा और 1935 में कांग्रेस ने इसकी आधिकारिक मांग की।",
+              explanation: "1934 में एम. एन. रॉय ने पहली बार भारत के लिए संविधान सभा का विचार रखा था।",
               sourceLine: "1934: एम. एन. रॉय ने पहली बार भारत के लिए संविधान सभा का विचार प्रस्तावित किया।"
+            },
+            {
+              q: "भारतीय राष्ट्रीय कांग्रेस (INC) ने आधिकारिक तौर पर एक संविधान सभा की मांग किस वर्ष की थी?",
+              options: ["1928", "1934", "1935", "1938"],
+              ans: 2,
+              explanation: "1935 में भारतीय राष्ट्रीय कांग्रेस ने आधिकारिक रूप से संविधान सभा की मांग की थी।",
+              sourceLine: "1935: भारतीय राष्ट्रीय कांग्रेस ने आधिकारिक तौर पर एक संवैधानिक सभा की मांग की।"
             },
             {
               q: "महात्मा गांधी ने किस ब्रिटिश प्रस्ताव (1942) को 'डूबते हुए बैंक का उत्तर-दिनांकित चेक' (Post-dated cheque) कहा था?",
@@ -737,6 +818,25 @@
               sourceLine: "संविधान अंगीकरण तिथि: 26 नवंबर 1949 (संविधान दिवस) | मूलतः 395 अनुच्छेद, 8 अनुसूचियाँ, 22 भाग और एक प्रस्तावना शामिल थी।"
             },
             {
+              q: "संविधान सभा ने राष्ट्रीय ध्वज तथा राष्ट्रगान/राष्ट्रीय गीत क्रमशः किस तिथि को अपनाए?",
+              options: [
+                "राष्ट्रीय ध्वज: 22 जुलाई 1947; राष्ट्रगान व गीत: 24 जनवरी 1950",
+                "राष्ट्रीय ध्वज: 15 अगस्त 1947; राष्ट्रगान व गीत: 26 जनवरी 1950",
+                "राष्ट्रीय ध्वज: 22 जनवरी 1947; राष्ट्रगान व गीत: 24 जनवरी 1950",
+                "राष्ट्रीय ध्वज: 22 जुलाई 1947; राष्ट्रगान व गीत: 26 नवंबर 1949"
+              ],
+              ans: 0,
+              explanation: "22 जुलाई 1947 को राष्ट्रीय ध्वज और 24 जनवरी 1950 को राष्ट्रगान (टैगोर) व राष्ट्रीय गीत (बंकिम चंद्र चटर्जी) अपनाए गए।",
+              sourceLine: "22 जुलाई 1947 को राष्ट्रीय ध्वज अपनाया | 24 जनवरी 1950 को राष्ट्रगान व राष्ट्रीय गीत अपनाया"
+            },
+            {
+              q: "भारतीय राष्ट्रीय ध्वज के डिजाइनर कौन थे जिन्हें 1921 में विजयवाड़ा कांग्रेस बैठक में महात्मा गांधी द्वारा अनुमोदित किया गया?",
+              options: ["पिंगली वेंकैया", "नंद लाल बोस", "बंकिम चंद्र चटर्जी", "ब्योहार राममनोहर सिन्हा"],
+              ans: 0,
+              explanation: "राष्ट्रीय ध्वज के डिजाइनर पिंगली वेंकैया थे।",
+              sourceLine: "भारतीय राष्ट्रीय ध्वज के डिजाइनरः पिंगली वेंकैया (1921 में विजयवाड़ा में एक कांग्रेस बैठक में महात्मा गांधी द्वारा अनुमोदित)।"
+            },
+            {
               q: "भारतीय संविधान के अंग्रेजी और हिंदी सुलेखनकर्ता (Calligraphers) क्रमशः कौन थे?",
               options: [
                 "अंग्रेजी: प्रेम बिहारी नारायण रायजादा; हिंदी: वसंत कृष्ण वैद्य",
@@ -754,26 +854,66 @@
     };
 
     // =========================================================================
-    // 3. APP STATE & PERSISTENCE (Synced Theme Key: gs_master_theme_v2)
+    // 3. BUILT-IN PDF LIBRARY FALLBACK (ALL 23 POLITY LECTURE PDFs)
     // =========================================================================
-    let currentSection = "notes"; // notes | pyq | ai | vault
+    const FALLBACK_PDF_LIBRARY = {
+      polity: [
+        { lec: "Lec 01", title: "संविधान निर्माण (Making of Constitution)", sub: "संविधान सभा, समितियाँ, सत्र व प्रारूप समिति", file: "pdfs/polity/lec1.pdf" },
+        { lec: "Lec 02", title: "संविधान की प्रमुख विशेषताएँ व अनुसूचियाँ", sub: "संघवाद, 12 अनुसूचियाँ (TEARS OF OLD PM)", file: "pdfs/polity/lec2.pdf" },
+        { lec: "Lec 03", title: "प्रस्तावना (Preamble & Parts)", sub: "उद्देशिका, टिप्पणियाँ, केस व संविधान के 25 भाग", file: "pdfs/polity/lec3.pdf" },
+        { lec: "Lec 04", title: "भाग I — संघ और उसका राज्यक्षेत्र", sub: "अनुच्छेद 1–4, राज्य पुनर्गठन व अनुच्छेद 371", file: "pdfs/polity/lec4.pdf" },
+        { lec: "Lec 05", title: "भाग II — नागरिकता (Citizenship)", sub: "अनुच्छेद 5–11, नागरिकता अधिनियम 1955, OCI व CAA", file: "pdfs/polity/lec5.pdf" },
+        { lec: "Lec 06", title: "भाग III — मौलिक अधिकार (Part-1)", sub: "अनुच्छेद 12–18, समानता का अधिकार व Landmark Cases", file: "pdfs/polity/lec6.pdf" },
+        { lec: "Lec 07", title: "भाग III — मौलिक अधिकार (Part-2)", sub: "अनुच्छेद 19–21A, स्वतंत्रता व जीवन का अधिकार", file: "pdfs/polity/lec7.pdf" },
+        { lec: "Lec 08", title: "भाग III — मौलिक अधिकार (Part-3)", sub: "अनुच्छेद 22–35, धर्म, अल्पसंख्यक व 5 रिट (Writs)", file: "pdfs/polity/lec8.pdf" },
+        { lec: "Lec 09", title: "भाग IV — राज्य के नीति निदेशक सिद्धांत (DPSP)", sub: "अनुच्छेद 36–51, UCC, संशोधन व FR बनाम DPSP", file: "pdfs/polity/lec9.pdf" },
+        { lec: "Lec 10", title: "मौलिक कर्तव्य व संविधान संशोधन", sub: "अनुच्छेद 51A (11 कर्तव्य), बहुमत के प्रकार व Art 368", file: "pdfs/polity/lec10.pdf" },
+        { lec: "Lec 11", title: "राष्ट्रपति और उपराष्ट्रपति", sub: "अनुच्छेद 52–71, चुनाव, महाभियोग व कार्यकाल", file: "pdfs/polity/lec11.pdf" },
+        { lec: "Lec 12", title: "प्रधानमंत्री, मंत्रिपरिषद व महान्यायवादी", sub: "अनुच्छेद 72–78, क्षमादान शक्ति व Attorney General", file: "pdfs/polity/lec12.pdf" },
+        { lec: "Lec 13", title: "भाग V — संसद (Part-1)", sub: "अनुच्छेद 79–85, लोकसभा, राज्यसभा, परिसीमन व सत्र", file: "pdfs/polity/lec13.pdf" },
+        { lec: "Lec 14", title: "भाग V — संसद (Part-2)", sub: "अनुच्छेद 86–106, पदाधिकारी, कोरम, दलबदल व विशेषाधिकार", file: "pdfs/polity/lec14.pdf" },
+        { lec: "Lec 15", title: "भाग V — संसद (Part-3)", sub: "अनुच्छेद 107–123, विधेयक, वीटो, बजट, समितियाँ व अध्यादेश", file: "pdfs/polity/lec15.pdf" },
+        { lec: "Lec 16", title: "राज्य कार्यपालिका व विधानमंडल", sub: "अनुच्छेद 152–213, राज्यपाल, CM, विधानसभा व विधान परिषद", file: "pdfs/polity/lec16.pdf" },
+        { lec: "Lec 17", title: "सर्वोच्च न्यायालय (Supreme Court)", sub: "अनुच्छेद 124–147, कॉलेजियम, क्षेत्राधिकार व पूर्ण न्याय", file: "pdfs/polity/lec17.pdf" },
+        { lec: "Lec 18", title: "उच्च न्यायालय, अधीनस्थ न्यायालय व अधिकरण", sub: "अनुच्छेद 214–237, रिट (226), लोक अदालत, PIL व CAT", file: "pdfs/polity/lec18.pdf" },
+        { lec: "Lec 19", title: "स्थानीय स्वशासन (Local Government)", sub: "पंचायत (243–243O), नगरपालिका (243P–ZG) व सहकारी समितियाँ", file: "pdfs/polity/lec19.pdf" },
+        { lec: "Lec 20", title: "केंद्र-राज्य संबंध (Center-State Relations)", sub: "विधायी (245–255), प्रशासनिक (256–263), वित्तीय (265–293) व क्षेत्रीय परिषदें", file: "pdfs/polity/lec20.pdf" },
+        { lec: "Lec 21", title: "संवैधानिक व गैर-संवैधानिक निकाय", sub: "ECI, UPSC, वित्त आयोग, GST परिषद, CAG, NCSC/ST/BC, NHRC, लोकपाल, नीति आयोग", file: "pdfs/polity/lec21.pdf" },
+        { lec: "Lec 22", title: "आपातकाल, राजभाषा, UT व जनजातीय क्षेत्र", sub: "अनुच्छेद 352–360, 343–351, 239–242 व 244–244A", file: "pdfs/polity/lec22.pdf" },
+        { lec: "Lec 23", title: "ऐतिहासिक पृष्ठभूमि (Historical Background)", sub: "रेगुलेटिंग एक्ट 1773 से भारतीय स्वतंत्रता अधिनियम 1947 तक", file: "pdfs/polity/lec23.pdf" }
+      ],
+      history: [],
+      geography: [],
+      static_gk: [],
+      science: [],
+      economics: []
+    };
+
+    // =========================================================================
+    // 4. APP STATE & PERSISTENCE KEYS
+    // =========================================================================
+    let currentSection = "notes"; // notes | pyq | ai | pdfs | vault
     let currentSubject = "polity";
     let loadedCache = {};
+    let pdfLibraryCache = null;
+    let pdfSearchQuery = "";
     let activeQuiz = null;
     let activeFlashcards = null;
     let confirmCallback = null;
+    let deferredInstallPrompt = null;
 
-    const STORAGE_THEME    = "gs_master_theme_v2"; // Synced with articles.html
-    const STORAGE_PROGRESS = "gs_master_progress_v4";
-    const STORAGE_VAULT    = "gs_master_vault_v4";
-    const STORAGE_STATS    = "gs_master_stats_v4";
+    const STORAGE_THEME    = "gs_master_theme_v2";    // Shared with articles.html
+    const STORAGE_PROGRESS = "gs_master_progress_v2"; // Topic progress & stats
+    const STORAGE_VAULT    = "gs_master_vault_v2";    // Saved wrong questions
 
     // =========================================================================
-    // 4. INITIALIZATION & THEME
+    // 5. INITIALIZATION, THEME & PWA LIFECYCLE
     // =========================================================================
     function init() {
       const savedTheme = localStorage.getItem(STORAGE_THEME) || "light";
       applyTheme(savedTheme);
+      initPwaEvents();
+      updateOnlineStatus();
       renderSubjectPills();
       updateDashboardStats(0);
       switchSection("notes");
@@ -797,41 +937,146 @@
       applyTheme(isDark ? "light" : "dark");
     }
 
-    // --- localStorage Helpers ---
-    function getProgress() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_PROGRESS) || "{}"); } catch { return {}; }
+    // --- PWA Install, Standalone Detection, Online/Offline & Service Worker ---
+    function isRunningStandalone() {
+      return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
     }
-    function saveProgress(topicId, scoreStr, total, accuracy) {
-      const p = getProgress();
-      const prev = p[topicId];
-      if (!prev || accuracy >= prev.accuracy) {
-        p[topicId] = { score: scoreStr, total, accuracy, updatedAt: new Date().toLocaleDateString("hi-IN") };
-        localStorage.setItem(STORAGE_PROGRESS, JSON.stringify(p));
+
+    function initPwaEvents() {
+      const installBtn = document.getElementById("installAppBtn");
+      if (isRunningStandalone() && installBtn) {
+        installBtn.classList.add("hidden");
+      }
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        if (installBtn && !isRunningStandalone()) {
+          installBtn.classList.remove("hidden");
+        }
+      });
+
+      window.addEventListener("appinstalled", () => {
+        deferredInstallPrompt = null;
+        if (installBtn) installBtn.classList.add("hidden");
+        showToast("GS Master App install ho gaya! 🎉", "success");
+      });
+
+      window.addEventListener("online", () => {
+        updateOnlineStatus();
+        showToast("Wapas Online ho gaye ✓", "success");
+      });
+
+      window.addEventListener("offline", () => {
+        updateOnlineStatus();
+        showToast("Aap abhi Offline mode mein hain 📡", "info");
+      });
+
+      // Safe Service Worker registration on window load
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {
+            // Silently ignore in sandboxed preview or non-HTTPS environments
+          });
+        });
       }
     }
 
-    function getGlobalStats() {
-      try {
-        const s = JSON.parse(localStorage.getItem(STORAGE_STATS) || "{}");
-        return { solved: Number(s.solved) || 0, correct: Number(s.correct) || 0 };
-      } catch {
-        return { solved: 0, correct: 0 };
+    function updateOnlineStatus() {
+      const badge = document.getElementById("offlineBadge");
+      if (!badge) return;
+      if (navigator.onLine === false) {
+        badge.classList.remove("hidden");
+        badge.classList.add("inline-flex");
+      } else {
+        badge.classList.add("hidden");
+        badge.classList.remove("inline-flex");
       }
     }
-    function recordGlobalStats(attempted, correct) {
-      const s = getGlobalStats();
-      s.solved += attempted;
-      s.correct += correct;
-      localStorage.setItem(STORAGE_STATS, JSON.stringify(s));
+
+    async function handleInstallClick() {
+      if (deferredInstallPrompt) {
+        try {
+          deferredInstallPrompt.prompt();
+          const { outcome } = await deferredInstallPrompt.userChoice;
+          deferredInstallPrompt = null;
+          if (outcome === "accepted") {
+            const btn = document.getElementById("installAppBtn");
+            if (btn) btn.classList.add("hidden");
+          }
+        } catch (err) {
+          openInstallGuideModal();
+        }
+      } else {
+        openInstallGuideModal();
+      }
+    }
+
+    function openInstallGuideModal() {
+      document.getElementById("installGuideModal").classList.remove("hidden");
+    }
+
+    function closeInstallGuideModal() {
+      document.getElementById("installGuideModal").classList.add("hidden");
+    }
+
+    // =========================================================================
+    // 6. PERSISTENCE HELPERS (gs_master_progress_v2 & gs_master_vault_v2)
+    // =========================================================================
+    function getProgressStore() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_PROGRESS) || "{}");
+        if (!raw || typeof raw !== "object") return { topics: {}, stats: { solved: 0, correct: 0 } };
+        // Support flat legacy structure gracefully
+        if (!raw.topics) {
+          return { topics: raw, stats: raw._stats || { solved: 0, correct: 0 } };
+        }
+        return {
+          topics: raw.topics || {},
+          stats: raw.stats || { solved: 0, correct: 0 }
+        };
+      } catch {
+        return { topics: {}, stats: { solved: 0, correct: 0 } };
+      }
+    }
+
+    function writeProgressStore(store) {
+      localStorage.setItem(STORAGE_PROGRESS, JSON.stringify(store));
+    }
+
+    function getTopicProgressMap() {
+      return getProgressStore().topics;
+    }
+
+    function saveTopicProgressAndStats(topicId, scoreStr, total, accuracy, attempted, correct) {
+      const store = getProgressStore();
+      if (attempted > 0) {
+        store.stats.solved = (Number(store.stats.solved) || 0) + attempted;
+        store.stats.correct = (Number(store.stats.correct) || 0) + correct;
+      }
+      if (topicId && topicId !== "vault-revision") {
+        const prev = store.topics[topicId];
+        if (!prev || accuracy >= prev.accuracy) {
+          store.topics[topicId] = {
+            score: scoreStr,
+            total,
+            accuracy,
+            updatedAt: new Date().toLocaleDateString("hi-IN")
+          };
+        }
+      }
+      writeProgressStore(store);
     }
 
     function getVault() {
       try { return JSON.parse(localStorage.getItem(STORAGE_VAULT) || "[]"); } catch { return []; }
     }
+
     function saveVault(list) {
       localStorage.setItem(STORAGE_VAULT, JSON.stringify(list));
       updateDashboardStats();
     }
+
     function addToVault(qObj, metaTag) {
       const vault = getVault();
       if (!vault.some(item => item.q === qObj.q)) {
@@ -839,6 +1084,7 @@
         saveVault(vault);
       }
     }
+
     function removeFromVault(index) {
       const vault = getVault();
       vault.splice(index, 1);
@@ -847,15 +1093,22 @@
       showToast("Question mastered & removed from Vault ✓", "success");
     }
 
-    function updateDashboardStats(sectionTopicCount = null) {
-      if (sectionTopicCount !== null) {
-        document.getElementById("statTopics").textContent = sectionTopicCount;
-      }
-      const stats = getGlobalStats();
-      const vaultLen = getVault().length;
-      const avgAcc = stats.solved > 0 ? Math.round((stats.correct / stats.solved) * 100) : 0;
+    function updateDashboardStats(sectionCount = null) {
+      const meta = SECTION_META[currentSection] || SECTION_META.notes;
+      document.getElementById("statTabLabel").textContent = meta.statLabel;
+      document.getElementById("statTabIcon").textContent = meta.statIcon;
 
-      document.getElementById("statSolved").textContent = stats.solved;
+      if (sectionCount !== null) {
+        document.getElementById("statTopics").textContent = sectionCount;
+      }
+
+      const { stats } = getProgressStore();
+      const solved = Number(stats.solved) || 0;
+      const correct = Number(stats.correct) || 0;
+      const avgAcc = solved > 0 ? Math.round((correct / solved) * 100) : 0;
+      const vaultLen = getVault().length;
+
+      document.getElementById("statSolved").textContent = solved;
       document.getElementById("statAccuracy").textContent = `${avgAcc}%`;
       document.getElementById("statVault").textContent = vaultLen;
 
@@ -869,7 +1122,7 @@
     }
 
     // =========================================================================
-    // 5. NAVIGATION & SILENT AUTO-FETCH ENGINE
+    // 7. NAVIGATION & SILENT DATA AUTO-FETCH ENGINE
     // =========================================================================
     function setBottomNavVisible(visible) {
       document.getElementById("bottomNav").classList.toggle("hidden", !visible);
@@ -889,6 +1142,7 @@
       setBottomNavVisible(true);
       updateDashboardStats();
       if (currentSection === "vault") renderVault();
+      else if (currentSection === "pdfs") loadPdfLibrary();
       else loadSubjectData(currentSection, currentSubject);
     }
 
@@ -904,6 +1158,10 @@
       if (sec === "vault") {
         document.getElementById("subjectBarWrap").classList.add("hidden");
         renderVault();
+      } else if (sec === "pdfs") {
+        document.getElementById("subjectBarWrap").classList.remove("hidden");
+        renderSubjectPills();
+        loadPdfLibrary();
       } else {
         document.getElementById("subjectBarWrap").classList.remove("hidden");
         renderSubjectPills();
@@ -927,7 +1185,8 @@
     function selectSubject(subKey) {
       currentSubject = subKey;
       renderSubjectPills();
-      loadSubjectData(currentSection, currentSubject);
+      if (currentSection === "pdfs") loadPdfLibrary();
+      else loadSubjectData(currentSection, currentSubject);
     }
 
     async function loadSubjectData(section, subject) {
@@ -946,13 +1205,13 @@
 
       try {
         const res = await fetch(path, { cache: "no-store" });
-        if (!res.ok) throw new Error("Not found");
+        if (!res.ok) throw new Error("Unavailable");
         const data = await res.json();
         loadedCache[cacheKey] = data;
         updateDashboardStats((data.topics || []).length);
         renderTopicBoxes(data);
       } catch (err) {
-        // Embedded 15-MCQ Polity Lec-1 fallback for live preview
+        // Preview fallback for Polity Class Notes
         if (section === "notes" && subject === "polity") {
           loadedCache[cacheKey] = PREVIEW_POLITY_DATA;
           updateDashboardStats(PREVIEW_POLITY_DATA.topics.length);
@@ -960,14 +1219,14 @@
           return;
         }
 
-        // Clean, student-friendly empty state (Zero technical jargon)
+        // Clean student-friendly empty state
         updateDashboardStats(0);
         area.innerHTML = `
           <div class="app-card rounded-3xl p-9 text-center max-w-md mx-auto animate-pop">
             <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center text-3xl mx-auto mb-3">📚</div>
-            <h3 class="font-extrabold text-base mb-1.5">Content Jald Hi Aayega</h3>
+            <h3 class="font-extrabold text-base mb-1.5">📚 Content Jald Hi Aayega</h3>
             <p class="text-xs leading-relaxed" style="color:var(--muted)">
-              Is subject ke notes &amp; tests abhi update kiye ja rahe hain.
+              Is subject ke notes aur practice sets abhi taiyar kiye ja rahe hain.
             </p>
           </div>
         `;
@@ -975,19 +1234,19 @@
     }
 
     // =========================================================================
-    // 6. AUTO-RENDERED TOPIC CARDS GRID
+    // 8. TOPIC CARDS GRID (NOTES / PYQS / AI)
     // =========================================================================
     function renderTopicBoxes(data) {
       const area = document.getElementById("contentArea");
       const topics = data.topics || [];
-      const progress = getProgress();
+      const progress = getTopicProgressMap();
 
       if (!topics.length) {
         area.innerHTML = `
           <div class="app-card rounded-3xl p-9 text-center max-w-md mx-auto">
             <div class="text-3xl mb-2">📚</div>
-            <h3 class="font-extrabold text-base mb-1">Content Jald Hi Aayega</h3>
-            <p class="text-xs" style="color:var(--muted)">Is subject ke notes &amp; tests abhi update kiye ja rahe hain.</p>
+            <h3 class="font-extrabold text-base mb-1">📚 Content Jald Hi Aayega</h3>
+            <p class="text-xs" style="color:var(--muted)">Is subject ke notes aur practice sets abhi taiyar kiye ja rahe hain.</p>
           </div>`;
         return;
       }
@@ -1000,6 +1259,7 @@
             const qCount = (topic.questions || []).length;
             const prog = progress[topic.id];
             const acc = prog ? prog.accuracy : 0;
+
             return `
               <div class="app-card app-card-hover rounded-3xl p-5 flex flex-col justify-between animate-pop">
                 <div>
@@ -1024,15 +1284,15 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-12 gap-2">
-                  <button onclick="startTopicQuiz(${idx})" class="btn-3d col-span-6 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+                <div class="flex items-center gap-2">
+                  <button onclick="startTopicQuiz(${idx})" class="duo-btn flex-1 py-2.5 px-3 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold whitespace-nowrap">
                     ▶ Start Test
                   </button>
-                  <button onclick="startTopicFlashcards(${idx})" class="col-span-4 py-2.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition text-blue-700 dark:text-blue-300" style="border-color:var(--border); background:var(--surface-2)" title="3D Flip Flashcards">
+                  <button onclick="startTopicFlashcards(${idx})" class="py-2.5 px-3 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition text-blue-700 dark:text-blue-300 whitespace-nowrap" style="border-color:var(--border); background:var(--surface-2)" title="3D Flip Flashcards">
                     🃏 Cards
                   </button>
-                  <button onclick="openKeyModal(${idx})" class="col-span-2 py-2.5 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition" style="border-color:var(--border); background:var(--surface-2)" title="Line-by-Line Revision Key">
-                    📖
+                  <button onclick="openKeyModal(${idx})" class="py-2.5 px-3 rounded-xl border text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 transition whitespace-nowrap" style="border-color:var(--border); background:var(--surface-2)" title="Line-by-Line Revision Key">
+                    📖 Key
                   </button>
                 </div>
               </div>
@@ -1043,7 +1303,127 @@
     }
 
     // =========================================================================
-    // 7. MISTAKE VAULT
+    // 9. INTEGRATED PDF NOTES LIBRARY TAB (📥 PDFs)
+    // =========================================================================
+    async function loadPdfLibrary() {
+      if (!pdfLibraryCache) {
+        try {
+          const res = await fetch("data/pdfs.json", { cache: "no-store" });
+          if (res.ok) {
+            pdfLibraryCache = await res.json();
+          } else {
+            pdfLibraryCache = FALLBACK_PDF_LIBRARY;
+          }
+        } catch (err) {
+          pdfLibraryCache = FALLBACK_PDF_LIBRARY;
+        }
+      }
+      renderPdfLibrary();
+    }
+
+    function handlePdfSearch(val) {
+      pdfSearchQuery = val;
+      renderPdfCardsOnly();
+    }
+
+    function renderPdfLibrary() {
+      const area = document.getElementById("contentArea");
+      const allForSubject = (pdfLibraryCache && pdfLibraryCache[currentSubject]) || [];
+      updateDashboardStats(allForSubject.length);
+
+      if (!allForSubject.length) {
+        area.innerHTML = `
+          <div class="app-card rounded-3xl p-9 text-center max-w-md mx-auto animate-pop">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center text-3xl mx-auto mb-3">📚</div>
+            <h3 class="font-extrabold text-base mb-1.5">📚 Content Jald Hi Aayega</h3>
+            <p class="text-xs leading-relaxed" style="color:var(--muted)">
+              Is subject ke original class notes PDFs jald hi available honge.
+            </p>
+          </div>`;
+        return;
+      }
+
+      area.innerHTML = `
+        <div class="space-y-4 animate-pop">
+          <!-- Live Search Bar + PDF Count Badge -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="relative flex-1 max-w-md">
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm opacity-60">🔍</span>
+              <input
+                type="text"
+                id="pdfSearchInput"
+                value="${escapeAttr(pdfSearchQuery)}"
+                oninput="handlePdfSearch(this.value)"
+                placeholder="Search Lecture number ya topic (e.g., Lec 07, संसद, DPSP)..."
+                class="app-card w-full pl-9 pr-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500/40"
+                style="color:var(--text)"
+              />
+            </div>
+            <span id="pdfCountBadge" class="self-start sm:self-auto font-mono text-xs font-extrabold px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
+              ${allForSubject.length} PDFs
+            </span>
+          </div>
+
+          <div id="pdfCardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      `;
+
+      renderPdfCardsOnly();
+    }
+
+    function renderPdfCardsOnly() {
+      const grid = document.getElementById("pdfCardsGrid");
+      const badge = document.getElementById("pdfCountBadge");
+      if (!grid) return;
+
+      const allForSubject = (pdfLibraryCache && pdfLibraryCache[currentSubject]) || [];
+      const q = pdfSearchQuery.trim().toLowerCase();
+
+      const filtered = allForSubject.filter(item => {
+        if (!q) return true;
+        return `${item.lec} ${item.title} ${item.sub || ""}`.toLowerCase().includes(q);
+      });
+
+      if (badge) badge.textContent = `${filtered.length} PDFs`;
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="col-span-full app-card rounded-3xl p-8 text-center max-w-md mx-auto">
+            <p class="text-xs font-bold" style="color:var(--muted)">Is search se koi lecture PDF nahi mila.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="app-card app-card-hover rounded-3xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-mono text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
+                ${escapeHtml(item.lec)}
+              </span>
+              <span class="font-mono text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30">
+                PDF
+              </span>
+            </div>
+
+            <h3 class="font-extrabold text-base leading-snug mb-1.5">${escapeHtml(item.title)}</h3>
+            ${item.sub ? `<p class="text-xs font-medium leading-relaxed mb-4" style="color:var(--muted)">${escapeHtml(item.sub)}</p>` : '<div class="mb-4"></div>'}
+          </div>
+
+          <div class="flex gap-2 pt-3 border-t" style="border-color:var(--border)">
+            <a href="${escapeAttr(item.file)}" target="_blank" rel="noopener" class="px-3.5 py-2.5 rounded-xl border text-xs font-extrabold transition hover:bg-blue-50 dark:hover:bg-slate-800 flex items-center justify-center gap-1" style="border-color:var(--border); background:var(--surface-2)">
+              👁️ Open
+            </a>
+            <a href="${escapeAttr(item.file)}" download class="duo-btn flex-1 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+              📥 Download PDF
+            </a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // =========================================================================
+    // 10. MISTAKE VAULT
     // =========================================================================
     function renderVault() {
       const area = document.getElementById("contentArea");
@@ -1069,8 +1449,8 @@
             <p class="text-xs" style="color:var(--muted)">Exam se pehle apne weak questions ko test ya flashcards se revise karein</p>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button onclick="startVaultQuiz()" class="btn-3d px-4 py-2 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">▶ Vault Revision Test</button>
-            <button onclick="startVaultFlashcards()" class="btn-3d px-4 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">🃏 Vault Cards</button>
+            <button onclick="startVaultQuiz()" class="duo-btn px-4 py-2 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">▶ Vault Revision Test</button>
+            <button onclick="startVaultFlashcards()" class="duo-btn px-4 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">🃏 Cards</button>
             <button onclick="requestClearVault()" class="px-3 py-2 rounded-xl border text-xs font-bold hover:text-rose-600 transition" style="border-color:var(--border); background:var(--surface-2)">Clear All</button>
           </div>
         </div>
@@ -1105,7 +1485,7 @@
     }
 
     // =========================================================================
-    // 8. FULL QUIZ ENGINE
+    // 11. FULL QUIZ ENGINE
     // =========================================================================
     function startTopicQuiz(topicIdx) {
       const data = loadedCache[`${currentSection}_${currentSubject}`];
@@ -1328,10 +1708,14 @@
       const attempted = correct + wrong;
       const acc = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-      if (attempted > 0) recordGlobalStats(attempted, correct);
-      if (activeQuiz.topicId !== "vault-revision") {
-        saveProgress(activeQuiz.topicId, `${score}/${maxScore}`, activeQuiz.questions.length, acc);
-      }
+      saveTopicProgressAndStats(
+        activeQuiz.topicId,
+        `${score}/${maxScore}`,
+        activeQuiz.questions.length,
+        acc,
+        attempted,
+        correct
+      );
       updateDashboardStats();
 
       hideAllViews();
@@ -1384,7 +1768,7 @@
     }
 
     // =========================================================================
-    // 9. 3D FLIP FLASHCARDS MODAL ENGINE
+    // 12. 3D FLIP FLASHCARDS MODAL ENGINE
     // =========================================================================
     function startTopicFlashcards(topicIdx) {
       const data = loadedCache[`${currentSection}_${currentSubject}`];
@@ -1479,7 +1863,7 @@
     });
 
     // =========================================================================
-    // 10. LINE-BY-LINE REVISION KEY MODAL
+    // 13. LINE-BY-LINE REVISION KEY MODAL
     // =========================================================================
     function openKeyModal(topicIdx) {
       const data = loadedCache[`${currentSection}_${currentSubject}`];
@@ -1501,7 +1885,7 @@
     }
 
     // =========================================================================
-    // 11. CUSTOM CONFIRM MODAL, TOAST & UTILITIES
+    // 14. CUSTOM CONFIRM MODAL, TOAST & UTILITIES
     // =========================================================================
     function openConfirmModal(title, message, onConfirm) {
       document.getElementById("confirmTitle").textContent = title;
@@ -1547,6 +1931,10 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function escapeAttr(str) {
+      return String(str || "").replace(/\\/g, "\\\\").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     init();
