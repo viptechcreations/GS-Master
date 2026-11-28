@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marathon Mocks — YouTube Marathon Tests | GS Master</title>
+
+  <!-- PWA Meta & Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="GS Master" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f0f5ff;
+      --surface: #ffffff;
+      --surface-2: #eff6ff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbeafe;
+    }
+    html.dark {
+      --bg: #070b14;
+      --surface: #0f172a;
+      --surface-2: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.2);
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .surface-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .duo-btn {
+      border-bottom-width: 4px;
+      transition: transform 0.08s ease, border-bottom-width 0.08s ease;
+    }
+    .duo-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .opt-btn { transition: all 0.15s ease; }
+    .opt-btn:hover:not(:disabled) {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.06);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Sticky Header -->
+  <header class="sticky top-0 z-30 surface-card border-x-0 border-t-0 shadow-sm backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="index.html" id="backHomeBtn" class="px-3 py-2 rounded-xl text-xs font-extrabold border transition hover:opacity-85 flex items-center gap-1 shrink-0" style="border-color:var(--border); background:var(--surface-2)">
+          ← GS Master
+        </a>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight text-blue-600 dark:text-blue-400 truncate">
+            🔥 Marathon Mocks
+          </h1>
+          <p class="text-[11px] font-semibold truncate" style="color:var(--muted)">YouTube Marathons • Timed Mock Tests</p>
+        </div>
+      </div>
+
+      <button onclick="toggleTheme()" id="themeBtn" class="w-9 h-9 rounded-xl border flex items-center justify-center text-base transition shrink-0" style="border-color:var(--border); background:var(--surface-2)" title="Toggle Theme">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-6xl w-full mx-auto px-4 py-5 flex-1">
+
+    <!-- ================= 1. MARATHONS GALLERY VIEW ================= -->
+    <section id="galleryView">
+      <!-- Filter Pills + Search -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+        <div id="subjectPills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
+
+        <div class="relative md:w-72 shrink-0">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm opacity-60">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            oninput="renderGallery()"
+            placeholder="Search Marathon, Teacher, Topic..."
+            class="w-full pl-9 pr-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold border outline-none focus:ring-2 focus:ring-blue-500/40"
+            style="background:var(--surface); border-color:var(--border); color:var(--text)"
+          />
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="marathonGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- ================= 2. MODE SELECTION MODAL ================= -->
+    <div id="modeModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="surface-card rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border-2 border-blue-500/30">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <span id="modalSubjectBadge" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400"></span>
+            <h2 id="modalTitle" class="font-extrabold text-base sm:text-lg leading-snug mt-1.5"></h2>
+          </div>
+          <button onclick="closeModeModal()" class="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm hover:bg-rose-500/15 text-rose-500 transition">✕</button>
+        </div>
+
+        <p id="modalMeta" class="text-xs font-semibold mb-4" style="color:var(--muted)"></p>
+
+        <div class="space-y-2.5 mb-5">
+          <button onclick="launchMock('practice')" class="w-full text-left p-3.5 rounded-2xl border-2 transition hover:border-blue-500 flex items-center gap-3" style="border-color:var(--border); background:var(--surface-2)">
+            <span class="text-2xl">🎯</span>
+            <div>
+              <div class="font-extrabold text-sm">Practice Mode (Instant Answer)</div>
+              <div class="text-[11px] font-semibold" style="color:var(--muted)">हर सवाल पर तुरंत सही उत्तर, व्याख्या और शॉर्ट नोट</div>
+            </div>
+          </button>
+
+          <button onclick="launchMock('ssc')" class="w-full text-left p-3.5 rounded-2xl border-2 transition hover:border-blue-500 flex items-center gap-3" style="border-color:var(--border); background:var(--surface-2)">
+            <span class="text-2xl">⏱️</span>
+            <div>
+              <div class="font-extrabold text-sm">SSC Exam Mode (+2 / -0.5)</div>
+              <div class="text-[11px] font-semibold" style="color:var(--muted)">रियल एग्जाम टाइमर, Question Palette व अंत में स्कोरकार्ड</div>
+            </div>
+          </button>
+
+          <button onclick="launchMock('cds')" class="w-full text-left p-3.5 rounded-2xl border-2 transition hover:border-blue-500 flex items-center gap-3" style="border-color:var(--border); background:var(--surface-2)">
+            <span class="text-2xl">🎖️</span>
+            <div>
+              <div class="font-extrabold text-sm">CDS Exam Mode (+0.83 / -0.27)</div>
+              <div class="text-[11px] font-semibold" style="color:var(--muted)">UPSC CDS नेगेटिव मार्किंग पैटर्न के साथ अभ्यास</div>
+            </div>
+          </button>
+        </div>
+
+        <label class="flex items-center gap-2 text-xs font-bold cursor-pointer select-none" style="color:var(--muted)">
+          <input type="checkbox" id="shuffleToggle" class="w-4 h-4 accent-blue-600 rounded" />
+          <span>प्रश्नों का क्रम Shuffle करें</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ================= 3. ACTIVE MOCK ENGINE ================= -->
+    <section id="mockView" class="hidden max-w-3xl mx-auto">
+      <div class="surface-card rounded-3xl p-5 sm:p-7 shadow-sm">
+        <!-- Top Quiz Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <span id="mockQBadge" class="text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400">Q 1 / 15</span>
+            <span id="mockModeBadge" class="text-[11px] font-extrabold px-2.5 py-1 rounded-xl" style="background:var(--surface-2); color:var(--muted)">Practice</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="mockTimer" class="text-xs font-extrabold px-3 py-1 rounded-xl" style="background:var(--surface-2)">⏱ 00:00</span>
+            <button onclick="togglePalette()" class="text-xs font-extrabold px-3 py-1 rounded-xl border transition hover:border-blue-500" style="border-color:var(--border); background:var(--surface-2)">☰ Palette</button>
+            <button onclick="exitMock()" class="text-xs font-extrabold px-2.5 py-1 rounded-xl bg-rose-500/10 text-rose-600 hover:bg-rose-500/20">✕</button>
+          </div>
+        </div>
+
+        <!-- Title & Progress -->
+        <div id="mockTitleLine" class="text-xs font-bold mb-2 truncate" style="color:var(--muted)"></div>
+        <div class="w-full h-2 rounded-full overflow-hidden mb-5" style="background:var(--surface-2)">
+          <div id="mockProgress" class="h-full bg-blue-600 transition-all duration-300 rounded-full" style="width:0%"></div>
+        </div>
+
+        <!-- Question Palette Drawer -->
+        <div id="paletteDrawer" class="hidden mb-5 p-3.5 rounded-2xl border" style="border-color:var(--border); background:var(--surface-2)">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-extrabold">Question Palette</span>
+            <span class="text-[10px] font-bold" style="color:var(--muted)">🟢 Answered • 🟣 Review • ⚪ Unseen</span>
+          </div>
+          <div id="paletteGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-1.5"></div>
+        </div>
+
+        <!-- Question -->
+        <h2 id="mockQuestion" class="font-extrabold text-base sm:text-lg leading-relaxed mb-5"></h2>
+
+        <!-- Options -->
+        <div id="mockOptions" class="space-y-2.5 mb-5"></div>
+
+        <!-- Practice Feedback Box -->
+        <div id="mockFeedback" class="hidden rounded-2xl p-4 mb-5 border text-xs sm:text-sm leading-relaxed">
+          <div id="mockFbStatus" class="font-extrabold mb-1"></div>
+          <p id="mockFbExp" class="font-medium mb-2"></p>
+          <div id="mockFbNote" class="hidden text-xs font-extrabold px-3 py-2 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300"></div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t" style="border-color:var(--border)">
+          <div class="flex items-center gap-2">
+            <button onclick="prevMockQ()" id="btnPrev" class="px-4 py-2 rounded-xl border text-xs font-extrabold transition hover:opacity-85" style="border-color:var(--border); background:var(--surface-2)">
+              ← पिछला
+            </button>
+            <button onclick="toggleMarkReview()" id="btnReview" class="px-3.5 py-2 rounded-xl border text-xs font-extrabold transition" style="border-color:var(--border); background:var(--surface-2)">
+              🚩 Review
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="nextMockQ()" id="btnNext" class="duo-btn px-5 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+              अगला →
+            </button>
+            <button onclick="submitMock()" id="btnSubmit" class="duo-btn px-5 py-2 rounded-xl bg-emerald-600 border-emerald-800 text-white text-xs font-extrabold">
+              ✓ Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. RESULT & REVIEW VIEW ================= -->
+    <section id="resultView" class="hidden max-w-3xl mx-auto space-y-4">
+      <div class="surface-card rounded-3xl p-6 sm:p-8 text-center shadow-sm">
+        <div id="resEmoji" class="text-5xl mb-2">🏆</div>
+        <h2 id="resHeading" class="font-extrabold text-xl sm:text-2xl mb-1">Mock पूरा हुआ!</h2>
+        <p id="resSub" class="text-xs sm:text-sm font-semibold mb-5" style="color:var(--muted)"></p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div class="rounded-2xl p-3 bg-blue-500/10 border border-blue-500/25">
+            <div id="resScore" class="font-extrabold text-xl text-blue-600 dark:text-blue-400">0</div>
+            <div class="text-[11px] font-bold" style="color:var(--muted)">Score</div>
+          </div>
+          <div class="rounded-2xl p-3 bg-emerald-500/10 border border-emerald-500/25">
+            <div id="resCorrect" class="font-extrabold text-xl text-emerald-600 dark:text-emerald-400">0</div>
+            <div class="text-[11px] font-bold" style="color:var(--muted)">सही</div>
+          </div>
+          <div class="rounded-2xl p-3 bg-rose-500/10 border border-rose-500/25">
+            <div id="resWrong" class="font-extrabold text-xl text-rose-600 dark:text-rose-400">0</div>
+            <div class="text-[11px] font-bold" style="color:var(--muted)">गलत</div>
+          </div>
+          <div class="rounded-2xl p-3 bg-amber-500/10 border border-amber-500/25">
+            <div id="resAcc" class="font-extrabold text-xl text-amber-600 dark:text-amber-400">0%</div>
+            <div class="text-[11px] font-bold" style="color:var(--muted)">Accuracy</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2.5">
+          <button id="btnWrongOnly" onclick="retryWrongOnly()" class="hidden duo-btn px-5 py-2.5 rounded-2xl bg-rose-600 border-rose-800 text-white text-xs sm:text-sm font-extrabold">
+            🛡️ Practice Wrong Only
+          </button>
+          <button onclick="openModeModal(activeMarathon.id)" class="duo-btn px-5 py-2.5 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">
+            🔄 Re-Attempt
+          </button>
+          <button onclick="backToGallery()" class="px-5 py-2.5 rounded-2xl border text-xs sm:text-sm font-extrabold" style="border-color:var(--border); background:var(--surface-2)">
+            ← सभी Marathons
+          </button>
+        </div>
+      </div>
+
+      <!-- Review Filter & List -->
+      <div class="surface-card rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <h3 class="font-extrabold text-sm sm:text-base">📋 Detailed Answer Review</h3>
+          <div class="flex gap-1.5" id="reviewFilters">
+            <button onclick="setReviewFilter('all')" data-rf="all" class="rf-btn px-3 py-1 rounded-xl text-xs font-extrabold bg-blue-600 text-white">All</button>
+            <button onclick="setReviewFilter('wrong')" data-rf="wrong" class="rf-btn px-3 py-1 rounded-xl text-xs font-extrabold surface-card">Wrong/Skip</button>
+            <button onclick="setReviewFilter('correct')" data-rf="correct" class="rf-btn px-3 py-1 rounded-xl text-xs font-extrabold surface-card">Correct</button>
+          </div>
+        </div>
+        <div id="reviewList" class="space-y-3"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const STORAGE_THEME = "gs_master_theme_v2";
+    const STORAGE_SCORES = "gs_master_marathon_scores_v1";
+
+    const SUBJECT_STYLES = {
+      Polity:          { grad: "from-blue-600 via-indigo-600 to-violet-700", icon: "⚖️" },
+      History:         { grad: "from-amber-500 via-orange-600 to-rose-600",  icon: "🏛️" },
+      Geography:       { grad: "from-emerald-500 via-teal-600 to-cyan-700",  icon: "🌍" },
+      "Static GK":     { grad: "from-violet-600 via-purple-600 to-pink-600", icon: "🎯" },
+      Science:         { grad: "from-cyan-500 via-sky-600 to-blue-700",      icon: "🔬" },
+      Economics:       { grad: "from-teal-500 via-emerald-600 to-green-700", icon: "📊" },
+      "Current Affairs": { grad: "from-rose-500 via-red-600 to-orange-600",  icon: "📰" }
+    };
+
+    const FALLBACK_DATA = {"title": "GS Master — YouTube Marathon Mocks", "marathons": [{"id": "polity-mega-marathon-1", "subject": "Polity", "title": "Complete Indian Polity Mega Marathon (Lec 1–23)", "teacher": "Parmar SSC", "duration": "Full Revision", "tag": "SSC + CDS", "videoId": "", "youtubeUrl": "", "thumbnail": "", "topics": "संविधान निर्माण, 12 अनुसूचियाँ, प्रस्तावना, मौलिक अधिकार, DPSP, संसद, न्यायपालिका व संवैधानिक निकाय", "questions": [{"q": "भारत के लिए संविधान सभा का विचार सर्वप्रथम 1934 में किसने प्रस्तावित किया था?", "options": ["मोतीलाल नेहरू", "एम. एन. रॉय", "जवाहरलाल नेहरू", "डॉ. बी. आर. अंबेडकर"], "ans": 1, "exp": "1934 में एम. एन. रॉय ने पहली बार संविधान सभा का विचार रखा। 1935 में भारतीय राष्ट्रीय कांग्रेस ने आधिकारिक रूप से इसकी मांग की।", "note": "1928: नेहरू रिपोर्ट (मोतीलाल नेहरू) | 1934: एम. एन. रॉय"}, {"q": "कैबिनेट मिशन योजना (1946) के अंतर्गत संविधान सभा की कुल कितनी सीटें निर्धारित की गई थीं?", "options": ["299", "389", "296", "395"], "ans": 1, "exp": "कुल 389 सीटें थीं — 296 ब्रिटिश भारत से निर्वाचित (292 गवर्नर प्रांत + 4 मुख्य आयुक्त प्रांत) और 93 देशी रियासतों से मनोनीत।", "note": "विभाजन (मुस्लिम लीग बहिष्कार) के बाद शेष सीटें: 299 (229 निर्वाचित + 70 मनोनीत)"}, {"q": "भारतीय संविधान की 6वीं अनुसूची में किन चार राज्यों के जनजातीय क्षेत्रों का प्रशासन शामिल है?", "options": ["असम, मणिपुर, मेघालय, मिजोरम", "असम, त्रिपुरा, मेघालय, मिजोरम", "नागालैंड, असम, त्रिपुरा, मिजोरम", "अरुणाचल, असम, मेघालय, त्रिपुरा"], "ans": 1, "exp": "6वीं अनुसूची में असम, त्रिपुरा, मेघालय और मिजोरम (AMTM) के जनजातीय क्षेत्रों हेतु स्वायत्त जिला परिषद (ADC) का प्रावधान है।", "note": "ट्रिक: ATM without Money (मणिपुर शामिल नहीं है)"}, {"q": "42वें संविधान संशोधन अधिनियम (1976) द्वारा संविधान की प्रस्तावना में कौन-से तीन नए शब्द जोड़े गए?", "options": ["लोकतांत्रिक, गणराज्य, संप्रभु", "न्याय, स्वतंत्रता, समानता", "समाजवादी, धर्मनिरपेक्ष और अखंडता", "बंधुत्व, अखंडता और गणराज्य"], "ans": 2, "exp": "प्रस्तावना में अब तक केवल एक बार (42वें संविधान संशोधन, 1976 द्वारा) संशोधन हुआ है, जिससे समाजवादी, धर्मनिरपेक्ष (पंथनिरपेक्ष) और अखंडता शब्द जोड़े गए।", "note": "ट्रिक: SIS / ISS (Socialist, Integrity, Secular)"}, {"q": "किस संविधान संशोधन द्वारा 'संपत्ति के अधिकार' को मौलिक अधिकार से हटाकर अनुच्छेद 300A के अंतर्गत विधिक अधिकार बनाया गया?", "options": ["42वां संशोधन, 1976", "44वां संशोधन, 1978", "24वां संशोधन, 1971", "86वां संशोधन, 2002"], "ans": 1, "exp": "44वें संविधान संशोधन अधिनियम, 1978 ने अनुच्छेद 19(1)(f) और अनुच्छेद 31 को हटाकर संपत्ति के अधिकार को भाग XII के अनुच्छेद 300A में रखा।", "note": "मूलतः 7 मौलिक अधिकार थे, वर्तमान में 6 मौलिक अधिकार हैं"}, {"q": "किस ऐतिहासिक मामले में सर्वोच्च न्यायालय ने स्पष्ट किया कि 'प्रेस की स्वतंत्रता' अनुच्छेद 19(1)(a) में अंतर्निहित है?", "options": ["रोमेश थापर बनाम मद्रास राज्य", "ए. के. गोपालन बनाम मद्रास राज्य", "शंकरी प्रसाद बनाम भारत संघ", "चंपकम दोरईराजन बनाम मद्रास राज्य"], "ans": 0, "exp": "रोमेश थापर बनाम मद्रास राज्य मामले ('द क्रॉस रोड्स' पत्रिका) में SC ने प्रेस की स्वतंत्रता को वाक् एवं अभिव्यक्ति की स्वतंत्रता का हिस्सा माना। इसके परिणामस्वरूप प्रथम संविधान संशोधन (1951) से 'लोक व्यवस्था' जोड़ा गया।", "note": "अनुच्छेद 19(1) ट्रिक: SAAMRO"}, {"q": "राष्ट्रीय आपातकाल (अनुच्छेद 352) के दौरान भी किन दो मौलिक अधिकारों को कभी निलंबित नहीं किया जा सकता?", "options": ["अनुच्छेद 14 और 19", "अनुच्छेद 19 और 21", "अनुच्छेद 20 और 21", "अनुच्छेद 21 और 32"], "ans": 2, "exp": "44वें संविधान संशोधन (1978) के बाद अनुच्छेद 359 के तहत भी अनुच्छेद 20 (दोषसिद्धि से संरक्षण) और अनुच्छेद 21 (जीवन एवं व्यक्तिगत स्वतंत्रता) को कभी निलंबित नहीं किया जा सकता।", "note": "स्वर्ण त्रिभुज (Golden Triangle): अनुच्छेद 14, 19 और 21"}, {"q": "डॉ. बी. आर. अंबेडकर ने भारतीय संविधान के किस अनुच्छेद को संविधान की 'हृदय और आत्मा' कहा है?", "options": ["अनुच्छेद 14", "अनुच्छेद 21", "अनुच्छेद 32", "अनुच्छेद 368"], "ans": 2, "exp": "अनुच्छेद 32 (संवैधानिक उपचारों का अधिकार) नागरिकों को मौलिक अधिकारों के उल्लंघन पर सीधे सर्वोच्च न्यायालय जाने और 5 रिट (Writs) जारी कराने का अधिकार देता है।", "note": "5 Writs: बंदी प्रत्यक्षीकरण, परमादेश, प्रतिषेध, उत्प्रेषण, अधिकार-पृच्छा"}, {"q": "भारतीय संविधान में 'समान नागरिक संहिता' (Uniform Civil Code) का प्रावधान किस अनुच्छेद में किया गया है?", "options": ["अनुच्छेद 40", "अनुच्छेद 42", "अनुच्छेद 44", "अनुच्छेद 48"], "ans": 2, "exp": "भाग IV (DPSP) का अनुच्छेद 44 राज्य को पूरे भारत में नागरिकों के लिए समान नागरिक संहिता (UCC) लागू करने का प्रयास करने का निर्देश देता है।", "note": "ट्रिक: 4 और 4 दोनों एक समान = Uniform Civil Code"}, {"q": "भाग IV-A (अनुच्छेद 51A) में मौलिक कर्तव्यों को किस समिति की सिफारिश पर जोड़ा गया था?", "options": ["सरकारिया आयोग", "स्वर्ण सिंह समिति", "बलवंत राय मेहता समिति", "जस्टिस वर्मा समिति"], "ans": 1, "exp": "स्वर्ण सिंह समिति (1976) की सिफारिश पर 42वें संविधान संशोधन (1976) द्वारा 10 मौलिक कर्तव्य जोड़े गए। 11वां कर्तव्य 51A(k) 86वें संशोधन (2002) से जुड़ा।", "note": "मौलिक कर्तव्य सोवियत संघ (USSR) से लिए गए हैं"}, {"q": "अनुच्छेद 108 के तहत संसद के दोनों सदनों की संयुक्त बैठक की अध्यक्षता कौन करता है?", "options": ["भारत के राष्ट्रपति", "राज्यसभा के सभापति", "लोकसभा के अध्यक्ष", "भारत के प्रधानमंत्री"], "ans": 2, "exp": "संयुक्त बैठक राष्ट्रपति बुलाते हैं (ऑस्ट्रेलिया से लिया गया), लेकिन अध्यक्षता लोकसभा अध्यक्ष करते हैं (अनुपस्थिति में LS उपाध्यक्ष → RS उपसभापति; RS सभापति कभी अध्यक्षता नहीं करते)।", "note": "अब तक 3 बार संयुक्त बैठक: 1961 (दहेज), 1978 (बैंकिंग), 2002 (POTA)"}, {"q": "संसद के विश्रांतिकाल में राष्ट्रपति द्वारा अध्यादेश जारी करने की शक्ति किस अनुच्छेद में है?", "options": ["अनुच्छेद 111", "अनुच्छेद 123", "अनुच्छेद 143", "अनुच्छेद 213"], "ans": 1, "exp": "अनुच्छेद 123 राष्ट्रपति को और अनुच्छेद 213 राज्यपाल को अध्यादेश जारी करने की शक्ति देता है। संसद के पुनः जुटने पर 6 सप्ताह में मंजूरी अनिवार्य है (अधिकतम अवधि: 6 माह + 6 सप्ताह)।", "note": "ट्रिक: 1-2-3 (राष्ट्रपति अध्यादेश) ↔ 2-1-3 (राज्यपाल अध्यादेश)"}, {"q": "उच्च न्यायालय (High Court) को मौलिक अधिकारों के साथ-साथ अन्य विधिक अधिकारों के लिए भी रिट जारी करने की शक्ति किस अनुच्छेद में प्राप्त है?", "options": ["अनुच्छेद 32", "अनुच्छेद 214", "अनुच्छेद 226", "अनुच्छेद 227"], "ans": 2, "exp": "अनुच्छेद 226 के तहत उच्च न्यायालय का रिट क्षेत्राधिकार सर्वोच्च न्यायालय (अनुच्छेद 32) से अधिक व्यापक है क्योंकि यह मौलिक व अन्य कानूनी अधिकार दोनों के लिए रिट जारी कर सकता है।", "note": "वर्तमान में भारत में कुल 25 उच्च न्यायालय हैं"}, {"q": "73वें संविधान संशोधन अधिनियम (1992) द्वारा जोड़ी गई 11वीं अनुसूची (पंचायती राज) में कुल कितने कार्यात्मक विषय शामिल हैं?", "options": ["18 विषय", "22 विषय", "29 विषय", "31 विषय"], "ans": 2, "exp": "73वें संविधान संशोधन (1992) ने भाग IX (अनुच्छेद 243–243O) और 11वीं अनुसूची (29 विषय) जोड़ी। यह 24 अप्रैल 1993 को लागू हुआ (राष्ट्रीय पंचायती राज दिवस)।", "note": "11वीं अनुसूची (पंचायत) = 29 विषय | 12वीं अनुसूची (नगरपालिका) = 18 विषय"}, {"q": "वस्तु एवं सेवा कर परिषद (GST Council) का प्रावधान भारतीय संविधान के किस अनुच्छेद में है?", "options": ["अनुच्छेद 269A", "अनुच्छेद 279A", "अनुच्छेद 280", "अनुच्छेद 324"], "ans": 1, "exp": "101वें संविधान संशोधन अधिनियम (2016) द्वारा अनुच्छेद 279A जोड़ा गया। GST परिषद में कुल 33 सदस्य होते हैं और इसके अध्यक्ष केंद्रीय वित्त मंत्री होते हैं।", "note": "GST परिषद के निर्णय 3/4 (75%) भारित बहुमत से होते हैं (केंद्र 1/3 + राज्य 2/3)"}]}]};
+
+    let marathonsList = [];
+    let activeSubject = "All";
+    let savedScores = {};
+
+    // Active Mock State
+    let selectedMarathonId = null;
+    let activeMarathon = null;
+    let activeMode = "practice"; // 'practice' | 'ssc' | 'cds'
+    let activeQuestions = [];
+    let userAnswers = [];
+    let markedReview = [];
+    let curIdx = 0;
+    let timerSec = 0;
+    let timerInterval = null;
+    let reviewFilter = "all";
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function initTheme() {
+      if (localStorage.getItem(STORAGE_THEME) === "dark") {
+        document.documentElement.classList.add("dark");
+        document.getElementById("themeBtn").textContent = "☀️";
+      }
+      try {
+        savedScores = JSON.parse(localStorage.getItem(STORAGE_SCORES) || "{}");
+      } catch { savedScores = {}; }
+    }
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem(STORAGE_THEME, isDark ? "dark" : "light");
+      document.getElementById("themeBtn").textContent = isDark ? "☀️" : "🌙";
+    }
+
+    async function loadMarathons() {
+      try {
+        const res = await fetch("data/marathons.json", { cache: "no-store" });
+        if (res.ok) {
+          const d = await res.json();
+          marathonsList = d.marathons || [];
+        } else {
+          marathonsList = FALLBACK_DATA.marathons;
+        }
+      } catch {
+        marathonsList = FALLBACK_DATA.marathons;
+      }
+      renderSubjectPills();
+      renderGallery();
+    }
+
+    function renderSubjectPills() {
+      const subs = ["All"];
+      marathonsList.forEach(m => {
+        if (m.subject && !subs.includes(m.subject)) subs.push(m.subject);
+      });
+      document.getElementById("subjectPills").innerHTML = subs.map(s => {
+        const active = s === activeSubject;
+        const style = SUBJECT_STYLES[s];
+        return `<button onclick="selectSubject('${escapeHtml(s)}')" class="shrink-0 px-4 py-2 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 ${
+          active ? 'bg-blue-600 text-white border-blue-700 shadow-sm' : 'surface-card hover:border-blue-400'
+        }">${style ? style.icon + ' ' : ''}${escapeHtml(s)}</button>`;
+      }).join("");
+    }
+
+    function selectSubject(sub) {
+      activeSubject = sub;
+      renderSubjectPills();
+      renderGallery();
+    }
+
+    function getThumbUrl(m) {
+      if (m.thumbnail && m.thumbnail.trim()) return m.thumbnail.trim();
+      if (m.videoId && m.videoId.trim()) return `https://img.youtube.com/vi/${m.videoId.trim()}/hqdefault.jpg`;
+      return "";
+    }
+
+    function getWatchUrl(m) {
+      if (m.youtubeUrl && m.youtubeUrl.trim()) return m.youtubeUrl.trim();
+      if (m.videoId && m.videoId.trim()) return `https://www.youtube.com/watch?v=${m.videoId.trim()}`;
+      return "";
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById("marathonGrid");
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+
+      const filtered = marathonsList.filter(m => {
+        if (activeSubject !== "All" && m.subject !== activeSubject) return false;
+        if (!q) return true;
+        return `${m.title} ${m.subject} ${m.teacher || ''} ${m.topics || ''} ${m.tag || ''}`.toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="col-span-full surface-card rounded-3xl p-10 text-center max-w-md mx-auto">
+            <div class="text-4xl mb-2">🎬</div>
+            <h3 class="font-extrabold text-base mb-1">कोई Marathon Mock नहीं मिला</h3>
+            <p class="text-xs" style="color:var(--muted)">दूसरा विषय या कीवर्ड चुनें।</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(m => {
+        const st = SUBJECT_STYLES[m.subject] || { grad: "from-blue-600 to-indigo-700", icon: "🔥" };
+        const thumbUrl = getThumbUrl(m);
+        const watchUrl = getWatchUrl(m);
+        const qCount = (m.questions || []).length;
+        const best = savedScores[m.id];
+
+        return `
+          <article class="surface-card rounded-3xl overflow-hidden flex flex-col justify-between hover:border-blue-400 hover:shadow-lg transition group">
+            <!-- 16:9 YouTube Thumbnail Area -->
+            <div>
+              <div class="relative aspect-video w-full overflow-hidden bg-gradient-to-br ${st.grad}">
+                <!-- Branded Fallback Poster (always underneath in case image fails/offline) -->
+                <div class="absolute inset-0 p-4 flex flex-col justify-center items-center text-center text-white select-none">
+                  <div class="text-4xl mb-1.5 drop-shadow">${st.icon}</div>
+                  <div class="text-[11px] font-extrabold uppercase tracking-widest opacity-85">${escapeHtml(m.teacher || 'GS Master')} • MARATHON</div>
+                  <div class="font-extrabold text-sm sm:text-base leading-snug mt-1 line-clamp-2 drop-shadow px-2">${escapeHtml(m.title)}</div>
+                </div>
+
+                ${thumbUrl ? `
+                  <img
+                    src="${escapeHtml(thumbUrl)}"
+                    alt="${escapeHtml(m.title)}"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-slate-950/35"></div>
+                ` : ''}
+
+                <!-- Top Badges -->
+                <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-slate-950/75 text-white backdrop-blur-sm">
+                    ${st.icon} ${escapeHtml(m.subject)}
+                  </span>
+                  ${best ? `
+                    <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-emerald-500 text-white shadow">
+                      🏆 Best ${best.acc}%
+                    </span>` : (m.tag ? `
+                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-blue-600/90 text-white">
+                      ${escapeHtml(m.tag)}
+                    </span>` : '')}
+                </div>
+
+                <!-- Bottom Metadata Badges -->
+                <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                  ${m.duration ? `<span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-950/80 text-white">⏱ ${escapeHtml(m.duration)}</span>` : '<span></span>'}
+                  <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-white/95 text-blue-700 shadow-sm">
+                    📝 ${qCount} Qs
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Details -->
+              <div class="p-4 pb-3">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="text-[11px] font-extrabold text-blue-600 dark:text-blue-400">🎓 ${escapeHtml(m.teacher || 'GS Master')}</span>
+                </div>
+                <h3 class="font-extrabold text-sm sm:text-base leading-snug mb-1.5">${escapeHtml(m.title)}</h3>
+                ${m.topics ? `<p class="text-xs font-medium leading-relaxed line-clamp-2" style="color:var(--muted)">${escapeHtml(m.topics)}</p>` : ''}
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="px-4 pb-4 pt-2 flex gap-2">
+              ${watchUrl ? `
+                <a href="${escapeHtml(watchUrl)}" target="_blank" rel="noopener" class="px-3.5 py-2.5 rounded-xl border text-xs font-extrabold transition hover:border-rose-500 hover:text-rose-600 flex items-center justify-center gap-1.5" style="border-color:var(--border); background:var(--surface-2)">
+                  <span class="text-rose-600">▶</span><span>Video</span>
+                </a>` : ''}
+              <button onclick="openModeModal('${escapeHtml(m.id)}')" class="duo-btn flex-1 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+                <span>📝</span><span>Start Mock</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // ================= MODE MODAL =================
+    function openModeModal(id) {
+      const m = marathonsList.find(x => x.id === id);
+      if (!m || !(m.questions || []).length) return;
+      selectedMarathonId = id;
+      document.getElementById("modalSubjectBadge").textContent = `${m.subject} • ${(m.questions || []).length} Questions`;
+      document.getElementById("modalTitle").textContent = m.title;
+      document.getElementById("modalMeta").textContent = `🎓 ${m.teacher || 'GS Master'} ${m.duration ? '• ⏱ ' + m.duration : ''}`;
+      document.getElementById("modeModal").classList.remove("hidden");
+    }
+    function closeModeModal() {
+      document.getElementById("modeModal").classList.add("hidden");
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function launchMock(mode, customQuestions = null) {
+      closeModeModal();
+      const m = marathonsList.find(x => x.id === selectedMarathonId) || activeMarathon;
+      if (!m) return;
+
+      activeMarathon = m;
+      activeMode = mode;
+      const doShuffle = document.getElementById("shuffleToggle").checked;
+      const baseQs = customQuestions || m.questions;
+      activeQuestions = doShuffle ? shuffleArr(baseQs) : [...baseQs];
+
+      userAnswers = new Array(activeQuestions.length).fill(null);
+      markedReview = new Array(activeQuestions.length).fill(false);
+      curIdx = 0;
+
+      // Timer: count up in practice, countdown (45s/Q) in exam modes
+      timerSec = mode === "practice" ? 0 : Math.max(60, activeQuestions.length * 45);
+
+      document.getElementById("galleryView").classList.add("hidden");
+      document.getElementById("resultView").classList.add("hidden");
+      document.getElementById("mockView").classList.remove("hidden");
+      document.getElementById("paletteDrawer").classList.add("hidden");
+
+      const modeNames = { practice: "🎯 Practice", ssc: "⏱ SSC (+2/-0.5)", cds: "🎖️ CDS (+0.83/-0.27)" };
+      document.getElementById("mockModeBadge").textContent = modeNames[mode];
+      document.getElementById("mockTitleLine").textContent = m.title;
+
+      startTimer();
+      renderMockQ();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerText();
+      timerInterval = setInterval(() => {
+        if (activeMode === "practice") {
+          timerSec++;
+        } else {
+          timerSec--;
+          if (timerSec <= 0) {
+            timerSec = 0;
+            updateTimerText();
+            submitMock();
+            return;
+          }
+        }
+        updateTimerText();
+      }, 1000);
+    }
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    function updateTimerText() {
+      const m = String(Math.floor(timerSec / 60)).padStart(2, "0");
+      const s = String(timerSec % 60).padStart(2, "0");
+      document.getElementById("mockTimer").textContent = `⏱ ${m}:${s}`;
+    }
+
+    function togglePalette() {
+      const el = document.getElementById("paletteDrawer");
+      el.classList.toggle("hidden");
+      if (!el.classList.contains("hidden")) renderPalette();
+    }
+
+    function renderPalette() {
+      document.getElementById("paletteGrid").innerHTML = activeQuestions.map((_, i) => {
+        let cls = "surface-card";
+        if (markedReview[i]) cls = "bg-violet-600 text-white border-violet-700";
+        else if (userAnswers[i] !== null) cls = "bg-emerald-600 text-white border-emerald-700";
+        const ring = i === curIdx ? "ring-2 ring-blue-500 ring-offset-1" : "";
+        return `<button onclick="jumpToQ(${i})" class="h-8 rounded-lg text-xs font-extrabold border ${cls} ${ring}">${i + 1}</button>`;
+      }).join("");
+    }
+
+    function jumpToQ(idx) {
+      curIdx = idx;
+      renderMockQ();
+    }
+
+    function renderMockQ() {
+      const q = activeQuestions[curIdx];
+      const chosen = userAnswers[curIdx];
+      const total = activeQuestions.length;
+
+      document.getElementById("mockQBadge").textContent = `Q ${curIdx + 1} / ${total}`;
+      document.getElementById("mockProgress").style.width = `${((curIdx + 1) / total) * 100}%`;
+      document.getElementById("mockQuestion").textContent = `${curIdx + 1}. ${q.q}`;
+
+      const revBtn = document.getElementById("btnReview");
+      revBtn.style.borderColor = markedReview[curIdx] ? "#7c3aed" : "var(--border)";
+      revBtn.style.color = markedReview[curIdx] ? "#7c3aed" : "var(--text)";
+
+      document.getElementById("btnPrev").disabled = curIdx === 0;
+      document.getElementById("btnPrev").style.opacity = curIdx === 0 ? "0.45" : "1";
+      document.getElementById("btnNext").classList.toggle("hidden", curIdx === total - 1);
+
+      const letters = ["A", "B", "C", "D"];
+      const locked = activeMode === "practice" && chosen !== null;
+
+      document.getElementById("mockOptions").innerHTML = q.options.map((opt, idx) => {
+        let extraStyle = "border-color:var(--border); background:var(--surface);";
+        if (locked) {
+          if (idx === q.ans) extraStyle = "border-color:#10b981; background:rgba(16,185,129,0.14);";
+          else if (idx === chosen) extraStyle = "border-color:#f43f5e; background:rgba(244,63,94,0.14);";
+          else extraStyle += " opacity:0.55;";
+        } else if (chosen === idx) {
+          extraStyle = "border-color:#2563eb; background:rgba(37,99,235,0.12);";
+        }
+        return `
+          <button onclick="selectOption(${idx})" ${locked ? 'disabled' : ''} class="opt-btn w-full text-left p-3.5 rounded-2xl border-2 font-bold text-xs sm:text-sm flex items-start gap-3" style="${extraStyle}">
+            <span class="w-6 h-6 rounded-lg shrink-0 flex items-center justify-center text-xs font-extrabold" style="background:var(--surface-2)">${letters[idx]}</span>
+            <span class="leading-snug">${escapeHtml(opt)}</span>
+          </button>`;
+      }).join("");
+
+      const fb = document.getElementById("mockFeedback");
+      if (locked) {
+        const isRight = chosen === q.ans;
+        fb.classList.remove("hidden", "bg-emerald-500/10", "border-emerald-500/30", "bg-rose-500/10", "border-rose-500/30");
+        fb.classList.add(isRight ? "bg-emerald-500/10" : "bg-rose-500/10", isRight ? "border-emerald-500/30" : "border-rose-500/30");
+        document.getElementById("mockFbStatus").innerHTML = isRight
+          ? `<span class="text-emerald-600 dark:text-emerald-400">✅ बिल्कुल सही उत्तर!</span>`
+          : `<span class="text-rose-600 dark:text-rose-400">❌ गलत — सही उत्तर: ${escapeHtml(q.options[q.ans])}</span>`;
+        document.getElementById("mockFbExp").textContent = q.exp || "";
+        const noteEl = document.getElementById("mockFbNote");
+        if (q.note) {
+          noteEl.textContent = "📌 " + q.note;
+          noteEl.classList.remove("hidden");
+        } else {
+          noteEl.classList.add("hidden");
+        }
+      } else {
+        fb.classList.add("hidden");
+      }
+
+      if (!document.getElementById("paletteDrawer").classList.contains("hidden")) renderPalette();
+    }
+
+    function selectOption(idx) {
+      if (activeMode === "practice" && userAnswers[curIdx] !== null) return;
+      userAnswers[curIdx] = idx;
+      renderMockQ();
+    }
+
+    function toggleMarkReview() {
+      markedReview[curIdx] = !markedReview[curIdx];
+      renderMockQ();
+    }
+
+    function prevMockQ() {
+      if (curIdx > 0) { curIdx--; renderMockQ(); }
+    }
+    function nextMockQ() {
+      if (curIdx < activeQuestions.length - 1) { curIdx++; renderMockQ(); }
+    }
+
+    function exitMock() {
+      if (confirm("क्या आप इस Mock से बाहर निकलना चाहते हैं?")) {
+        stopTimer();
+        backToGallery();
+      }
+    }
+
+    function submitMock() {
+      stopTimer();
+      let correct = 0, wrong = 0, skipped = 0;
+      activeQuestions.forEach((q, i) => {
+        if (userAnswers[i] === null) skipped++;
+        else if (userAnswers[i] === q.ans) correct++;
+        else wrong++;
+      });
+
+      const total = activeQuestions.length;
+      const attempted = correct + wrong;
+      const acc = attempted ? Math.round((correct / attempted) * 100) : 0;
+
+      let scoreStr = `${correct}/${total}`;
+      if (activeMode === "ssc") {
+        const sc = (correct * 2 - wrong * 0.5).toFixed(2);
+        scoreStr = `${sc} / ${total * 2}`;
+      } else if (activeMode === "cds") {
+        const sc = (correct * 0.83 - wrong * 0.27).toFixed(2);
+        scoreStr = `${sc}`;
+      }
+
+      // Save best accuracy for full marathon attempts
+      if (activeMarathon && total === (activeMarathon.questions || []).length) {
+        const prevBest = savedScores[activeMarathon.id]?.acc || 0;
+        const pct = Math.round((correct / total) * 100);
+        if (pct >= prevBest) {
+          savedScores[activeMarathon.id] = { acc: pct, correct, total };
+          localStorage.setItem(STORAGE_SCORES, JSON.stringify(savedScores));
+        }
+      }
+
+      document.getElementById("mockView").classList.add("hidden");
+      document.getElementById("resultView").classList.remove("hidden");
+
+      document.getElementById("resEmoji").textContent = acc >= 80 ? "🏆" : acc >= 50 ? "💪" : "📚";
+      document.getElementById("resHeading").textContent = activeMarathon.title;
+      document.getElementById("resSub").textContent = `कुल ${total} प्रश्न • Attempted ${attempted} • Skipped ${skipped}`;
+      document.getElementById("resScore").textContent = scoreStr;
+      document.getElementById("resCorrect").textContent = correct;
+      document.getElementById("resWrong").textContent = wrong;
+      document.getElementById("resAcc").textContent = `${acc}%`;
+
+      const wrongCount = wrong + skipped;
+      const wrongBtn = document.getElementById("btnWrongOnly");
+      if (wrongCount > 0) {
+        wrongBtn.classList.remove("hidden");
+        wrongBtn.textContent = `🛡️ Practice Wrong/Skip (${wrongCount})`;
+      } else {
+        wrongBtn.classList.add("hidden");
+      }
+
+      setReviewFilter("all");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setReviewFilter(f) {
+      reviewFilter = f;
+      document.querySelectorAll(".rf-btn").forEach(btn => {
+        const on = btn.dataset.rf === f;
+        btn.className = `rf-btn px-3 py-1 rounded-xl text-xs font-extrabold ${on ? 'bg-blue-600 text-white' : 'surface-card'}`;
+      });
+      renderReviewList();
+    }
+
+    function renderReviewList() {
+      const items = activeQuestions.map((q, i) => ({ q, i, ans: userAnswers[i] })).filter(x => {
+        if (reviewFilter === "correct") return x.ans === x.q.ans;
+        if (reviewFilter === "wrong") return x.ans !== x.q.ans;
+        return true;
+      });
+
+      if (!items.length) {
+        document.getElementById("reviewList").innerHTML = `<p class="text-xs font-bold text-center py-4" style="color:var(--muted)">इस फ़िल्टर में कोई प्रश्न नहीं है।</p>`;
+        return;
+      }
+
+      document.getElementById("reviewList").innerHTML = items.map(({ q, i, ans }) => {
+        const isRight = ans === q.ans;
+        const isSkip = ans === null;
+        const cardStyle = isRight
+          ? "border-emerald-500/30 bg-emerald-500/5"
+          : isSkip
+          ? "border-amber-500/30 bg-amber-500/5"
+          : "border-rose-500/30 bg-rose-500/5";
+
+        return `
+          <div class="p-4 rounded-2xl border text-xs sm:text-sm ${cardStyle}">
+            <div class="font-extrabold mb-1.5">${i + 1}. ${escapeHtml(q.q)}</div>
+            <div class="font-bold ${isRight ? 'text-emerald-600 dark:text-emerald-400' : isSkip ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}">
+              ${isRight ? '✅ आपका उत्तर सही:' : isSkip ? '⏭️ Skipped' : '❌ आपका उत्तर:'} ${isSkip ? '' : escapeHtml(q.options[ans])}
+            </div>
+            ${!isRight ? `<div class="font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">✓ सही उत्तर: ${escapeHtml(q.options[q.ans])}</div>` : ''}
+            ${q.exp ? `<p class="text-xs mt-1.5 leading-relaxed" style="color:var(--muted)">${escapeHtml(q.exp)}</p>` : ''}
+            ${q.note ? `<div class="mt-2 text-[11px] font-extrabold text-amber-700 dark:text-amber-300">📌 ${escapeHtml(q.note)}</div>` : ''}
+          </div>`;
+      }).join("");
+    }
+
+    function retryWrongOnly() {
+      const wrongQs = activeQuestions.filter((q, i) => userAnswers[i] !== q.ans);
+      if (!wrongQs.length) return;
+      launchMock("practice", wrongQs);
+    }
+
+    function backToGallery() {
+      stopTimer();
+      document.getElementById("mockView").classList.add("hidden");
+      document.getElementById("resultView").classList.add("hidden");
+      document.getElementById("galleryView").classList.remove("hidden");
+      renderGallery();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+
+    initTheme();
+    loadMarathons();
+  </script>
+</body>
+</html>
