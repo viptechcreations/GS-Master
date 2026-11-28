@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>संविधान Revision — Schedules, Articles &amp; Test | GS Master</title>
+
+  <!-- PWA Meta & Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="GS Master" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f0f5ff;
+      --surface: #ffffff;
+      --surface-2: #eff6ff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbeafe;
+    }
+    html.dark {
+      --bg: #070b14;
+      --surface: #0f172a;
+      --surface-2: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.2);
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .surface-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .duo-btn {
+      border-bottom-width: 4px;
+      transition: transform 0.08s ease, border-bottom-width 0.08s ease;
+    }
+    .duo-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 3D Flip Flashcards with 4-Sided Colorful Borders */
+    .flip-scene {
+      perspective: 1100px;
+      min-height: 238px;
+    }
+    .flip-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 238px;
+      transform-style: preserve-3d;
+      transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+    }
+    .flip-card.flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.25rem;
+      background: var(--surface);
+      border-width: 2.5px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.15rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+      overflow-y: auto;
+    }
+    .drill-card {
+      border-radius: 1.25rem;
+      background: var(--surface);
+      border-width: 2.5px;
+      border-style: solid;
+      min-height: 238px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .drill-card:hover {
+      transform: translateY(-3px);
+    }
+    .opt-btn {
+      transition: all 0.16s ease;
+    }
+    .opt-btn:hover:not(:disabled) {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.06);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Sticky Header -->
+  <header class="sticky top-0 z-30 surface-card border-x-0 border-t-0 shadow-sm backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="index.html" class="px-3 py-2 rounded-xl text-xs font-extrabold border transition hover:opacity-85 flex items-center gap-1 shrink-0" style="border-color:var(--border); background:var(--surface-2)">
+          ← GS Master
+        </a>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight text-blue-600 dark:text-blue-400 truncate">
+            संविधान Revision
+          </h1>
+          <p class="text-[11px] font-semibold truncate" style="color:var(--muted)">12 Schedules • Articles • Test</p>
+        </div>
+      </div>
+
+      <button onclick="toggleTheme()" id="themeBtn" class="w-9 h-9 rounded-xl border flex items-center justify-center text-base transition shrink-0" style="border-color:var(--border); background:var(--surface-2)" title="Toggle Light / Dark Mode">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl w-full mx-auto px-4 py-5 flex-1">
+
+    <!-- Top Mode Tabs + Search -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+      <div class="grid grid-cols-3 gap-2 sm:gap-2.5 md:w-auto">
+        <button onclick="switchMode('schedules')" id="btn-schedules" class="duo-btn px-3 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1.5">
+          <span>📑</span><span>Schedules</span>
+        </button>
+        <button onclick="switchMode('articles')" id="btn-articles" class="duo-btn px-3 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1.5">
+          <span>📜</span><span>Articles</span>
+        </button>
+        <button onclick="switchMode('test')" id="btn-test" class="duo-btn px-3 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1.5">
+          <span>📝</span><span>Articles Test</span>
+        </button>
+      </div>
+
+      <div id="searchWrap" class="relative flex-1 md:max-w-xs">
+        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm opacity-60">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          oninput="renderCardsView()"
+          placeholder="Search Art 21, Writ, भाषा, 73rd..."
+          class="w-full pl-9 pr-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold border outline-none focus:ring-2 focus:ring-blue-500/40"
+          style="background:var(--surface); border-color:var(--border); color:var(--text)"
+        />
+      </div>
+    </div>
+
+    <!-- ================= FLASHCARDS SECTION (Schedules & Articles) ================= -->
+    <section id="cardsSection">
+      <!-- Articles Controls (Part Filter Pills + Sub-Articles Breadcrumb) -->
+      <div id="articlesControls" class="hidden mb-5">
+        <div id="partFilterWrap">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">भाग (Part) चुनें</span>
+            <span id="countPill" class="text-[11px] font-bold px-2.5 py-0.5 rounded-lg" style="background:var(--surface-2); color:var(--muted)">0 Cards</span>
+          </div>
+          <div id="partPills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
+        </div>
+
+        <!-- Sub-Articles Breadcrumb Bar -->
+        <div id="subBreadcrumbBar" class="hidden surface-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 border-2 border-blue-500/40">
+          <div class="flex items-center gap-3">
+            <button onclick="closeSubArticles()" class="duo-btn px-4 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+              ← सभी Articles
+            </button>
+            <div>
+              <div id="subParentNum" class="text-xs font-extrabold text-blue-600 dark:text-blue-400"></div>
+              <h2 id="subParentTitle" class="font-extrabold text-sm sm:text-base leading-snug"></h2>
+            </div>
+          </div>
+          <span id="subCountBadge" class="text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400"></span>
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- ================= ARTICLES TEST SECTION ================= -->
+    <section id="testSection" class="hidden max-w-3xl mx-auto">
+
+      <!-- 1. Test Setup Panel -->
+      <div id="testSetupCard" class="surface-card rounded-3xl p-5 sm:p-7 shadow-sm">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-2xl shadow-sm">
+            📝
+          </div>
+          <div>
+            <h2 class="font-extrabold text-lg sm:text-xl leading-tight">संविधान Articles &amp; Schedules Test</h2>
+            <p class="text-xs font-semibold mt-0.5" style="color:var(--muted)">Instant Answer • Memory Trick • Wrong Questions Practice</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <!-- Scope Selector -->
+          <div>
+            <label class="block text-xs font-extrabold mb-1.5" style="color:var(--muted)">1. Topic / Scope चुनें</label>
+            <select id="testScope" class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/40" style="background:var(--surface-2); border-color:var(--border); color:var(--text)">
+              <option value="all_articles">📜 सभी Articles (Complete)</option>
+              <option value="schedules">📑 केवल 12 Schedules (अनुसूचियाँ)</option>
+              <option value="sub_articles">📂 केवल Sub-Articles (13, 15, 16, 19, 20, 21, 32, 51A...)</option>
+              <option value="mix_all">🔥 Full Constitution Mix (Schedules + Articles + Sub)</option>
+            </select>
+          </div>
+
+          <!-- Pattern Selector -->
+          <div>
+            <label class="block text-xs font-extrabold mb-1.5" style="color:var(--muted)">2. Question Pattern</label>
+            <select id="testPattern" class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/40" style="background:var(--surface-2); border-color:var(--border); color:var(--text)">
+              <option value="mix">🎲 Mix (दोनों प्रकार के प्रश्न)</option>
+              <option value="num_to_title">🔢 Article नंबर → प्रावधान पहचानें</option>
+              <option value="title_to_num">📖 प्रावधान → सही Article चुनें</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Question Count Pills -->
+        <div class="mb-6">
+          <label class="block text-xs font-extrabold mb-2" style="color:var(--muted)">3. प्रश्नों की संख्या</label>
+          <div class="grid grid-cols-4 gap-2" id="countBtnsWrap">
+            <button type="button" onclick="setTestCount(10)" data-cnt="10" class="cnt-pill py-2.5 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition">10 Qs</button>
+            <button type="button" onclick="setTestCount(20)" data-cnt="20" class="cnt-pill py-2.5 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition">20 Qs</button>
+            <button type="button" onclick="setTestCount(30)" data-cnt="30" class="cnt-pill py-2.5 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition">30 Qs</button>
+            <button type="button" onclick="setTestCount(999)" data-cnt="999" class="cnt-pill py-2.5 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition">All</button>
+          </div>
+        </div>
+
+        <button onclick="startArticleTest()" class="duo-btn w-full py-3.5 rounded-2xl bg-blue-600 border-blue-800 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md">
+          <span>▶</span><span>Test शुरू करें</span>
+        </button>
+      </div>
+
+      <!-- 2. Active Quiz Card -->
+      <div id="testActiveCard" class="hidden surface-card rounded-3xl p-5 sm:p-7 shadow-sm">
+        <!-- Quiz Top Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div class="flex items-center gap-2">
+            <span id="qCounterBadge" class="text-xs font-extrabold px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400">Q 1 / 20</span>
+            <span id="qTagBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-xl" style="background:var(--surface-2); color:var(--muted)"></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="qScoreBadge" class="text-xs font-extrabold px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">✓ 0</span>
+            <span id="qTimerBadge" class="text-xs font-extrabold px-3 py-1 rounded-xl" style="background:var(--surface-2)">⏱ 00:00</span>
+            <button onclick="quitArticleTest()" class="text-xs font-extrabold px-2.5 py-1 rounded-xl bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition">✕</button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-2 rounded-full overflow-hidden mb-5" style="background:var(--surface-2)">
+          <div id="qProgressBar" class="h-full bg-blue-600 transition-all duration-300 rounded-full" style="width:0%"></div>
+        </div>
+
+        <!-- Question Text -->
+        <div class="mb-5">
+          <p id="qPromptLabel" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-1.5"></p>
+          <h3 id="qText" class="font-extrabold text-base sm:text-lg leading-relaxed"></h3>
+        </div>
+
+        <!-- Options -->
+        <div id="qOptions" class="space-y-2.5 mb-5"></div>
+
+        <!-- Feedback & Trick Box -->
+        <div id="qFeedbackBox" class="hidden rounded-2xl p-4 mb-5 border text-xs sm:text-sm leading-relaxed">
+          <div id="qFeedbackStatus" class="font-extrabold mb-1"></div>
+          <p id="qFeedbackDetail" class="font-medium mb-2"></p>
+          <div id="qFeedbackTrick" class="hidden text-xs font-extrabold px-3 py-2 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300"></div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="flex justify-end">
+          <button id="nextQBtn" onclick="nextQuestion()" class="hidden duo-btn px-6 py-2.5 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">
+            अगला प्रश्न →
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Result & Review Card -->
+      <div id="testResultCard" class="hidden space-y-4">
+        <div class="surface-card rounded-3xl p-6 sm:p-8 text-center shadow-sm">
+          <div id="resEmoji" class="text-5xl mb-2">🏆</div>
+          <h2 class="font-extrabold text-xl sm:text-2xl mb-1">Test पूरा हुआ!</h2>
+          <p id="resSubtitle" class="text-xs sm:text-sm font-semibold mb-5" style="color:var(--muted)"></p>
+
+          <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-6">
+            <div class="rounded-2xl p-3 bg-emerald-500/10 border border-emerald-500/25">
+              <div id="resCorrect" class="font-extrabold text-xl text-emerald-600 dark:text-emerald-400">0</div>
+              <div class="text-[11px] font-bold" style="color:var(--muted)">सही</div>
+            </div>
+            <div class="rounded-2xl p-3 bg-rose-500/10 border border-rose-500/25">
+              <div id="resWrong" class="font-extrabold text-xl text-rose-600 dark:text-rose-400">0</div>
+              <div class="text-[11px] font-bold" style="color:var(--muted)">गलत</div>
+            </div>
+            <div class="rounded-2xl p-3 bg-blue-500/10 border border-blue-500/25">
+              <div id="resAcc" class="font-extrabold text-xl text-blue-600 dark:text-blue-400">0%</div>
+              <div class="text-[11px] font-bold" style="color:var(--muted)">Accuracy</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-2.5">
+            <button id="practiceWrongBtn" onclick="practiceWrongOnly()" class="hidden duo-btn px-5 py-2.5 rounded-2xl bg-rose-600 border-rose-800 text-white text-xs sm:text-sm font-extrabold">
+              🛡️ Practice Wrong Only
+            </button>
+            <button onclick="resetTestToSetup()" class="duo-btn px-5 py-2.5 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">
+              🔄 नया Test दें
+            </button>
+          </div>
+        </div>
+
+        <!-- Detailed Review List -->
+        <div class="surface-card rounded-3xl p-5 sm:p-6">
+          <h3 class="font-extrabold text-sm sm:text-base mb-4">📋 Answer Review</h3>
+          <div id="resReviewList" class="space-y-3"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const STORAGE_THEME = "gs_master_theme_v2";
+
+    const COLOR_MAP = {
+      blue:    { border: "#2563eb", badgeBg: "rgba(37,99,235,0.12)",  badgeText: "#2563eb", glow: "0 10px 25px -6px rgba(37,99,235,0.28)" },
+      emerald: { border: "#10b981", badgeBg: "rgba(16,185,129,0.12)", badgeText: "#059669", glow: "0 10px 25px -6px rgba(16,185,129,0.28)" },
+      amber:   { border: "#f59e0b", badgeBg: "rgba(245,158,11,0.13)", badgeText: "#d97706", glow: "0 10px 25px -6px rgba(245,158,11,0.28)" },
+      rose:    { border: "#f43f5e", badgeBg: "rgba(244,63,94,0.12)",  badgeText: "#e11d48", glow: "0 10px 25px -6px rgba(244,63,94,0.28)" },
+      red:     { border: "#ef4444", badgeBg: "rgba(239,68,68,0.12)",  badgeText: "#dc2626", glow: "0 10px 25px -6px rgba(239,68,68,0.28)" },
+      violet:  { border: "#8b5cf6", badgeBg: "rgba(139,92,246,0.12)", badgeText: "#7c3aed", glow: "0 10px 25px -6px rgba(139,92,246,0.28)" },
+      cyan:    { border: "#06b6d4", badgeBg: "rgba(6,182,212,0.12)",  badgeText: "#0891b2", glow: "0 10px 25px -6px rgba(6,182,212,0.28)" },
+      orange:  { border: "#f97316", badgeBg: "rgba(249,115,22,0.12)", badgeText: "#ea580c", glow: "0 10px 25px -6px rgba(249,115,22,0.28)" },
+      teal:    { border: "#14b8a6", badgeBg: "rgba(20,184,166,0.12)", badgeText: "#0d9488", glow: "0 10px 25px -6px rgba(20,184,166,0.28)" },
+      indigo:  { border: "#6366f1", badgeBg: "rgba(99,102,241,0.12)", badgeText: "#4f46e5", glow: "0 10px 25px -6px rgba(99,102,241,0.28)" },
+      pink:    { border: "#ec4899", badgeBg: "rgba(236,72,153,0.12)", badgeText: "#db2777", glow: "0 10px 25px -6px rgba(236,72,153,0.28)" }
+    };
+
+    let constitutionData = { schedules: [], articles: [] };
+    let currentMode = "schedules"; // 'schedules' | 'articles' | 'test'
+    let activePart = "All";
+    let activeParentArticle = null;
+
+    // Test Engine State
+    let selectedTestCount = 20;
+    let quizList = [];
+    let quizIndex = 0;
+    let quizCorrect = 0;
+    let quizResults = [];
+    let quizTimerSec = 0;
+    let quizTimerId = null;
+
+    function getThemeColor(key) {
+      return COLOR_MAP[key] || COLOR_MAP.blue;
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Theme Sync with index.html
+    function initTheme() {
+      if (localStorage.getItem(STORAGE_THEME) === "dark") {
+        document.documentElement.classList.add("dark");
+        document.getElementById("themeBtn").textContent = "☀️";
+      }
+    }
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem(STORAGE_THEME, isDark ? "dark" : "light");
+      document.getElementById("themeBtn").textContent = isDark ? "☀️" : "🌙";
+    }
+
+    // Load data/constitution.json silently
+    async function loadData() {
+      const grid = document.getElementById("cardsGrid");
+      grid.innerHTML = `<div class="col-span-full surface-card rounded-3xl p-10 text-center text-sm font-bold" style="color:var(--muted)">संविधान कार्ड्स लोड हो रहे हैं...</div>`;
+      try {
+        const res = await fetch("data/constitution.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("Not found");
+        constitutionData = await res.json();
+        populateScopeDropdown();
+        setTestCount(20);
+        switchMode("schedules");
+      } catch (err) {
+        grid.innerHTML = `
+          <div class="col-span-full surface-card rounded-3xl p-10 text-center max-w-md mx-auto">
+            <div class="text-4xl mb-2">📜</div>
+            <h3 class="font-extrabold text-base mb-1">Content Jald Hi Aayega</h3>
+            <p class="text-xs" style="color:var(--muted)">Schedules aur Articles ka data abhi load nahi ho paaya. Kripya thodi der baad dobara check karein.</p>
+          </div>`;
+      }
+    }
+
+    function populateScopeDropdown() {
+      const sel = document.getElementById("testScope");
+      // Keep first 4 base options, then append distinct Parts
+      while (sel.options.length > 4) sel.remove(4);
+      const parts = [];
+      (constitutionData.articles || []).forEach(a => {
+        if (a.part && !parts.includes(a.part)) parts.push(a.part);
+      });
+      parts.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = "part:" + p;
+        opt.textContent = "📌 केवल " + p;
+        sel.appendChild(opt);
+      });
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      activeParentArticle = null;
+      stopTimer();
+
+      ["schedules", "articles", "test"].forEach(m => {
+        const b = document.getElementById("btn-" + m);
+        b.classList.remove("bg-blue-600", "text-white", "border-blue-800");
+        b.classList.add("surface-card");
+      });
+      const activeBtn = document.getElementById("btn-" + mode);
+      activeBtn.classList.remove("surface-card");
+      activeBtn.classList.add("bg-blue-600", "text-white", "border-blue-800");
+
+      const cardsSec = document.getElementById("cardsSection");
+      const testSec = document.getElementById("testSection");
+      const searchWrap = document.getElementById("searchWrap");
+      const ctrl = document.getElementById("articlesControls");
+
+      if (mode === "test") {
+        cardsSec.classList.add("hidden");
+        searchWrap.classList.add("hidden");
+        testSec.classList.remove("hidden");
+        resetTestToSetup();
+        return;
+      }
+
+      testSec.classList.add("hidden");
+      cardsSec.classList.remove("hidden");
+      searchWrap.classList.remove("hidden");
+
+      if (mode === "articles") {
+        ctrl.classList.remove("hidden");
+        document.getElementById("subBreadcrumbBar").classList.add("hidden");
+        document.getElementById("partFilterWrap").classList.remove("hidden");
+        renderPartPills();
+      } else {
+        ctrl.classList.add("hidden");
+      }
+      renderCardsView();
+    }
+
+    function renderPartPills() {
+      const parts = ["All"];
+      (constitutionData.articles || []).forEach(a => {
+        if (a.part && !parts.includes(a.part)) parts.push(a.part);
+      });
+      const wrap = document.getElementById("partPills");
+      wrap.innerHTML = parts.map(p => {
+        const active = p === activePart;
+        return `<button onclick="selectPart('${p}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-extrabold border transition ${
+          active ? 'bg-blue-600 text-white border-blue-700 shadow-sm' : 'surface-card hover:border-blue-400'
+        }">${escapeHtml(p)}</button>`;
+      }).join("");
+    }
+
+    function selectPart(part) {
+      activePart = part;
+      activeParentArticle = null;
+      renderPartPills();
+      renderCardsView();
+    }
+
+    function openSubArticles(artIndex) {
+      const list = getFilteredArticles();
+      activeParentArticle = list[artIndex];
+      document.getElementById("partFilterWrap").classList.add("hidden");
+      document.getElementById("subBreadcrumbBar").classList.remove("hidden");
+      document.getElementById("subParentNum").textContent = `${activeParentArticle.num} • ${activeParentArticle.part || ''}`;
+      document.getElementById("subParentTitle").textContent = activeParentArticle.title;
+      document.getElementById("subCountBadge").textContent = `${activeParentArticle.subArticles.length} Sub-Cards`;
+      renderCardsView();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function closeSubArticles() {
+      activeParentArticle = null;
+      document.getElementById("subBreadcrumbBar").classList.add("hidden");
+      document.getElementById("partFilterWrap").classList.remove("hidden");
+      renderCardsView();
+    }
+
+    function getFilteredArticles() {
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      return (constitutionData.articles || []).filter(a => {
+        const partOk = activePart === "All" || a.part === activePart;
+        if (!partOk) return false;
+        if (!q) return true;
+        const hay = `${a.num} ${a.part || ''} ${a.title} ${a.front || ''} ${a.back || ''} ${a.trick || ''}`.toLowerCase();
+        const subHay = (a.subArticles || []).map(s => `${s.num} ${s.title} ${s.front} ${s.back}`).join(" ").toLowerCase();
+        return hay.includes(q) || subHay.includes(q);
+      });
+    }
+
+    function buildFlipCard(item, badgeLabel) {
+      const c = getThemeColor(item.color);
+      return `
+        <div class="flip-scene">
+          <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <!-- Front -->
+            <div class="flip-face" style="border-color:${c.border};" onmouseenter="this.style.boxShadow='${c.glow}'" onmouseleave="this.style.boxShadow='none'">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2.5">
+                  <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg" style="background:${c.badgeBg}; color:${c.badgeText}">${escapeHtml(item.num)}</span>
+                  ${badgeLabel ? `<span class="text-[11px] font-bold" style="color:var(--muted)">${escapeHtml(badgeLabel)}</span>` : ''}
+                </div>
+                <h3 class="font-extrabold text-base leading-snug mb-2">${escapeHtml(item.title)}</h3>
+                <p class="text-xs font-semibold leading-relaxed" style="color:var(--muted)">${escapeHtml(item.front || '')}</p>
+              </div>
+              <div class="pt-3 mt-2 border-t flex items-center justify-between text-[11px] font-bold" style="border-color:var(--border); color:${c.badgeText}">
+                <span>🔄 Tap to Flip</span>
+                <span>उत्तर देखें →</span>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-face flip-back" style="border-color:${c.border}; box-shadow:${c.glow};">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg" style="background:${c.badgeBg}; color:${c.badgeText}">${escapeHtml(item.num)}</span>
+                  <span class="text-[10px] font-extrabold uppercase tracking-wider" style="color:var(--muted)">विवरण</span>
+                </div>
+                <p class="text-xs sm:text-[13px] font-semibold leading-relaxed mb-3">${escapeHtml(item.back || '')}</p>
+              </div>
+              ${item.trick ? `
+                <div class="text-[11px] font-bold p-2.5 rounded-xl" style="background:${c.badgeBg}; color:${c.badgeText}">
+                  💡 ${escapeHtml(item.trick)}
+                </div>` : `
+                <div class="text-[11px] font-bold opacity-60 text-right">🔄 Tap to flip back</div>
+              `}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildDrillCard(item, idx) {
+      const c = getThemeColor(item.color);
+      const subCount = item.subArticles.length;
+      return `
+        <div class="drill-card" onclick="openSubArticles(${idx})" style="border-color:${c.border};" onmouseenter="this.style.boxShadow='${c.glow}'" onmouseleave="this.style.boxShadow='none'">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg" style="background:${c.badgeBg}; color:${c.badgeText}">${escapeHtml(item.num)}</span>
+              <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full" style="background:${c.badgeBg}; color:${c.badgeText}">${subCount} Sub-Cards</span>
+            </div>
+            <h3 class="font-extrabold text-base leading-snug mb-2">${escapeHtml(item.title)}</h3>
+            <p class="text-xs font-semibold leading-relaxed mb-2" style="color:var(--muted)">${escapeHtml(item.front || '')}</p>
+            ${item.trick ? `<p class="text-[11px] font-bold" style="color:${c.badgeText}">💡 ${escapeHtml(item.trick)}</p>` : ''}
+          </div>
+          <div class="pt-3 mt-2 border-t flex items-center justify-between text-xs font-extrabold" style="border-color:var(--border); color:${c.badgeText}">
+            <span>📂 Sub-Articles खोलें</span>
+            <span>→</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCardsView() {
+      const grid = document.getElementById("cardsGrid");
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+
+      if (currentMode === "articles" && activeParentArticle) {
+        const subs = activeParentArticle.subArticles.filter(s => {
+          if (!q) return true;
+          return `${s.num} ${s.title} ${s.front} ${s.back}`.toLowerCase().includes(q);
+        });
+        grid.innerHTML = subs.length
+          ? subs.map(s => buildFlipCard(s, activeParentArticle.num)).join("")
+          : `<div class="col-span-full surface-card rounded-2xl p-8 text-center text-sm font-semibold" style="color:var(--muted)">कोई Sub-Article नहीं मिला।</div>`;
+        return;
+      }
+
+      if (currentMode === "schedules") {
+        const list = (constitutionData.schedules || []).filter(s => {
+          if (!q) return true;
+          return `${s.num} ${s.title} ${s.front} ${s.back} ${s.trick || ''}`.toLowerCase().includes(q);
+        });
+        grid.innerHTML = list.length
+          ? list.map(s => buildFlipCard(s, "अनुसूची")).join("")
+          : `<div class="col-span-full surface-card rounded-2xl p-8 text-center text-sm font-semibold" style="color:var(--muted)">कोई Schedule नहीं मिली।</div>`;
+        return;
+      }
+
+      const list = getFilteredArticles();
+      document.getElementById("countPill").textContent = `${list.length} Cards`;
+      if (!list.length) {
+        grid.innerHTML = `<div class="col-span-full surface-card rounded-2xl p-8 text-center text-sm font-semibold" style="color:var(--muted)">कोई Article नहीं मिला।</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map((a, idx) => {
+        if (a.subArticles && a.subArticles.length > 0) {
+          return buildDrillCard(a, idx);
+        }
+        return buildFlipCard(a, a.part || "");
+      }).join("");
+    }
+
+    // ================= ARTICLES TEST ENGINE =================
+    function setTestCount(cnt) {
+      selectedTestCount = cnt;
+      document.querySelectorAll(".cnt-pill").forEach(btn => {
+        const isSel = Number(btn.dataset.cnt) === cnt;
+        btn.classList.toggle("bg-blue-600", isSel);
+        btn.classList.toggle("text-white", isSel);
+        btn.classList.toggle("border-blue-700", isSel);
+        btn.classList.toggle("surface-card", !isSel);
+      });
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function buildQuestionPool(scope) {
+      const schedules = (constitutionData.schedules || []).map(s => ({
+        num: s.num, title: s.title, back: s.back, trick: s.trick || "", tag: "Schedule"
+      }));
+      const articles = (constitutionData.articles || []).map(a => ({
+        num: a.num, title: a.title, back: a.back, trick: a.trick || "", tag: a.part || "Article"
+      }));
+      const subs = [];
+      (constitutionData.articles || []).forEach(a => {
+        (a.subArticles || []).forEach(s => {
+          subs.push({
+            num: s.num, title: s.title, back: s.back, trick: a.trick || "", tag: a.num
+          });
+        });
+      });
+
+      if (scope === "schedules") return { pool: schedules, distractors: schedules };
+      if (scope === "sub_articles") return { pool: subs, distractors: subs };
+      if (scope === "mix_all") {
+        const all = [...schedules, ...articles, ...subs];
+        return { pool: all, distractors: all };
+      }
+      if (scope.startsWith("part:")) {
+        const p = scope.slice(5);
+        const filtered = articles.filter(a => a.tag === p);
+        return { pool: filtered, distractors: articles.length >= 4 ? articles : filtered };
+      }
+      return { pool: articles, distractors: articles };
+    }
+
+    function generateMCQs(pool, distractorPool, pattern, limit) {
+      const picked = shuffleArr(pool).slice(0, Math.min(limit, pool.length));
+      return picked.map(item => {
+        const mode = pattern === "mix"
+          ? (Math.random() < 0.5 ? "num_to_title" : "title_to_num")
+          : pattern;
+
+        const others = shuffleArr(distractorPool.filter(d => d.num !== item.num && d.title !== item.title)).slice(0, 3);
+        if (mode === "num_to_title") {
+          const opts = shuffleArr([item.title, ...others.map(o => o.title)]);
+          return {
+            promptLabel: "सही प्रावधान पहचानें",
+            question: `भारतीय संविधान में "${item.num}" किससे संबंधित है?`,
+            options: opts,
+            answerIndex: opts.indexOf(item.title),
+            tag: item.tag,
+            detail: `${item.num}: ${item.back}`,
+            trick: item.trick,
+            rawItem: item,
+            mode
+          };
+        } else {
+          const opts = shuffleArr([item.num, ...others.map(o => o.num)]);
+          return {
+            promptLabel: "सही अनुच्छेद / अनुसूची चुनें",
+            question: `"${item.title}" का प्रावधान निम्नलिखित में से किसमें किया गया है?`,
+            options: opts,
+            answerIndex: opts.indexOf(item.num),
+            tag: item.tag,
+            detail: `${item.num}: ${item.back}`,
+            trick: item.trick,
+            rawItem: item,
+            mode
+          };
+        }
+      });
+    }
+
+    function startArticleTest(customQuestions = null) {
+      if (customQuestions) {
+        quizList = customQuestions;
+      } else {
+        const scope = document.getElementById("testScope").value;
+        const pattern = document.getElementById("testPattern").value;
+        const { pool, distractors } = buildQuestionPool(scope);
+        if (pool.length < 4 && distractors.length < 4) {
+          alert("Is topic mein abhi paryapt cards nahi hain.");
+          return;
+        }
+        quizList = generateMCQs(pool, distractors, pattern, selectedTestCount);
+      }
+
+      quizIndex = 0;
+      quizCorrect = 0;
+      quizResults = [];
+      quizTimerSec = 0;
+
+      document.getElementById("testSetupCard").classList.add("hidden");
+      document.getElementById("testResultCard").classList.add("hidden");
+      document.getElementById("testActiveCard").classList.remove("hidden");
+
+      startTimer();
+      renderCurrentQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerUI();
+      quizTimerId = setInterval(() => {
+        quizTimerSec++;
+        updateTimerUI();
+      }, 1000);
+    }
+    function stopTimer() {
+      if (quizTimerId) clearInterval(quizTimerId);
+      quizTimerId = null;
+    }
+    function updateTimerUI() {
+      const m = String(Math.floor(quizTimerSec / 60)).padStart(2, "0");
+      const s = String(quizTimerSec % 60).padStart(2, "0");
+      document.getElementById("qTimerBadge").textContent = `⏱ ${m}:${s}`;
+    }
+
+    function renderCurrentQuestion() {
+      const q = quizList[quizIndex];
+      document.getElementById("qCounterBadge").textContent = `Q ${quizIndex + 1} / ${quizList.length}`;
+      document.getElementById("qTagBadge").textContent = q.tag || "";
+      document.getElementById("qScoreBadge").textContent = `✓ ${quizCorrect}`;
+      document.getElementById("qProgressBar").style.width = `${(quizIndex / quizList.length) * 100}%`;
+
+      document.getElementById("qPromptLabel").textContent = q.promptLabel;
+      document.getElementById("qText").textContent = q.question;
+
+      const fb = document.getElementById("qFeedbackBox");
+      fb.classList.add("hidden");
+      document.getElementById("nextQBtn").classList.add("hidden");
+
+      const letters = ["A", "B", "C", "D"];
+      document.getElementById("qOptions").innerHTML = q.options.map((opt, idx) => `
+        <button onclick="answerQuestion(${idx})" data-oidx="${idx}" class="opt-btn w-full text-left p-3.5 rounded-2xl border-2 font-bold text-xs sm:text-sm flex items-start gap-3" style="border-color:var(--border); background:var(--surface)">
+          <span class="w-6 h-6 rounded-lg shrink-0 flex items-center justify-center text-xs font-extrabold" style="background:var(--surface-2)">${letters[idx]}</span>
+          <span class="leading-snug">${escapeHtml(opt)}</span>
+        </button>
+      `).join("");
+    }
+
+    function answerQuestion(chosenIdx) {
+      const q = quizList[quizIndex];
+      const isRight = chosenIdx === q.answerIndex;
+      if (isRight) quizCorrect++;
+
+      quizResults.push({ q, chosenIdx, isRight });
+      document.getElementById("qScoreBadge").textContent = `✓ ${quizCorrect}`;
+
+      document.querySelectorAll("#qOptions button").forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answerIndex) {
+          btn.style.borderColor = "#10b981";
+          btn.style.background = "rgba(16,185,129,0.14)";
+        } else if (idx === chosenIdx && !isRight) {
+          btn.style.borderColor = "#f43f5e";
+          btn.style.background = "rgba(244,63,94,0.14)";
+        } else {
+          btn.style.opacity = "0.55";
+        }
+      });
+
+      const fb = document.getElementById("qFeedbackBox");
+      fb.classList.remove("hidden", "bg-emerald-500/10", "border-emerald-500/30", "bg-rose-500/10", "border-rose-500/30");
+      if (isRight) {
+        fb.classList.add("bg-emerald-500/10", "border-emerald-500/30");
+        document.getElementById("qFeedbackStatus").innerHTML = `<span class="text-emerald-600 dark:text-emerald-400">✅ बिल्कुल सही उत्तर!</span>`;
+      } else {
+        fb.classList.add("bg-rose-500/10", "border-rose-500/30");
+        document.getElementById("qFeedbackStatus").innerHTML = `<span class="text-rose-600 dark:text-rose-400">❌ गलत उत्तर — सही उत्तर: ${escapeHtml(q.options[q.answerIndex])}</span>`;
+      }
+      document.getElementById("qFeedbackDetail").textContent = q.detail;
+
+      const trickEl = document.getElementById("qFeedbackTrick");
+      if (q.trick) {
+        trickEl.textContent = "💡 " + q.trick;
+        trickEl.classList.remove("hidden");
+      } else {
+        trickEl.classList.add("hidden");
+      }
+
+      const nextBtn = document.getElementById("nextQBtn");
+      nextBtn.textContent = quizIndex + 1 === quizList.length ? "Result देखें →" : "अगला प्रश्न →";
+      nextBtn.classList.remove("hidden");
+    }
+
+    function nextQuestion() {
+      quizIndex++;
+      if (quizIndex >= quizList.length) {
+        finishArticleTest();
+      } else {
+        renderCurrentQuestion();
+      }
+    }
+
+    function finishArticleTest() {
+      stopTimer();
+      document.getElementById("qProgressBar").style.width = "100%";
+      document.getElementById("testActiveCard").classList.add("hidden");
+      document.getElementById("testResultCard").classList.remove("hidden");
+
+      const total = quizList.length;
+      const wrong = total - quizCorrect;
+      const acc = total ? Math.round((quizCorrect / total) * 100) : 0;
+      const m = String(Math.floor(quizTimerSec / 60)).padStart(2, "0");
+      const s = String(quizTimerSec % 60).padStart(2, "0");
+
+      document.getElementById("resEmoji").textContent = acc >= 80 ? "🏆" : acc >= 50 ? "💪" : "📚";
+      document.getElementById("resSubtitle").textContent = `कुल ${total} प्रश्न • समय ${m}:${s}`;
+      document.getElementById("resCorrect").textContent = quizCorrect;
+      document.getElementById("resWrong").textContent = wrong;
+      document.getElementById("resAcc").textContent = `${acc}%`;
+
+      const wrongBtn = document.getElementById("practiceWrongBtn");
+      if (wrong > 0) {
+        wrongBtn.classList.remove("hidden");
+        wrongBtn.textContent = `🛡️ Practice Wrong Only (${wrong})`;
+      } else {
+        wrongBtn.classList.add("hidden");
+      }
+
+      document.getElementById("resReviewList").innerHTML = quizResults.map((r, i) => `
+        <div class="p-3.5 rounded-2xl border text-xs sm:text-sm ${r.isRight ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-rose-500/30 bg-rose-500/5'}">
+          <div class="font-extrabold mb-1">${i + 1}. ${escapeHtml(r.q.question)}</div>
+          <div class="font-bold ${r.isRight ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
+            ${r.isRight ? '✅ आपका उत्तर सही:' : '❌ आपका उत्तर:'} ${escapeHtml(r.q.options[r.chosenIdx])}
+          </div>
+          ${!r.isRight ? `<div class="font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">✓ सही उत्तर: ${escapeHtml(r.q.options[r.q.answerIndex])}</div>` : ''}
+          <p class="text-xs mt-1.5" style="color:var(--muted)">${escapeHtml(r.q.detail)}</p>
+        </div>
+      `).join("");
+    }
+
+    function practiceWrongOnly() {
+      const wrongQs = quizResults.filter(r => !r.isRight).map(r => r.q);
+      if (!wrongQs.length) return;
+      startArticleTest(shuffleArr(wrongQs));
+    }
+
+    function quitArticleTest() {
+      stopTimer();
+      resetTestToSetup();
+    }
+
+    function resetTestToSetup() {
+      stopTimer();
+      document.getElementById("testActiveCard").classList.add("hidden");
+      document.getElementById("testResultCard").classList.add("hidden");
+      document.getElementById("testSetupCard").classList.remove("hidden");
+    }
+
+    // Service Worker Registration
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+
+    initTheme();
+    loadData();
+  </script>
+</body>
+</html>
