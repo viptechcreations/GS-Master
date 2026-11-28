@@ -1,9 +1,10 @@
-const CACHE_NAME = 'gs-master-v1';
+const CACHE_NAME = 'gs-master-v2';
 
 const CORE_ASSETS = [
   './',
   './index.html',
   './articles.html',
+  './marathons.html',
   './manifest.json',
   './icon.svg',
   './icon-192.png',
@@ -12,11 +13,11 @@ const CORE_ASSETS = [
 
 const OPTIONAL_DATA = [
   './data/constitution.json',
+  './data/marathons.json',
   './data/pdfs.json',
   './data/notes/polity.json'
 ];
 
-// Install: Cache core app shell safely
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
@@ -30,30 +31,20 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: Clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      )
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-// Fetch Strategy:
-// - HTML & JSON: Network-first (fresh GitHub updates when online, instant offline fallback)
-// - Icons/Fonts/Other GET assets: Cache-first with background update
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-
-  // Skip cross-origin requests except fonts/CDNs if needed
   const isSameOrigin = url.origin === self.location.origin;
   const isDataOrHtml =
     req.mode === 'navigate' ||
@@ -61,11 +52,8 @@ self.addEventListener('fetch', (event) => {
     url.pathname.endsWith('.json') ||
     url.pathname === '/';
 
-  // Don't cache large PDFs aggressively unless opened
   if (isSameOrigin && url.pathname.endsWith('.pdf')) {
-    event.respondWith(
-      fetch(req).catch(() => caches.match(req))
-    );
+    event.respondWith(fetch(req).catch(() => caches.match(req)));
     return;
   }
 
